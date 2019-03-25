@@ -112,7 +112,7 @@ public class DruidConfig {
         try {
             datasource.setFilters(filters);
         } catch (SQLException e) {
-//            logger.error("druid configuration initialization filter", e);
+            logger.error("druid configuration initialization filter", e);
         }
         return datasource;
     }

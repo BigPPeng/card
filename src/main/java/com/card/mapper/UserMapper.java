@@ -13,7 +13,7 @@ public interface UserMapper {
 
     int deleteByPrimaryKey(Integer id);
 
-    int insert(User record);
+    long insert(User record);
 
     User selectByPrimaryKey(Integer id);
 

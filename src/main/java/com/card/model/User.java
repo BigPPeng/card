@@ -1,5 +1,7 @@
 package com.card.model;
 
+import com.card.model.enums.UserStatus;
+
 import java.util.Date;
 
 /**
@@ -27,6 +29,19 @@ public class User {
      UNIQUE KEY `name` (`name`) USING BTREE
      )
      */
+
+    public User() {
+        init();
+    }
+
+    private void init() {
+        this.realName = "";
+        this.identityCardNumber = "";
+        this.homeAddress = "";
+        this.receiveAddress = "";
+        this.status = UserStatus.DEFAULT.status;
+    }
+
     private long id;
     private String name;
     private String pass;
