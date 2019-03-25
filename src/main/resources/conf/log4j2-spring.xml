@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Configuration>
+
+    <Properties>
+        <Property name="LOG_PATH">/Users/hongpeng.cui/Desktop/app/card</Property>
+    </Properties>
+
+    <Appenders>
+        <!-- 控制台输出 -->
+        <Console name="stdout">
+            <PatternLayout pattern="%d %p [%c] - %m%n" />
+        </Console>
+        <!-- 系统启动日志输出文件 -->
+        <RollingRandomAccessFile name="fileAppender"
+                                 fileName="${LOG_PATH}/logs/system.log"
+                                 filePattern="${LOG_PATH}/logs/system.log.%d{yyyy-MM-dd}">
+            <PatternLayout pattern="%d %p [%c] - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingRandomAccessFile>
+        <!--actionLogEntity appender -->
+        <RollingRandomAccessFile name="actionLogEntityAppender"
+                                 fileName="${LOG_PATH}/logs/goods-audit_actionlogentity.log"
+                                 filePattern="${LOG_PATH}/logs/goods-audit_actionlogentity.log.%d{yyyy-MM-dd-HH-mm}">
+            <PatternLayout pattern="%m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingRandomAccessFile>
+        <!-- 全局异常 -->
+        <RollingRandomAccessFile name="globalExceptionAppender"
+                                 fileName="${LOG_PATH}/logs/goods-audit_globalexception.log"
+                                 filePattern="${LOG_PATH}/logs/goods-audit_globalexception.log.%d{yyyy-MM-dd-HH-mm}">
+            <PatternLayout pattern="%m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingRandomAccessFile>
+        <!--scheduleLogEntityAppender appender -->
+        <RollingRandomAccessFile name="scheduleLogEntityAppender"
+                                 fileName="${LOG_PATH}/logs/schedule_logentity.log"
+                                 filePattern="${LOG_PATH}/logs/schedule_logentity.log.%d{yyyy-MM-dd-HH}.log">
+            <PatternLayout pattern="%m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingRandomAccessFile>
+        <!-- 搜索日志 -->
+        <RollingRandomAccessFile name="auditTraceAppender"
+                                 fileName="${LOG_PATH}/logs/audit_trace.log"
+                                 filePattern="${LOG_PATH}/logs/audit_trace.log.%d{yyyy-MM-dd-HH}.log">
+            <PatternLayout pattern="%m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingRandomAccessFile>
+
+        <!--添加一个文本追加器，文件位于根目录下，名为log.log-->
+        <RollingRandomAccessFile name="springFileAppender"
+                                 fileName="${LOG_PATH}/logs/spring.log"
+                                 filePattern="${LOG_PATH}/logs/spring.log.%d{yyyy-MM-dd}.log">
+            <PatternLayout pattern="[%-5p] %d %c - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingRandomAccessFile>
+
+        <!--添加一个文本追加器，文件位于根目录下，activiti.log  记录activiti组件的日志-->
+        <RollingRandomAccessFile name="activitiFileAppender"
+                                 fileName="${LOG_PATH}/logs/activiti.log"
+                                 filePattern="${LOG_PATH}/logs/activiti.log.%d{yyyy-MM-dd}.log">
+            <PatternLayout pattern="[%-5p] %d %c - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingRandomAccessFile>
+
+    </Appenders>
+
+
+    <loggers>
+        <root level="DEBUG">
+            <AppenderRef ref="stdout"/>
+            <!--<AppenderRef ref="fileAppender"/>-->
+        </root>
+
+        <logger level="INFO" name="schedulelogger">
+            <AppenderRef ref="scheduleLogEntityAppender"/>
+        </logger>
+
+        <logger level="INFO" name="actionLogEntityLogger" additivity="true">
+            <level value="INFO"/>
+            <AppenderRef ref="actionLogEntityAppender" />
+        </logger>
+
+        <logger level="INFO" name="globalExceptionLogger" additivity="true">
+            <AppenderRef ref="globalExceptionAppender"/>
+        </logger>
+        <logger level="INFO" name="auditTraceLogger">
+            <AppenderRef ref="auditTraceAppender"/>
+        </logger>
+        <Logger name="org.springframework" level="DEBUG" additivity="true">
+            <AppenderRef ref="springFileAppender" />
+        </Logger>
+        <!--<Logger name="org.activiti" level="info" additivity="false">-->
+            <!--<AppenderRef ref="activitiFileAppender" />-->
+        <!--</Logger>-->
+        <Logger name="org.apache.ibatis" level="info" additivity="false">
+            <AppenderRef ref="springFileAppender" />
+        </Logger>
+
+    </loggers>
+
+
+</Configuration>
