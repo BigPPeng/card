@@ -30,6 +30,7 @@
     <resultMap id="BaseResultMap" type="com.card.model.User">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="pass" jdbcType="VARCHAR" property="pass"/>
         <result column="real_name" jdbcType="VARCHAR" property="realName"/>
         <result column="phone_number" jdbcType="VARCHAR" property="phoneNumber"/>
         <result column="identity_card_number" jdbcType="VARCHAR" property="identityCardNumber"/>
@@ -42,7 +43,7 @@
     </resultMap>
 
     <sql id="BaseSelect">
-        id,name,real_name,phone_number,identity_card_number,user_email,
+        id,name,pass,real_name,phone_number,identity_card_number,user_email,
         home_address,receive_address,status,login_time,create_time
     </sql>
 
@@ -56,10 +57,11 @@
             SELECT LAST_INSERT_ID()
         </selectKey>
         insert into card_user
-          (name,real_name,phone_number,identity_card_number,user_email,
+          (name,pass,real_name,phone_number,identity_card_number,user_email,
             home_address,receive_address,status,login_time,create_time)
         values (
           #{name,jdbcType=VARCHAR},
+          #{pass,jdbcType=VARCHAR},
           #{realName,jdbcType=VARCHAR},
           #{phoneNumber,jdbcType=VARCHAR},
           #{identityCardNumber,jdbcType=VARCHAR},
@@ -76,6 +78,9 @@
         <set>
             <if test="name != null">
                 name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="pass != null">
+                pass = #{pass,jdbcType=VARCHAR},
             </if>
             <if test="realName != null">
                 real_name = #{realName},
@@ -124,6 +129,7 @@
         FROM card_user
         <where>
             <if test="name != null">AND name LIKE CONCAT('%',#{name},'%')</if>
+            <if test="pass != null">AND pass LIKE CONCAT('%',#{pass},'%')</if>
             <if test="homeAddress != null">AND home_address LIKE CONCAT('%',#{homeAddress},'%')</if>
             <if test="receiveAddress != null">AND receive_address LIKE CONCAT('%',#{receiveAddress},'%')</if>
             <if test="userEmail != null">AND user_email LIKE CONCAT('%',#{userEmail},'%')</if>
@@ -144,6 +150,7 @@
         FROM card_user
         <where>
             <if test="name != null">AND name LIKE CONCAT('%',#{name},'%')</if>
+            <if test="pass != null">AND pass LIKE CONCAT('%',#{pass},'%')</if>
             <if test="homeAddress != null">AND home_address LIKE CONCAT('%',#{homeAddress},'%')</if>
             <if test="receiveAddress != null">AND receive_address LIKE CONCAT('%',#{receiveAddress},'%')</if>
             <if test="userEmail != null">AND user_email LIKE CONCAT('%',#{userEmail},'%')</if>

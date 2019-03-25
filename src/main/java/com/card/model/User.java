@@ -11,6 +11,7 @@ public class User {
      CREATE TABLE `card_user` (
      `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
      `name` varchar(30) NOT NULL DEFAULT '' COMMENT '用户昵称',
+     `pass` varchar(30) NOT NULL DEFAULT '' COMMENT '用户密码',
      `real_name` varchar(30) NOT NULL DEFAULT '' COMMENT '用户实名',
      `phone_number` varchar(30) NOT NULL DEFAULT '' COMMENT '用户手机号',
      `identity_card_number` varchar(40) NOT NULL DEFAULT '' COMMENT '身份证ID',
@@ -28,6 +29,7 @@ public class User {
      */
     private long id;
     private String name;
+    private String pass;
     private String realName;
     private String phoneNumber;
     private String identityCardNumber;
@@ -127,11 +129,20 @@ public class User {
     }
 
 
+    public String getPass() {
+        return pass;
+    }
+
+    public void setPass(String pass) {
+        this.pass = pass;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", pass='" + pass + '\'' +
                 ", realName='" + realName + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", identityCardNumber='" + identityCardNumber + '\'' +
