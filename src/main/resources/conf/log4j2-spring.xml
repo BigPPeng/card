@@ -3,6 +3,7 @@
 
     <Properties>
         <Property name="LOG_PATH">/Users/hongpeng.cui/Desktop/app/card</Property>
+        <!--<Property name="LOG_PATH">/home/work/card</Property>-->
     </Properties>
 
     <Appenders>
