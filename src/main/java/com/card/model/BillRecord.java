@@ -24,105 +24,107 @@ public class BillRecord {
       `create_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '创建时间',
      */
 
-    private long billRecordId;
-    private long userId;
-    private long cardId;//账单关联的信用卡ID
-    private long consumeTime;// 消费日期
+    private Long billRecordId;
+    private Long userId;
+    private Long cardId;//账单关联的信用卡ID
+    private Long consumeTime;// 消费日期
     /**
      * 账单状态{@link BillStatus}
      */
-    private int billStatus;
+    private Integer billStatus;
     /**
      * 消费类型{@link ConsumeType}
      */
-    private int consumeType;
-    private long repaymentTime;// 还款日期或者最后还款日期
-    private double money;// 金额
+    private Integer consumeType;
+    private Long repaymentTime;// 还款日期或者最后还款日期
+    private Double money;// 金额
     /**
      * 还款方式{@link RepaymentType}
      */
-    private int repaymentType;
-    private long createTime;// 账单创建时间
+    private Integer repaymentType;
+    private Long createTime;// 账单创建时间
 
-    public long getBillRecordId() {
+    public Long getBillRecordId() {
         return billRecordId;
     }
 
-    public void setBillRecordId(long billRecordId) {
+    public void setBillRecordId(Long billRecordId) {
         this.billRecordId = billRecordId;
     }
 
-    public long getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
-    public long getCardId() {
+    public Long getCardId() {
         return cardId;
     }
 
-    public void setCardId(long cardId) {
+    public void setCardId(Long cardId) {
         this.cardId = cardId;
     }
 
-    public long getConsumeTime() {
+    public Long getConsumeTime() {
         return consumeTime;
     }
 
-    public void setConsumeTime(long consumeTime) {
+    public void setConsumeTime(Long consumeTime) {
         this.consumeTime = consumeTime;
     }
 
-    public int getBillStatus() {
+    public Integer getBillStatus() {
         return billStatus;
     }
 
-    public void setBillStatus(int billStatus) {
+    public void setBillStatus(Integer billStatus) {
         this.billStatus = billStatus;
     }
 
-    public int getConsumeType() {
+    public Integer getConsumeType() {
         return consumeType;
     }
 
-    public void setConsumeType(int consumeType) {
+    public void setConsumeType(Integer consumeType) {
         this.consumeType = consumeType;
     }
 
-    public long getRepaymentTime() {
+    public Long getRepaymentTime() {
         return repaymentTime;
     }
 
-    public void setRepaymentTime(long repaymentTime) {
+    public void setRepaymentTime(Long repaymentTime) {
         this.repaymentTime = repaymentTime;
     }
 
-    public double getMoney() {
+    public Double getMoney() {
         return money;
     }
 
-    public void setMoney(double money) {
+    public void setMoney(Double money) {
         this.money = money;
     }
 
-    public int getRepaymentType() {
+    public Integer getRepaymentType() {
         return repaymentType;
     }
 
-    public void setRepaymentType(int repaymentType) {
+    public void setRepaymentType(Integer repaymentType) {
         this.repaymentType = repaymentType;
     }
 
-    public long getCreateTime() {
+    public Long getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(long createTime) {
+    public void setCreateTime(Long createTime) {
         this.createTime = createTime;
     }
+
+
 
     @Override
     public String toString() {

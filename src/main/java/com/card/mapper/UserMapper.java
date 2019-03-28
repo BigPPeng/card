@@ -1,6 +1,7 @@
 package com.card.mapper;
 
 import com.card.model.User;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,7 @@ import java.util.Map;
  *
  * Created by hongpeng.cui on 2019/3/25.
  */
+@Component
 public interface UserMapper {
 
     int deleteByPrimaryKey(Integer id);

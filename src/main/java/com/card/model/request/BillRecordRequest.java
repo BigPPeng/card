@@ -8,16 +8,16 @@ import java.util.Date;
  */
 public class BillRecordRequest {
     // 必须的
+    private long userId;
+    // 非必须筛选条件
     private int pageSize;
     private int pageNumber;
-    private int userId;
-    // 非必须筛选条件
-    private int cardId;
+    private long cardId;
     private Date consumeBegin;
     private Date consumeEnd;
     private int billStatus;
     private int repaymentType;
-    private int billType;
+    private int consumeType;
 
     public int getPageSize() {
         return pageSize;
@@ -35,19 +35,19 @@ public class BillRecordRequest {
         this.pageNumber = pageNumber;
     }
 
-    public int getUserId() {
+    public long getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 
-    public int getCardId() {
+    public long getCardId() {
         return cardId;
     }
 
-    public void setCardId(int cardId) {
+    public void setCardId(long cardId) {
         this.cardId = cardId;
     }
 
@@ -83,12 +83,12 @@ public class BillRecordRequest {
         this.repaymentType = repaymentType;
     }
 
-    public int getBillType() {
-        return billType;
+    public int getConsumeType() {
+        return consumeType;
     }
 
-    public void setBillType(int billType) {
-        this.billType = billType;
+    public void setConsumeType(int consumeType) {
+        this.consumeType = consumeType;
     }
 
     @Override
@@ -102,7 +102,7 @@ public class BillRecordRequest {
                 ", consumeEnd=" + consumeEnd +
                 ", billStatus=" + billStatus +
                 ", repaymentType=" + repaymentType +
-                ", billType=" + billType +
+                ", consumeType=" + consumeType +
                 '}';
     }
 }

@@ -15,9 +15,14 @@ public class BillRecordResponse {
     private int pageNumber;
     private int totalPage;
     private int totalCount;
-    private List<BillRecord> billRecord = Lists.newArrayList();
+    private List<BillRecord> billRecord;
 
     public BillRecordResponse() {
+        pageNumber = 0;
+        pageSize = 0;
+        totalCount = 0;
+        totalPage = 0;
+        billRecord = Lists.newArrayList();
     }
 
     public int getPageSize() {

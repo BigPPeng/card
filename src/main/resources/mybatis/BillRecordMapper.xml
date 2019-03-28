@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.card.mapper.BillRecordMapper">
+    <!--
+        `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+        `user_id` bigint(11) NOT NULL DEFAULT -1  COMMENT '用户ID',
+        `card_id` bigint(30) NOT NULL DEFAULT -1 COMMENT '关联信用卡ID',
+        `consume_time` bigint(30) NOT NULL DEFAULT -1 COMMENT '消费日期，存储距离1970..秒数',
+        `bill_status` int(11) NOT NULL DEFAULT 0 COMMENT '账单状态',
+        `consume_type` int(11) NOT NULL DEFAULT 0 COMMENT '消费类型',
+        `repayment_time` bigint(30) NOT NULL DEFAULT -1 COMMENT '还款日期',
+        `money` bigint(30) NOT NULL DEFAULT -1 COMMENT '金额',
+        `repayment_type` int(11) NOT NULL DEFAULT -1 COMMENT '还款方式',
+        `create_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '创建时间',
+
+        private long billRecordId;
+        private long userId;
+        private long cardId;//账单关联的信用卡ID
+        private long consumeTime;// 消费日期
+        private int billStatus;
+        private int consumeType;
+        private long repaymentTime;// 还款日期或者最后还款日期
+        private double money;// 金额
+        private int repaymentType;
+        private long createTime;// 账单创建时间
+    -->
+    <resultMap id="BaseResultMap" type="com.card.model.BillRecord">
+        <id column="id" jdbcType="BIGINT" property="billRecordId"/>
+        <id column="user_id" jdbcType="BIGINT" property="userId"/>
+        <id column="card_id" jdbcType="BIGINT" property="cardId"/>
+        <id column="repayment_time" jdbcType="BIGINT" property="consumeTime"/>
+        <id column="consume_time" jdbcType="BIGINT" property="repaymentTime"/>
+        <id column="create_time" jdbcType="BIGINT" property="createTime"/>
+        <result column="bill_status" jdbcType="INTEGER" property="billStatus"/>
+        <result column="consume_type" jdbcType="INTEGER" property="consumeType"/>
+        <result column="repayment_type" jdbcType="INTEGER" property="repaymentType"/>
+        <result column="money" jdbcType="DOUBLE" property="money"/>
+    </resultMap>
+
+    <sql id="BaseSelect">
+        id,user_id,card_id,repayment_time,consume_time,create_time,bill_status,consume_type,money,repayment_type
+    </sql>
+
+
+    <insert id="insert" parameterType="com.card.model.BillRecord">
+        <selectKey resultType="java.lang.Long" keyProperty="billRecordId" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into bill_record
+        (user_id,card_id,repayment_time,consume_time,create_time,bill_status,consume_type,money,repayment_type)
+        values (#{userId,jdbcType=BIGINT},#{cardId,jdbcType=BIGINT},#{repaymentTime,jdbcType=BIGINT},
+        #{consumeTime,jdbcType=BIGINT},#{createTime,jdbcType=BIGINT},#{billStatus,jdbcType=INTEGER},
+        #{consumeType,jdbcType=INTEGER},#{money,jdbcType=DOUBLE},#{repaymentType,jdbcType=INTEGER})
+     </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.card.model.BillRecord">
+        update bill_record
+        <set>
+            <if test="repaymentTime != null">
+                repayment_time = #{repaymentTime,jdbcType=BIGINT},
+            </if>
+            <if test="billStatus != null">
+                bill_status = #{billStatus},
+            </if>
+            <if test="repaymentType != null">
+                repayment_type = #{repaymentType},
+            </if>
+        </set>
+        where id = #{billRecordId,jdbcType=BIGINT}
+    </update>
+
+    <!-- 根据主键查询 -->
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select <include refid="BaseSelect"/>
+        from bill_record
+        where id = #{billRecordId,jdbcType=BIGINT}
+    </select>
+
+    <!-- 根据参数查询用户信息 -->
+    <select id="selectByParams" resultMap="BaseResultMap" parameterType="java.util.Map">
+        SELECT <include refid="BaseSelect"/>
+        FROM bill_record
+        <where>
+            <if test="userId != null">AND user_id = #{userId}</if>
+            <if test="cardId != null">AND card_id = #{cardId}</if>
+            <if test="billStatus != null">AND bill_status = #{billStatus}</if>
+            <if test="notDelete != null">AND bill_status != #{notDelete}</if>
+            <if test="consumeType != null">AND consume_type = #{consumeType}</if>
+            <if test="repaymentType != null">AND repayment_type = #{repaymentType}</if>
+            <if test="consumeBegin != null"><![CDATA[ AND consume_time >= #{consumeBegin} ]]></if>
+            <if test="consumeEnd != null"><![CDATA[ AND consume_time <= #{consumeEnd} ]]></if>
+            <if test="repaymentBegin != null"><![CDATA[ AND repayment_time >= #{repaymentBegin} ]]></if>
+            <if test="repaymentEnd != null"><![CDATA[ AND repayment_time <= #{repaymentEnd} ]]></if>
+        </where>
+        <if test="start != null and pageSize != null">
+            LIMIT #{start}, #{pageSize}
+        </if>
+    </select>
+
+    <select id="getCount" resultType="int" parameterType="java.util.Map">
+        SELECT COUNT(id)
+        FROM bill_record
+        <where>
+            <if test="userId != null">AND user_id = #{userId}</if>
+            <if test="cardId != null">AND card_id = #{cardId}</if>
+            <if test="billStatus != null">AND bill_status = #{billStatus}</if>
+            <if test="notDelete != null">AND bill_status != #{notDelete}</if>
+            <if test="consumeType != null">AND consume_type = #{consumeType}</if>
+            <if test="repaymentType != null">AND repayment_type = #{repaymentType}</if>
+            <if test="consumeBegin != null"><![CDATA[ AND consume_time >= #{consumeBegin} ]]></if>
+            <if test="consumeEnd != null"><![CDATA[ AND consume_time <= #{consumeEnd} ]]></if>
+            <if test="repaymentBegin != null"><![CDATA[ AND repayment_time >= #{repaymentBegin} ]]></if>
+            <if test="repaymentEnd != null"><![CDATA[ AND repayment_time <= #{repaymentEnd} ]]></if>
+        </where>
+    </select>
+
+</mapper>

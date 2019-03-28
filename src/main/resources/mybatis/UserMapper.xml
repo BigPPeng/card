@@ -111,7 +111,7 @@
     </update>
 
     <!-- 根据主键查询 -->
-    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select <include refid="BaseSelect"/>
         from card_user
         where id = #{id,jdbcType=BIGINT}

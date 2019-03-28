@@ -5,6 +5,7 @@ import com.card.mapper.UserMapper;
 import com.card.model.User;
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -15,6 +16,7 @@ import java.util.Map;
  *
  * Created by hongpeng.cui on 2019/3/25.
  */
+@Service
 public class UserService {
 
     @Resource

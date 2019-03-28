@@ -5,6 +5,7 @@ package com.card.model.enums;
  * Created by hongpeng.cui on 2019/3/27.
  */
 public enum RepaymentType {
+    WEI_HUAN_ZHANG(0,"未还"),
     WE_XIN(1,"微信"),
     ZHI_FU_BAO(2,"支付宝"),
     YIN_HANG(3,"银行卡"),
