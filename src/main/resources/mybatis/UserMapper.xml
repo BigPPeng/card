@@ -57,7 +57,7 @@
             SELECT LAST_INSERT_ID()
         </selectKey>
         insert into card_user
-          (name,pass,real_name,phone_number,identity_card_number,user_email,
+          (`name`,pass,real_name,phone_number,identity_card_number,user_email,
             home_address,receive_address,status,login_time,create_time)
         values (
           #{name,jdbcType=VARCHAR},
@@ -128,15 +128,18 @@
         SELECT <include refid="BaseSelect"/>
         FROM card_user
         <where>
-            <if test="name != null">AND name LIKE CONCAT('%',#{name},'%')</if>
+            <if test="name != null">AND `name` LIKE CONCAT('%',#{name},'%')</if>
+            <if test="nameSelect != null">AND `name` = #{nameSelect}</if>
             <if test="pass != null">AND pass LIKE CONCAT('%',#{pass},'%')</if>
             <if test="homeAddress != null">AND home_address LIKE CONCAT('%',#{homeAddress},'%')</if>
             <if test="receiveAddress != null">AND receive_address LIKE CONCAT('%',#{receiveAddress},'%')</if>
             <if test="userEmail != null">AND user_email LIKE CONCAT('%',#{userEmail},'%')</if>
+            <if test="userEmailSelect != null">AND `user_email` = #{userEmailSelect}</if>
             <if test="identityCardNumber != null">AND identity_card_number LIKE CONCAT('%',#{identityCardNumber},'%')</if>
             <if test="phoneNumber != null">AND phone_number LIKE CONCAT('%',#{phoneNumber},'%')</if>
+            <if test="phoneNumberSelect != null">AND `phone_number` = #{phoneNumberSelect}</if>
             <if test="realName != null">AND real_name LIKE CONCAT('%',#{realName},'%')</if>
-            <if test="status != 0">AND status = #{status}</if>
+            <if test="status != null">AND status = #{status}</if>
             <if test="loginTime != null">AND login_time = #{loginTime}</if>
             <if test="createTime != null">AND create_time = #{createTime}</if>
         </where>
@@ -146,18 +149,21 @@
     </select>
 
     <select id="getUserCount" resultType="int" parameterType="java.util.Map">
-        SELECT COUNT(id)
+        SELECT COUNT(*)
         FROM card_user
         <where>
-            <if test="name != null">AND name LIKE CONCAT('%',#{name},'%')</if>
+            <if test="name != null">AND `name` LIKE CONCAT('%',#{name},'%')</if>
+            <if test="nameSelect != null">AND `name` = #{nameSelect}</if>
             <if test="pass != null">AND pass LIKE CONCAT('%',#{pass},'%')</if>
             <if test="homeAddress != null">AND home_address LIKE CONCAT('%',#{homeAddress},'%')</if>
             <if test="receiveAddress != null">AND receive_address LIKE CONCAT('%',#{receiveAddress},'%')</if>
             <if test="userEmail != null">AND user_email LIKE CONCAT('%',#{userEmail},'%')</if>
+            <if test="userEmailSelect != null">AND `user_email` = #{userEmailSelect}</if>
             <if test="identityCardNumber != null">AND identity_card_number LIKE CONCAT('%',#{identityCardNumber},'%')</if>
             <if test="phoneNumber != null">AND phone_number LIKE CONCAT('%',#{phoneNumber},'%')</if>
+            <if test="phoneNumberSelect != null">AND `phone_number` = #{phoneNumberSelect}</if>
             <if test="realName != null">AND real_name LIKE CONCAT('%',#{realName},'%')</if>
-            <if test="status != 0">AND status = #{status}</if>
+            <if test="status != null">AND status = #{status}</if>
             <if test="loginTime != null">AND login_time = #{loginTime}</if>
             <if test="createTime != null">AND create_time = #{createTime}</if>
         </where>

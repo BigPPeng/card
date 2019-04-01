@@ -17,7 +17,7 @@ public interface UserMapper {
 
     long insert(User record);
 
-    User selectByPrimaryKey(Integer id);
+    User selectByPrimaryKey(Long id);
 
     List<User> selectAll();
 

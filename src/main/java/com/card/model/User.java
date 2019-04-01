@@ -169,4 +169,11 @@ public class User {
                 ", createTime=" + createTime +
                 '}';
     }
+
+
+    public String sessionKey() {
+        String s = this.toString();
+        return s.hashCode()+s;
+    }
+
 }

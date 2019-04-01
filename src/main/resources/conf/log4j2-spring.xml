@@ -2,8 +2,8 @@
 <Configuration>
 
     <Properties>
-        <Property name="LOG_PATH">/Users/hongpeng.cui/Desktop/app/card</Property>
-        <!--<Property name="LOG_PATH">/home/work/card</Property>-->
+        <!--<Property name="LOG_PATH">/Users/hongpeng.cui/Desktop/app/card</Property>-->
+        <Property name="LOG_PATH">/home/work/card</Property>
     </Properties>
 
     <Appenders>
@@ -107,7 +107,7 @@
         <!--<Logger name="org.activiti" level="info" additivity="false">-->
             <!--<AppenderRef ref="activitiFileAppender" />-->
         <!--</Logger>-->
-        <Logger name="org.apache.ibatis" level="info" additivity="false">
+        <Logger name="org.apache.ibatis" level="info" additivity="true">
             <AppenderRef ref="springFileAppender" />
         </Logger>
 
