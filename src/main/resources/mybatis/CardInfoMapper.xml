@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.card.mapper.CardInfoMapper">
+    <!--
+    CREATE TABLE `card_info` (
+  `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` bigint(11) NOT NULL COMMENT 'id',
+  `user_name` varchar(30) NOT NULL DEFAULT '' COMMENT '用户名',
+  `card_type` int(11) NOT NULL DEFAULT '0' COMMENT '卡类型',
+  `card_number` varchar(30) NOT NULL DEFAULT '' COMMENT '卡号',
+  `card_limit` int(11) NOT NULL DEFAULT '0' COMMENT '卡额度',
+  `back_name` varchar(100) NOT NULL DEFAULT '' COMMENT '银行名',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `effective_time` datetime DEFAULT null COMMENT '激活时间',
+  `status` int(11) NOT NULL DEFAULT '0' COMMENT '卡状态',
+
+    private long id;
+    private long userId;
+    private String userName;
+    private int cardType;
+    private String cardNumber;
+    private int cardLimit;
+    private String backName;
+    private long createTime;
+    private long effectiveTime;
+    private int status;
+
+    -->
+    <resultMap id="BaseResultMap" type="com.card.model.CardInfo">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <id column="user_id" jdbcType="BIGINT" property="userId"/>
+        <id column="user_name" jdbcType="VARCHAR" property="userName"/>
+        <id column="card_type" jdbcType="INTEGER" property="cardType"/>
+        <id column="card_number" jdbcType="VARCHAR" property="cardNumber"/>
+        <id column="card_limit" jdbcType="INTEGER" property="cardLimit"/>
+        <result column="back_name" jdbcType="VARCHAR" property="backName"/>
+        <result column="create_time" jdbcType="BIGINT" property="createTime"/>
+        <result column="effective_time" jdbcType="BIGINT" property="effectiveTime"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+    </resultMap>
+
+    <sql id="BaseSelect">
+        id,user_id,user_name,card_type,card_number,card_limit,back_name,create_time,effective_time,status
+    </sql>
+
+
+    <insert id="insert" parameterType="com.card.model.CardInfo">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into card_info
+        (user_id,user_name,card_type,card_number,card_limit,back_name,create_time,effective_time,status)
+        values (#{userId},#{userName},#{cardType}, #{cardNumber},#{cardLimit},#{backName},#{createTime},#{effectiveTime},#{status})
+     </insert>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from card_info
+        where id = #{id}
+    </delete>
+
+    <update id="updateByPrimaryKey" parameterType="com.card.model.CardInfo">
+        update card_info
+        <set>
+            <if test="cardType != null">
+                card_type = #{cardType},
+            </if>
+            <if test="cardLimit != null">
+                card_limit = #{cardLimit},
+            </if>
+            <if test="effectiveTime != null">
+                effective_time = #{effectiveTime},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!-- 根据主键查询 -->
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select <include refid="BaseSelect"/>
+        from card_info
+        where id = #{id}
+    </select>
+
+    <!-- 根据参数查询用户信息 -->
+    <select id="selectByParams" resultMap="BaseResultMap" parameterType="java.util.Map">
+        SELECT <include refid="BaseSelect"/>
+        FROM card_info
+        <where>
+            <if test="userId != null">AND user_id = #{userId}</if>
+            <if test="userName != null">AND user_name = #{userName}</if>
+            <if test="cardType != null">AND card_type = #{cardType}</if>
+            <if test="cardNumber != null">AND card_number != #{cardNumber}</if>
+            <if test="cardLimit != null">AND card_limit = #{cardLimit}</if>
+            <if test="backName != null">AND  back_name LIKE CONCAT('%',#{backName},'%')</if>
+            <if test="status != null">AND  status = #{status}</if>
+            <if test="effectiveTimeBegin != null"><![CDATA[ AND effective_time >= #{effectiveTimeBegin} ]]></if>
+            <if test="effectiveTimeEnd != null"><![CDATA[ AND effective_time <= #{effectiveTimeEnd} ]]></if>
+            <if test="createTimeBegin != null"><![CDATA[ AND create_time >= #{createTimeBegin} ]]></if>
+            <if test="createTimeEnd != null"><![CDATA[ AND create_time <= #{createTimeEnd} ]]></if>
+        </where>
+    </select>
+
+    <select id="getCount" resultType="int" parameterType="java.util.Map">
+        SELECT COUNT(id)
+        FROM card_info
+        <where>
+            <if test="userId != null">AND user_id = #{userId}</if>
+            <if test="userName != null">AND user_name = #{userName}</if>
+            <if test="cardType != null">AND card_type = #{cardType}</if>
+            <if test="cardNumber != null">AND card_number != #{cardNumber}</if>
+            <if test="cardLimit != null">AND card_limit = #{cardLimit}</if>
+            <if test="backName != null">AND  back_name LIKE CONCAT('%',#{backName},'%')</if>
+            <if test="status != null">AND  status = #{status}</if>
+            <if test="effectiveTimeBegin != null"><![CDATA[ AND effective_time >= #{effectiveTimeBegin} ]]></if>
+            <if test="effectiveTimeEnd != null"><![CDATA[ AND effective_time <= #{effectiveTimeEnd} ]]></if>
+            <if test="createTimeBegin != null"><![CDATA[ AND create_time >= #{createTimeBegin} ]]></if>
+            <if test="createTimeEnd != null"><![CDATA[ AND create_time <= #{createTimeEnd} ]]></if>
+        </where>
+    </select>
+
+</mapper>

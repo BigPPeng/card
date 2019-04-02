@@ -3,6 +3,8 @@ package com.card.common;
 import com.google.common.base.Strings;
 import org.springframework.util.StringUtils;
 
+import java.util.Random;
+
 /**
  * Created by hongpeng.cui on 2019/4/1.
  */
@@ -37,6 +39,25 @@ public class CardUtil {
         }
         return true;
     }
+
+
+    public static String getCardNumber(){
+        Random random = new Random(System.currentTimeMillis());
+        StringBuilder builder = new StringBuilder();
+        int i = 0;
+        while (i < 17) {
+            int a = random.nextInt();
+            if (a < 0)
+                continue;
+            int b = a % 10;
+            if (i == 0 && b == 0)
+                continue;
+            builder.append(b);
+            i++;
+        }
+        return builder.toString();
+    }
+
 
 
 }

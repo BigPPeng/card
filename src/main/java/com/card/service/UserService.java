@@ -33,7 +33,6 @@ public class UserService {
 
 
     /**
-     *
      * @param nameOrEmailOrPhoneOrId 名字 or 电话 or 邮箱
      * @param type                   1：名字 2：电话 3：邮箱 4:id
      * @return User基本信息
