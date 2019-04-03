@@ -1,7 +1,6 @@
 package com.card.common;
 
 import com.google.common.base.Strings;
-import org.springframework.util.StringUtils;
 
 import java.util.Random;
 

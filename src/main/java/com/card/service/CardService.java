@@ -11,7 +11,6 @@ import com.card.model.enums.CardStatus;
 import com.card.model.enums.CardType;
 import com.card.model.enums.UserStatus;
 import com.card.model.request.GetCardRequest;
-import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +48,7 @@ public class CardService {
         param.put("userId",request.getUserId());
 
         BackEnum backName = BackEnum.getById(request.getBackId());
-        if (backName == null) {
+        if (backName != null) {
             param.put("backName",backName.name);
         }
         if (request.getCardNumber() != null && request.getCardNumber() > 0) {
