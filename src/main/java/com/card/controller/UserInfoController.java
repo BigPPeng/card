@@ -35,4 +35,28 @@ public class UserInfoController {
     }
 
 
+    /*
+     * 1：名字 2：电话 3：邮箱 4:id
+     */
+    @RequestMapping(value = "/userIsRealName")
+    @ResponseBody
+    public Response<Boolean> userIsRealName(String nameOrEmailOrPhoneOrId, int type) {
+        return userService.isUserRealName(nameOrEmailOrPhoneOrId,type);
+    }
+
+
+
+    //1：名字 2：电话 3：邮箱 4:id
+    @RequestMapping(value = "/userRealName")
+    @ResponseBody
+    public Response<User> userRealName(String nameOrEmailOrPhoneOrId, int type,
+                                       String realName, String userCode,
+                                       String receiveAddress, String homeAddress) {
+        return userService.userRealName(nameOrEmailOrPhoneOrId,type,realName,userCode,receiveAddress,homeAddress);
+    }
+
+
+
+
+
 }

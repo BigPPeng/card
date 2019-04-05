@@ -80,6 +80,65 @@ public class UserService {
 
     }
 
+
+    public Response<Boolean> isUserRealName(String nameOrEmailOrPhoneOrId, int type) {
+        Response<Boolean> response = new Response<>();
+
+        Response<User> temp = this.getUserInfo(nameOrEmailOrPhoneOrId,type);
+        if (temp.getStatus() != 0 || temp.getData() == null || temp.getData().getStatus() != UserStatus.OK.status) {
+            response.setMessage("不存在用户或者未实名");
+            response.setStatus(1);
+            response.setData(Boolean.FALSE);
+            return response;
+        }
+
+        response.setData(Boolean.TRUE);
+        return response;
+
+    }
+
+    public Response<User> userRealName(String nameOrEmailOrPhoneOrId, int type,String realName, String userCode, String receiveAddress, String homeAddress) {
+        Response<User> response = new Response<>();
+        if (Strings.isNullOrEmpty(realName) || Strings.isNullOrEmpty(userCode)) {
+            response.setStatus(1);
+            response.setMessage("参数错误");
+            return response;
+        }
+
+        Response<User> temp = this.getUserInfo(nameOrEmailOrPhoneOrId,type);
+        if (temp.getStatus() != 0 || temp.getData() == null) {
+            response.setMessage("没有用户信息");
+            response.setStatus(1);
+            response.setData(null);
+            return response;
+        }
+        if (temp.getData().getStatus() == UserStatus.OK.status) {
+            response.setMessage("已经实名，无需重复");
+            response.setStatus(0);
+            response.setData(null);
+            return response;
+        }
+
+
+        User user = temp.getData();
+        user.setStatus(UserStatus.OK.status);
+        user.setRealName(Strings.isNullOrEmpty(realName) ? "":realName);
+        user.setHomeAddress(Strings.isNullOrEmpty(homeAddress) ? "" :homeAddress);
+        user.setReceiveAddress(Strings.isNullOrEmpty(receiveAddress) ? "" : receiveAddress);
+        user.setIdentityCardNumber(userCode);
+        Response upResponse = this.updateUser(user);
+        if (upResponse.getStatus() != 0) {
+            response.setStatus(1);
+            response.setMessage("实名失败，请检查信息");
+            return response;
+        }
+
+        response.setData(user);
+        return response;
+
+    }
+
+
     public Response<Long> insertUser(User user) {
         logger.info("request:{}", JSON.toJSONString(user));
         Response<Long> response = new Response<>();
@@ -142,16 +201,16 @@ public class UserService {
 
         if (user.getName() != null) {
             param.put("name",user.getName());
-            if (userMapper.getUserCount(param) > 0) {
+            if (userMapper.getUserCount(param) > 1) {
                 response.setStatus(2);
-                response.setMessage("用户名存在");
+                response.setMessage("用户名不存在");
                 return response;
             }
         }
         if (user.getUserEmail() != null) {
             param.clear();
             param.put("userEmail",user.getUserEmail());
-            if (userMapper.getUserCount(param) > 0) {
+            if (userMapper.getUserCount(param) > 1) {
                 response.setStatus(2);
                 response.setMessage("邮箱已经注册");
                 return response;
@@ -161,7 +220,7 @@ public class UserService {
         if (user.getPhoneNumber() != null){
             param.clear();
             param.put("phoneNumber",user.getUserEmail());
-            if (userMapper.getUserCount(param) > 0) {
+            if (userMapper.getUserCount(param) > 1) {
                 response.setStatus(2);
                 response.setMessage("手机号已经注册");
                 return response;
