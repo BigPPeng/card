@@ -83,7 +83,7 @@
     <loggers>
         <root level="DEBUG">
             <AppenderRef ref="stdout"/>
-            <!--<AppenderRef ref="fileAppender"/>-->
+            <AppenderRef ref="fileAppender"/>
         </root>
 
         <logger level="INFO" name="schedulelogger">
