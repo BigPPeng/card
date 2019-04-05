@@ -2,6 +2,7 @@ package com.card.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.card.common.CardUtil;
+import com.card.common.JavaMail;
 import com.card.common.Response;
 import com.card.model.User;
 import com.card.model.enums.UserStatus;
@@ -44,9 +45,23 @@ public class LoginController {
      */
     @RequestMapping(value = "/getCheckCode")
     @ResponseBody
-    public Response<String> getEmailCheckCode(String email) {
+    public Response<String> getEmailCheckCode(String email, HttpServletRequest request) {
+        logger.info("getEmailCheckCode: email:{}",email);
         Response<String> response = new Response<>();
-
+        //邮箱信息判断
+        if (email == null || "".equals(email) || !CardUtil.isEmail(email)) {
+            response.setStatus(1);
+            response.setMessage("邮箱有空或者不合法");
+            return response;
+        }
+        String code = JavaMail.getIdentifyingCode();
+        logger.info("getEmailCheckCode: code:{}",code);
+        // 发送邮件
+        JavaMail.sendEmail(code, email);
+        String key = "code"+email;
+        logger.info("getEmailCheckCode: session key:{}",key);
+        request.getSession().setAttribute(key, code);
+        response.setMessage(code);
         return response;
     }
 
@@ -59,9 +74,27 @@ public class LoginController {
      */
     @RequestMapping(value = "/verifyCheckCode")
     @ResponseBody
-    public Response<Boolean> verifyEmailCheckCode(String email, String code) {
+    public Response<Boolean> verifyEmailCheckCode(String email, String code, HttpServletRequest request) {
+        logger.info("getEmailCheckCode: email:{},code:{}",email,code);
         Response<Boolean> response = new Response<>();
-
+        String key = "code"+email;
+        String sessionCode = (String) request.getSession().getAttribute(key);
+        if (sessionCode == null || sessionCode.isEmpty()) {
+            response.setMessage("验证码失效");
+            response.setStatus(1);
+            response.setData(Boolean.FALSE);
+            return response;
+        }
+        logger.info("getEmailCheckCode:session key:{},code:{}",key,sessionCode);
+        if (code != null && !code.isEmpty() && sessionCode.equals(code)) {
+            response.setMessage("验证成功");
+            response.setData(Boolean.TRUE);
+            return response;
+        }
+        request.getSession().removeAttribute(key);
+        response.setMessage("验证失败");
+        response.setStatus(1);
+        response.setData(Boolean.FALSE);
         return response;
     }
 
@@ -78,6 +111,7 @@ public class LoginController {
     @RequestMapping(value = "/verifyUserInfo")
     @ResponseBody
     public Response<Boolean> verifyUserInfoBeforeRes(String userName, String email, String phoneNumber) {
+        logger.info("verifyUserInfoBeforeRes userName:{},email:{},phone:{}",userName,email,phoneNumber);
         Response<Boolean> response = new Response<>();
         Map<String,Object> param = Maps.newHashMap();
         if (!Strings.isNullOrEmpty(userName)) {
@@ -91,6 +125,7 @@ public class LoginController {
         }
 
         Response<Integer> response1 = userService.getCount(param);
+        logger.info("verifyUserInfoBeforeRes response1:{}",JSON.toJSONString(response1));
         if (response1.getStatus() != 0 || response1.getData() != 0) {
             response.setStatus(response1.getStatus());
             response.setMessage("数据存在或者非法，请检查。"+response1.getMessage());
@@ -105,6 +140,7 @@ public class LoginController {
     @RequestMapping(value = "/userRegister")
     @ResponseBody
     public Response<Boolean> userRegister(String userName, String email, String phoneNumber, String password) {
+        logger.info("verifyUserInfoBeforeRes userName:{},email:{},phone:{},pass:{}",userName,email,phoneNumber,password);
         Response<Boolean> response = new Response<>();
         User user = new User();
         user.setName(userName);
@@ -140,6 +176,7 @@ public class LoginController {
     @RequestMapping(value = "/userLogin")
     @ResponseBody
     public Response<Boolean> userLogin(String nameOrEmailOrPhone, String password, int type, HttpServletRequest request) {
+        logger.info("verifyUserInfoBeforeRes nameOrEmailOrPhone:{},password:{},type:{}",nameOrEmailOrPhone,password,type);
         Response<Boolean> response = userService.userLogin(nameOrEmailOrPhone, password, type);
         if (response.getStatus() == 0) {
             Response<User> userResponse = userService.getUserInfo(nameOrEmailOrPhone,type);
