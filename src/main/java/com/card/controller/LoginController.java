@@ -61,7 +61,7 @@ public class LoginController {
         String key = "code"+email;
         logger.info("getEmailCheckCode: session key:{}",key);
         request.getSession().setAttribute(key, code);
-        response.setMessage(code);
+        response.setData(code);
         return response;
     }
 
