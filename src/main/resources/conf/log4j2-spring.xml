@@ -101,7 +101,7 @@
         <logger level="INFO" name="auditTraceLogger">
             <AppenderRef ref="auditTraceAppender"/>
         </logger>
-        <Logger name="org.springframework" level="DEBUG" additivity="true">
+        <Logger name="org.springframework" level="DEBUG" additivity="false">
             <AppenderRef ref="springFileAppender" />
         </Logger>
         <!--<Logger name="org.activiti" level="info" additivity="false">-->

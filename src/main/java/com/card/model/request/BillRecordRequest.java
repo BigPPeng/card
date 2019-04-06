@@ -8,46 +8,46 @@ import java.util.Date;
  */
 public class BillRecordRequest {
     // 必须的
-    private long userId;
+    private Long userId;
     // 非必须筛选条件
-    private int pageSize;
-    private int pageNumber;
-    private long cardId;
+    private Integer pageSize;
+    private Integer pageNumber;
+    private Long cardId;
     private Date consumeBegin;
     private Date consumeEnd;
-    private int billStatus;
-    private int repaymentType;
-    private int consumeType;
+    private Integer billStatus;
+    private Integer repaymentType;
+    private Integer consumeType;
 
-    public int getPageSize() {
-        return pageSize;
-    }
-
-    public void setPageSize(int pageSize) {
-        this.pageSize = pageSize;
-    }
-
-    public int getPageNumber() {
-        return pageNumber;
-    }
-
-    public void setPageNumber(int pageNumber) {
-        this.pageNumber = pageNumber;
-    }
-
-    public long getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
-    public long getCardId() {
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public Integer getPageNumber() {
+        return pageNumber;
+    }
+
+    public void setPageNumber(Integer pageNumber) {
+        this.pageNumber = pageNumber;
+    }
+
+    public Long getCardId() {
         return cardId;
     }
 
-    public void setCardId(long cardId) {
+    public void setCardId(Long cardId) {
         this.cardId = cardId;
     }
 
@@ -67,27 +67,27 @@ public class BillRecordRequest {
         this.consumeEnd = consumeEnd;
     }
 
-    public int getBillStatus() {
+    public Integer getBillStatus() {
         return billStatus;
     }
 
-    public void setBillStatus(int billStatus) {
+    public void setBillStatus(Integer billStatus) {
         this.billStatus = billStatus;
     }
 
-    public int getRepaymentType() {
+    public Integer getRepaymentType() {
         return repaymentType;
     }
 
-    public void setRepaymentType(int repaymentType) {
+    public void setRepaymentType(Integer repaymentType) {
         this.repaymentType = repaymentType;
     }
 
-    public int getConsumeType() {
+    public Integer getConsumeType() {
         return consumeType;
     }
 
-    public void setConsumeType(int consumeType) {
+    public void setConsumeType(Integer consumeType) {
         this.consumeType = consumeType;
     }
 

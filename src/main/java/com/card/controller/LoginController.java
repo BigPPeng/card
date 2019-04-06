@@ -46,7 +46,7 @@ public class LoginController {
     @RequestMapping(value = "/getCheckCode")
     @ResponseBody
     public Response<String> getEmailCheckCode(String email, HttpServletRequest request) {
-        logger.info("getEmailCheckCode: email:{}",email);
+        logger.info("getEmailCheckCode: email:{}", email);
         Response<String> response = new Response<>();
         //邮箱信息判断
         if (email == null || "".equals(email) || !CardUtil.isEmail(email)) {
@@ -55,11 +55,11 @@ public class LoginController {
             return response;
         }
         String code = JavaMail.getIdentifyingCode();
-        logger.info("getEmailCheckCode: code:{}",code);
+        logger.info("getEmailCheckCode: code:{}", code);
         // 发送邮件
         JavaMail.sendEmail(code, email);
-        String key = "code"+email;
-        logger.info("getEmailCheckCode: session key:{}",key);
+        String key = "code" + email;
+        logger.info("getEmailCheckCode: session key:{}", key);
         request.getSession().setAttribute(key, code);
         response.setData(code);
         return response;
@@ -75,9 +75,9 @@ public class LoginController {
     @RequestMapping(value = "/verifyCheckCode")
     @ResponseBody
     public Response<Boolean> verifyEmailCheckCode(String email, String code, HttpServletRequest request) {
-        logger.info("getEmailCheckCode: email:{},code:{}",email,code);
+        logger.info("getEmailCheckCode: email:{},code:{}", email, code);
         Response<Boolean> response = new Response<>();
-        String key = "code"+email;
+        String key = "code" + email;
         String sessionCode = (String) request.getSession().getAttribute(key);
         if (sessionCode == null || sessionCode.isEmpty()) {
             response.setMessage("验证码失效");
@@ -85,7 +85,7 @@ public class LoginController {
             response.setData(Boolean.FALSE);
             return response;
         }
-        logger.info("getEmailCheckCode:session key:{},code:{}",key,sessionCode);
+        logger.info("getEmailCheckCode:session key:{},code:{}", key, sessionCode);
         if (code != null && !code.isEmpty() && sessionCode.equals(code)) {
             response.setMessage("验证成功");
             response.setData(Boolean.TRUE);
@@ -111,24 +111,24 @@ public class LoginController {
     @RequestMapping(value = "/verifyUserInfo")
     @ResponseBody
     public Response<Boolean> verifyUserInfoBeforeRes(String userName, String email, String phoneNumber) {
-        logger.info("verifyUserInfoBeforeRes userName:{},email:{},phone:{}",userName,email,phoneNumber);
+        logger.info("verifyUserInfoBeforeRes userName:{},email:{},phone:{}", userName, email, phoneNumber);
         Response<Boolean> response = new Response<>();
-        Map<String,Object> param = Maps.newHashMap();
+        Map<String, Object> param = Maps.newHashMap();
         if (!Strings.isNullOrEmpty(userName)) {
-            param.put("name",userName);
+            param.put("name", userName);
         }
         if (!Strings.isNullOrEmpty(email) && CardUtil.isEmail(email)) {
-            param.put("userEmail",email);
+            param.put("userEmail", email);
         }
         if (!Strings.isNullOrEmpty(phoneNumber) && CardUtil.isPhoneNumber(phoneNumber)) {
-            param.put("phoneNumber",phoneNumber);
+            param.put("phoneNumber", phoneNumber);
         }
 
         Response<Integer> response1 = userService.getCount(param);
-        logger.info("verifyUserInfoBeforeRes response1:{}",JSON.toJSONString(response1));
+        logger.info("verifyUserInfoBeforeRes response1:{}", JSON.toJSONString(response1));
         if (response1.getStatus() != 0 || response1.getData() != 0) {
             response.setStatus(response1.getStatus());
-            response.setMessage("数据存在或者非法，请检查。"+response1.getMessage());
+            response.setMessage("数据存在或者非法，请检查。" + response1.getMessage());
             return response;
         }
 
@@ -137,10 +137,19 @@ public class LoginController {
     }
 
 
+    /**
+     * 用户注册
+     *
+     * @param userName    用户名
+     * @param email       邮箱
+     * @param phoneNumber 电话
+     * @param password    密码
+     * @return true
+     */
     @RequestMapping(value = "/userRegister")
     @ResponseBody
     public Response<Boolean> userRegister(String userName, String email, String phoneNumber, String password) {
-        logger.info("verifyUserInfoBeforeRes userName:{},email:{},phone:{},pass:{}",userName,email,phoneNumber,password);
+        logger.info("verifyUserInfoBeforeRes userName:{},email:{},phone:{},pass:{}", userName, email, phoneNumber, password);
         Response<Boolean> response = new Response<>();
         User user = new User();
         user.setName(userName);
@@ -155,7 +164,7 @@ public class LoginController {
         user.setCreateTime(new Date());
         user.setLoginTime(new Date());
         user.setPhoneNumber(phoneNumber);
-        Response<Long>  response1 = userService.insertUser(user);
+        Response<Long> response1 = userService.insertUser(user);
         if (response1.getStatus() != 0) {
             response.setMessage(response1.getMessage());
             response.setStatus(response1.getStatus());
@@ -176,26 +185,34 @@ public class LoginController {
     @RequestMapping(value = "/userLogin")
     @ResponseBody
     public Response<Boolean> userLogin(String nameOrEmailOrPhone, String password, int type, HttpServletRequest request) {
-        logger.info("verifyUserInfoBeforeRes nameOrEmailOrPhone:{},password:{},type:{}",nameOrEmailOrPhone,password,type);
+        logger.info("verifyUserInfoBeforeRes nameOrEmailOrPhone:{},password:{},type:{}", nameOrEmailOrPhone, password, type);
         Response<Boolean> response = userService.userLogin(nameOrEmailOrPhone, password, type);
         if (response.getStatus() == 0) {
-            Response<User> userResponse = userService.getUserInfo(nameOrEmailOrPhone,type);
+            Response<User> userResponse = userService.getUserInfo(nameOrEmailOrPhone, type);
             if (userResponse.getStatus() != 0) {
                 response.setMessage("信息错误");
                 response.setStatus(1);
                 response.setData(Boolean.FALSE);
                 return response;
             }
-            request.getSession().setAttribute(userResponse.getData().sessionKey(),userResponse.getData());
+            request.getSession().setAttribute(userResponse.getData().sessionKey(), userResponse.getData());
         }
         return response;
     }
 
+    /**
+     * 检查指定用户是否登陆
+     *
+     * @param nameOrEmailOrPhoneOrId 名字 or 电话 or 邮箱
+     * @param type                   1：名字 2：电话 3：邮箱 4：ID
+     * @param request
+     * @return true or false
+     */
     @RequestMapping(value = "/checkLog")
     @ResponseBody
     public Response<Boolean> checkLog(String nameOrEmailOrPhoneOrId, int type, HttpServletRequest request) {
         Response<Boolean> response = new Response<>();
-        Response<User> userResponse = userService.getUserInfo(nameOrEmailOrPhoneOrId,type);
+        Response<User> userResponse = userService.getUserInfo(nameOrEmailOrPhoneOrId, type);
         if (userResponse.getStatus() != 0) {
             response.setMessage("信息错误");
             response.setStatus(1);
@@ -208,9 +225,8 @@ public class LoginController {
     }
 
 
-
     /**
-     * 用户可以根据名字，电话，邮箱  进行登陆
+     * 用户可以根据名字，电话，邮箱  进行登出
      *
      * @param nameOrEmailOrPhone 名字 or 电话 or 邮箱
      * @param type               1：名字 2：电话 3：邮箱

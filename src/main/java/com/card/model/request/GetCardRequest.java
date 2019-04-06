@@ -4,8 +4,8 @@ package com.card.model.request;
  * Created by hongpeng.cui on 2019/4/2.
  */
 public class GetCardRequest {
-    private Long cardNumber;
-    private int backId;
+    private Long cardNumber;// 卡号
+    private int backId;// 银行ID
     private Long userId;
 
     public Long getCardNumber() {

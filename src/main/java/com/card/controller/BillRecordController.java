@@ -26,7 +26,8 @@ public class BillRecordController {
     private BillRecordService billRecordService;
 
     /**
-     * 导入账单
+     * 导入账单，指定email，用户ID，给改用户下的所有信用卡导入10条账单
+     * <p>
      * 输入合法邮箱地址，导入邮箱中的账单，此处是虚拟账单信息
      *
      * @param email  邮箱信息
@@ -37,7 +38,13 @@ public class BillRecordController {
     @ResponseBody
     public Response<Page<BillRecord>> toLeadBillRecord(String email, long userId) {
         Response<Page<BillRecord>> response = new Response<>();
-        billRecordService.toLeadBillRecord(email, userId);
+        Response<Long> response1 =  billRecordService.toLeadBillRecord(email, userId);
+        if (response1.getStatus() != 0) {
+            response.setStatus(1);
+            response.setMessage("参数错误"+response1.getMessage());
+            return response;
+        }
+
         BillRecordRequest recordRequest = new BillRecordRequest();
         recordRequest.setUserId(userId);
         Page<BillRecord> page = billRecordService.selectBillRecord(recordRequest);
@@ -53,13 +60,19 @@ public class BillRecordController {
     /**
      * 分页查询账单信息记录
      *
-     * @param recordRequest 账单请求
+     * @param recordRequest 账单请求 pageSize=0或者不传值默认是获取全部信息
      * @return 分页记录
      */
     @RequestMapping(value = "/selectBillRecord")
     @ResponseBody
     public Response<Page<BillRecord>> selectBillRecord(BillRecordRequest recordRequest) {
         Response<Page<BillRecord>> response = new Response<>();
+        if (recordRequest.getUserId() == 0) {
+            response.setStatus(1);
+            response.setMessage("用户ID是必须参数");
+            return response;
+        }
+
         Page<BillRecord> page = billRecordService.selectBillRecord(recordRequest);
         if (page == null) {
             response.setStatus(1);
@@ -72,7 +85,7 @@ public class BillRecordController {
     }
 
     /**
-     * 根据ID查询
+     * 根据ID查询账单
      *
      * @param billRecordId 账单ID
      * @return BillRecord

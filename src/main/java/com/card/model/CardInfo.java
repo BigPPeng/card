@@ -16,18 +16,29 @@ CREATE TABLE `card_info` (
   `back_name` varchar(100) NOT NULL DEFAULT '' COMMENT '银行名',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `effective_time` datetime DEFAULT null COMMENT '激活时间',
+  `repay_time` datetime DEFAULT null COMMENT '激活时间',
   `status` int(11) NOT NULL DEFAULT '0' COMMENT '卡状态',
      */
 
-    private Long id;
-    private Long userId;
-    private String userName;
+    private Long id;// 信用卡ID
+    private Long userId;// 用户ID
+    private String userName; // 用户名称
+    /**
+     * 信用卡类型 枚举{@link com.card.model.enums.CardType}
+     */
     private Integer cardType;
-    private String cardNumber;
-    private Integer cardLimit;
+    private String cardNumber;// 卡号
+    private Integer cardLimit;// 卡限额
+    /**
+     * 银行名称 枚举{@link com.card.model.enums.BackEnum}
+     */
     private String backName;
-    private Long createTime;
-    private Long effectiveTime;
+    private Long createTime;// 创建时间
+    private Long effectiveTime;// 生效激活时间
+    private Long repayTime;// 还款日期 距离月初的秒数 10号零点 10 * 24 * 60 * 60
+    /**
+     * 信用卡状态 枚举{@link com.card.model.enums.CardStatus}
+     */
     private Integer status;
 
     public Long getId() {
@@ -108,5 +119,13 @@ CREATE TABLE `card_info` (
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Long getRepayTime() {
+        return repayTime;
+    }
+
+    public void setRepayTime(Long repayTime) {
+        this.repayTime = repayTime;
     }
 }

@@ -1,23 +1,29 @@
 package com.card.service;
 
+import com.alibaba.fastjson.JSON;
 import com.card.common.Page;
 import com.card.common.Response;
 import com.card.common.LocalTimeUtil;
 import com.card.mapper.BillRecordMapper;
 import com.card.model.BillRecord;
+import com.card.model.CardInfo;
+import com.card.model.User;
 import com.card.model.enums.BillStatus;
 import com.card.model.enums.ConsumeType;
 import com.card.model.enums.RepaymentType;
 import com.card.model.request.BillRecordRequest;
+import com.card.model.request.GetCardRequest;
 import com.google.common.collect.Maps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * Created by hongpeng.cui on 2019/3/27.
@@ -30,16 +36,23 @@ public class BillRecordService {
     @Resource
     private BillRecordMapper billRecordMapper;
 
+    @Resource
+    private CardService cardService;
+
+    @Resource
+    private UserService userService;
+
     public Page<BillRecord> selectBillRecord(BillRecordRequest recordRequest) {
         if (recordRequest == null || recordRequest.getUserId() <= 0) {
             return null;
         }
         Map<String,Object> param = fillParamMap(recordRequest);
         int count = this.getCount(param);
-        int pageSize = recordRequest.getPageSize() !=0 ? recordRequest.getPageSize() : 2;
-
+        // 参数中不指定PageSize就获取用户非删除状态的全部账单
+        int pageSize = recordRequest.getPageSize() != null && recordRequest.getPageSize() !=0 ? recordRequest.getPageSize() : count;// 参数中不指定PageSize就获取用户全部账单
         Page<BillRecord> page = new Page<>(pageSize, count);
-        page.setPageNumber(recordRequest.getPageNumber() == 0 ? 1 : recordRequest.getPageNumber());
+        boolean pageNumberRequest = recordRequest.getPageNumber() != null && recordRequest.getPageNumber() != 0;
+        page.setPageNumber(pageNumberRequest ? recordRequest.getPageNumber() : 1);
         if (page.getTotalCount() == 0) {
             return page;
         }
@@ -53,24 +66,24 @@ public class BillRecordService {
     private Map<String,Object> fillParamMap(BillRecordRequest recordRequest) {
         Map<String,Object> param = Maps.newHashMap();
         param.put("userId",recordRequest.getUserId());
-        if (recordRequest.getBillStatus() != 0) {
+        if (recordRequest.getBillStatus() != null && recordRequest.getBillStatus() != 0) {
             param.put("billStatus",recordRequest.getBillStatus());
         } else {
             param.put("notDelete",6);
         }
-        if (recordRequest.getCardId() != 0) {
+        if (recordRequest.getCardId() != null && recordRequest.getCardId() != 0) {
             param.put("cardId",recordRequest.getCardId());
         }
-        if (recordRequest.getConsumeBegin() != null) {
+        if (recordRequest.getConsumeBegin() != null && recordRequest.getConsumeBegin() != null) {
             param.put("consumeBegin",recordRequest.getConsumeBegin());
         }
-        if (recordRequest.getConsumeEnd() != null) {
+        if (recordRequest.getConsumeEnd() != null && recordRequest.getConsumeEnd() != null) {
             param.put("consumeEnd",recordRequest.getConsumeEnd());
         }
-        if (recordRequest.getConsumeType() != 0) {
+        if (recordRequest.getConsumeType() != null && recordRequest.getConsumeType() != 0) {
             param.put("consumeType",recordRequest.getConsumeType());
         }
-        if (recordRequest.getRepaymentType() != 0) {
+        if (recordRequest.getRepaymentType() != null && recordRequest.getRepaymentType() != 0) {
             param.put("repaymentType",recordRequest.getRepaymentType());
         }
         return param;
@@ -177,19 +190,71 @@ public class BillRecordService {
     }
 
 
-    public long toLeadBillRecord(String email,long userId) {
+    public Response<Long> toLeadBillRecord(String email,long userId) {
+        Response<Long> response = new Response<>();
+
         logger.info("email:{},userID:{}",email,userId);
-        BillRecord billRecord = new BillRecord();
-        billRecord.setUserId(userId);
-        billRecord.setBillStatus(BillStatus.CHU_ZHANG.status);
-        billRecord.setRepaymentType(RepaymentType.WEI_HUAN_ZHANG.type);
-        billRecord.setCardId(1L);
-        billRecord.setConsumeTime(LocalTimeUtil.getCurrentTimeSecond());
-        billRecord.setCreateTime(LocalTimeUtil.getCurrentTimeSecond());
-        billRecord.setMoney(100.);
-        billRecord.setConsumeType(ConsumeType.CAN_YIN.type);
-        billRecord.setRepaymentTime(LocalTimeUtil.getRePaymentTime(LocalTimeUtil.getCurrentTimeSecond()));
-        return this.insertBill(billRecord);
+        Response<User> userResponse = userService.getUserInfo(String.valueOf(userId),4);
+        if (userResponse.getStatus() != 0 || userResponse.getData() == null) {
+            response.setStatus(1);
+            response.setMessage("用户ID不存在");
+            return response;
+        }
+        logger.info("userResponse:{}", JSON.toJSONString(userResponse));
+        GetCardRequest request = new GetCardRequest();
+        request.setUserId(userId);
+        Response<List<CardInfo>> cardInfoResponse = cardService.getCardInfo(request);
+        if (cardInfoResponse.getStatus() != 0 || CollectionUtils.isEmpty(cardInfoResponse.getData())) {
+            response.setStatus(1);
+            response.setMessage("用户ID不存在信用卡");
+            return response;
+        }
+        logger.info("cardInfoResponse:{}", JSON.toJSONString(cardInfoResponse));
+
+        int number = 0;
+        for (CardInfo cardInfo : cardInfoResponse.getData()) {
+            for (int i = 0; i < BillStatus.values().length; i++) {
+                BillStatus billStatus = BillStatus.values()[i];
+                BillRecord billRecord = new BillRecord();
+                billRecord.setUserId(userId);//指定用户ID
+                billRecord.setBillStatus(billStatus.status);
+                billRecord.setRepaymentType(getRepaymentType(billStatus).type);
+                billRecord.setCardId(cardInfo.getId());// 指定cardID
+                billRecord.setConsumeTime(LocalTimeUtil.getCurrentTimeSecond());
+                billRecord.setCreateTime(LocalTimeUtil.getCurrentTimeSecond());
+                billRecord.setMoney(getRandomMoney());
+                billRecord.setConsumeType(ConsumeType.getRandom(-1).type);
+                billRecord.setRepaymentTime(LocalTimeUtil.getRePaymentTime(LocalTimeUtil.getCurrentTimeSecond()));
+                billRecordMapper.insert(billRecord);
+                BillRecord billRecord2 = new BillRecord();
+                billRecord2.setUserId(userId);//指定用户ID
+                billRecord2.setBillStatus(billStatus.status);
+                billRecord2.setRepaymentType(getRepaymentType(billStatus).type);
+                billRecord2.setCardId(cardInfo.getId());// 指定cardID
+                billRecord2.setConsumeTime(LocalTimeUtil.getCurrentTimeSecond());
+                billRecord2.setCreateTime(LocalTimeUtil.getCurrentTimeSecond());
+                billRecord2.setMoney(getRandomMoney());
+                billRecord2.setConsumeType(ConsumeType.getRandom(-1).type);
+                billRecord2.setRepaymentTime(LocalTimeUtil.getRePaymentTime(LocalTimeUtil.getCurrentTimeSecond()));
+                billRecordMapper.insert(billRecord2);
+                number += 2;
+            }
+        }
+        response.setData((long) number);
+        return response;
+    }
+
+    private RepaymentType getRepaymentType(BillStatus billStatus) {
+        boolean b = billStatus == BillStatus.WEI_CHU_ZHANG || billStatus == BillStatus.CHU_ZHANG;
+        return b ? RepaymentType.WEI_HUAN_ZHANG : RepaymentType.WE_XIN;
+    }
+
+    private double getRandomMoney(){
+       double money =  (double) (new Random().nextInt() % 1000);
+       while (money < 0) {
+           money =  (double) (new Random().nextInt() % 1000);
+       }
+       return money;
     }
 
 

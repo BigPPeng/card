@@ -55,7 +55,6 @@ public class CardService {
             param.put("cardNumber",request.getCardNumber());
         }
 
-
         List<CardInfo> cardInfos = cardInfoMapper.selectByParams(param);
         if (CollectionUtils.isEmpty(cardInfos)) {
             listResponse.setMessage("用户没有信用卡");
@@ -71,7 +70,7 @@ public class CardService {
      *
      * @return Response
      */
-    public Response<CardInfo> getOneNewCard(int id, int limit, int cardType, long userId){
+    public Response<CardInfo> getOneNewCard(int id, int limit, int cardType, long userId, long repayTime){
         Response<CardInfo> response = new Response<>();
         BackEnum backName = BackEnum.getById(id);
         if (backName == null || limit < 0) {
@@ -109,6 +108,7 @@ public class CardService {
         cardInfo.setStatus(CardStatus.NEW.status);
         cardInfo.setUserId(user.getId());
         cardInfo.setUserName(user.getName());
+        cardInfo.setRepayTime(repayTime);
         cardInfoMapper.insert(cardInfo);
         response.setData(cardInfo);
         return response;

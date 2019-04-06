@@ -1,5 +1,7 @@
 package com.card.model.enums;
 
+import java.util.Random;
+
 /**
  * 消费类型
  * Created by hongpeng.cui on 2019/3/27.
@@ -23,4 +25,20 @@ public enum ConsumeType {
         this.type = type;
         this.desc = desc;
     }
+
+
+    public static ConsumeType getRandom(int i){
+        if (i<0) {
+            int a = new Random().nextInt() % 10;
+            while (a < 0) {
+                a = new Random().nextInt() % 10;
+            }
+            if (a == 9)
+                return QI_TA;
+            else
+                return ConsumeType.values()[a];
+        }
+        return ConsumeType.values()[i];
+    }
+
 }

@@ -36,11 +36,12 @@
         <result column="back_name" jdbcType="VARCHAR" property="backName"/>
         <result column="create_time" jdbcType="BIGINT" property="createTime"/>
         <result column="effective_time" jdbcType="BIGINT" property="effectiveTime"/>
+        <result column="repay_time" jdbcType="BIGINT" property="repayTime"/>
         <result column="status" jdbcType="INTEGER" property="status"/>
     </resultMap>
 
     <sql id="BaseSelect">
-        id,user_id,user_name,card_type,card_number,card_limit,back_name,create_time,effective_time,status
+        id,user_id,user_name,card_type,card_number,card_limit,back_name,create_time,effective_time,repay_time,status
     </sql>
 
 
@@ -72,6 +73,9 @@
             </if>
             <if test="status != null">
                 status = #{status},
+            </if>
+            <if test="repayTime != null">
+                repay_time = repayTime,
             </if>
         </set>
         where id = #{id}
