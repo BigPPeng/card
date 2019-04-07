@@ -157,7 +157,10 @@ public class User {
 
 
     public String getLoginTimeString() {
-        return DateToolUtil.format("yyyy-MM-dd HH:mm:ss",loginTime);
+        if (loginTime == null)
+            return "";
+        loginTimeString = DateToolUtil.format("yyyy-MM-dd HH:mm:ss", loginTime);
+        return loginTimeString;
     }
 
     public void setLoginTimeString(String loginTimeString) {
@@ -165,29 +168,14 @@ public class User {
     }
 
     public String getCreateTimeString() {
-        return DateToolUtil.format("yyyy-MM-dd HH:mm:ss",createTime);
+        if (createTime == null)
+            return "";
+        createTimeString = DateToolUtil.format("yyyy-MM-dd HH:mm:ss", createTime);
+        return createTimeString;
     }
 
     public void setCreateTimeString(String createTimeString) {
         this.createTimeString = createTimeString;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", pass='" + pass + '\'' +
-                ", realName='" + realName + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", identityCardNumber='" + identityCardNumber + '\'' +
-                ", userEmail='" + userEmail + '\'' +
-                ", homeAddress='" + homeAddress + '\'' +
-                ", receiveAddress='" + receiveAddress + '\'' +
-                ", status=" + status +
-                ", loginTime=" + loginTime +
-                ", createTime=" + createTime +
-                '}';
     }
 
 
