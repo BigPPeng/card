@@ -92,6 +92,7 @@
             <if test="repaymentBegin != null"><![CDATA[ AND repayment_time >= #{repaymentBegin} ]]></if>
             <if test="repaymentEnd != null"><![CDATA[ AND repayment_time <= #{repaymentEnd} ]]></if>
         </where>
+        ORDER BY consume_time DESC
         <if test="start != null and pageSize != null">
             LIMIT #{start}, #{pageSize}
         </if>

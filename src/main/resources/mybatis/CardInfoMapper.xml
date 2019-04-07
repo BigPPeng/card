@@ -105,6 +105,7 @@
             <if test="createTimeBegin != null"><![CDATA[ AND create_time >= #{createTimeBegin} ]]></if>
             <if test="createTimeEnd != null"><![CDATA[ AND create_time <= #{createTimeEnd} ]]></if>
         </where>
+        ORDER BY create_time DESC;
     </select>
 
     <select id="getCount" resultType="int" parameterType="java.util.Map">
