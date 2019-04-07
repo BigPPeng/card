@@ -28,8 +28,8 @@
         <id column="id" jdbcType="BIGINT" property="billRecordId"/>
         <id column="user_id" jdbcType="BIGINT" property="userId"/>
         <id column="card_id" jdbcType="BIGINT" property="cardId"/>
-        <id column="repayment_time" jdbcType="BIGINT" property="consumeTime"/>
-        <id column="consume_time" jdbcType="BIGINT" property="repaymentTime"/>
+        <id column="repayment_time" jdbcType="BIGINT" property="repaymentTime"/>
+        <id column="consume_time" jdbcType="BIGINT" property="consumeTime"/>
         <id column="create_time" jdbcType="BIGINT" property="createTime"/>
         <result column="bill_status" jdbcType="INTEGER" property="billStatus"/>
         <result column="consume_type" jdbcType="INTEGER" property="consumeType"/>

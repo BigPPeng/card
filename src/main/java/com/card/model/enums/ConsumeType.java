@@ -27,6 +27,14 @@ public enum ConsumeType {
     }
 
 
+    public static ConsumeType getById(int id) {
+        for (ConsumeType consumeType : ConsumeType.values()) {
+            if (consumeType.type == id)
+                return consumeType;
+        }
+        return QI_TA;
+    }
+
     public static ConsumeType getRandom(int i){
         if (i<0) {
             int a = new Random().nextInt() % 10;

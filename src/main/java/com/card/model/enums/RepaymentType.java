@@ -18,4 +18,14 @@ public enum RepaymentType {
         this.type = type;
         this.desc = desc;
     }
+
+
+    public static RepaymentType getById(int id) {
+        for (RepaymentType repaymentType : RepaymentType.values()) {
+            if (repaymentType.type == id)
+                return repaymentType;
+        }
+        return QI_TA;
+    }
+
 }

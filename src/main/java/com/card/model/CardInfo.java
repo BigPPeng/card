@@ -1,5 +1,9 @@
 package com.card.model;
 
+import com.card.common.DateToolUtil;
+import com.card.model.enums.CardStatus;
+import com.card.model.enums.CardType;
+
 /**
  * Created by hongpeng.cui on 2019/4/2.
  */
@@ -27,19 +31,28 @@ CREATE TABLE `card_info` (
      * 信用卡类型 枚举{@link com.card.model.enums.CardType}
      */
     private Integer cardType;
+    private String cardTypeString;
+
+
     private String cardNumber;// 卡号
     private Integer cardLimit;// 卡限额
     /**
      * 银行名称 枚举{@link com.card.model.enums.BackEnum}
      */
     private String backName;
+
     private Long createTime;// 创建时间
+    private String createTimeString;// 创建时间
+
     private Long effectiveTime;// 生效激活时间
+    private String effectiveTimeString;// 生效激活时间
+    // TODO
     private Long repayTime;// 还款日期 距离月初的秒数 10号零点 10 * 24 * 60 * 60
     /**
      * 信用卡状态 枚举{@link com.card.model.enums.CardStatus}
      */
     private Integer status;
+    private String statusString;
 
     public Long getId() {
         return id;
@@ -127,5 +140,38 @@ CREATE TABLE `card_info` (
 
     public void setRepayTime(Long repayTime) {
         this.repayTime = repayTime;
+    }
+
+
+    public String getCardTypeString() {
+        return CardType.getById(cardType).desc;
+    }
+
+    public void setCardTypeString(String cardTypeString) {
+        this.cardTypeString = cardTypeString;
+    }
+
+    public String getCreateTimeString() {
+        return DateToolUtil.format("yyyy-MM-dd HH:mm:ss",createTime);
+    }
+
+    public void setCreateTimeString(String createTimeString) {
+        this.createTimeString = createTimeString;
+    }
+
+    public String getEffectiveTimeString() {
+        return DateToolUtil.format("yyyy-MM-dd HH:mm:ss",effectiveTime);
+    }
+
+    public void setEffectiveTimeString(String effectiveTimeString) {
+        this.effectiveTimeString = effectiveTimeString;
+    }
+
+    public String getStatusString() {
+        return CardStatus.getById(status).desc;
+    }
+
+    public void setStatusString(String statusString) {
+        this.statusString = statusString;
     }
 }

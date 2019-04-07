@@ -16,4 +16,12 @@ public enum CardStatus {
         this.status = status;
         this.desc = desc;
     }
+
+    public static CardStatus getById(Integer status) {
+        for (CardStatus cardStatus : CardStatus.values()) {
+            if (cardStatus.status == status)
+                return cardStatus;
+        }
+        return NEW;
+    }
 }

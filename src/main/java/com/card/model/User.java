@@ -1,5 +1,6 @@
 package com.card.model;
 
+import com.card.common.DateToolUtil;
 import com.card.model.enums.UserStatus;
 
 import java.util.Date;
@@ -53,7 +54,9 @@ public class User {
     private String receiveAddress;
     private int status;
     private Date loginTime;
+    private String loginTimeString;
     private Date createTime;
+    private String createTimeString;
 
     public long getId() {
         return id;
@@ -150,6 +153,23 @@ public class User {
 
     public void setPass(String pass) {
         this.pass = pass;
+    }
+
+
+    public String getLoginTimeString() {
+        return DateToolUtil.format("yyyy-MM-dd HH:mm:ss",loginTime);
+    }
+
+    public void setLoginTimeString(String loginTimeString) {
+        this.loginTimeString = loginTimeString;
+    }
+
+    public String getCreateTimeString() {
+        return DateToolUtil.format("yyyy-MM-dd HH:mm:ss",createTime);
+    }
+
+    public void setCreateTimeString(String createTimeString) {
+        this.createTimeString = createTimeString;
     }
 
     @Override

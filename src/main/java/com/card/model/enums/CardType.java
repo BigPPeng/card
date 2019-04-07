@@ -24,7 +24,7 @@ public enum CardType {
             if (cardType.type == id)
                 return cardType;
         }
-        return null;
+        return PU_TONG;
     }
 
 }

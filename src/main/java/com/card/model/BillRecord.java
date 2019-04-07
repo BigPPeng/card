@@ -1,5 +1,6 @@
 package com.card.model;
 
+import com.card.common.DateToolUtil;
 import com.card.model.enums.BillStatus;
 import com.card.model.enums.ConsumeType;
 import com.card.model.enums.RepaymentType;
@@ -28,21 +29,30 @@ public class BillRecord {
     private Long userId;
     private Long cardId;//账单关联的信用卡ID
     private Long consumeTime;// 消费日期
+    private String consumeTimeString;
     /**
      * 账单状态{@link BillStatus}
      */
     private Integer billStatus;
+    private String billStatusString;
     /**
      * 消费类型{@link ConsumeType}
      */
     private Integer consumeType;
+    private String consumeTypeString;
+
     private Long repaymentTime;// 还款日期或者最后还款日期
+    private String repaymentTimeString;
+
     private Double money;// 金额
     /**
      * 还款方式{@link RepaymentType}
      */
     private Integer repaymentType;
+    private String repaymentTypeString;
+
     private Long createTime;// 账单创建时间
+    private String createTimeString;
 
     public Long getBillRecordId() {
         return billRecordId;
@@ -124,7 +134,54 @@ public class BillRecord {
         this.createTime = createTime;
     }
 
+    public String getConsumeTimeString() {
+        return DateToolUtil.format("yyyy-MM-dd HH:mm:ss",consumeTime);
+    }
 
+    public void setConsumeTimeString(String consumeTimeString) {
+        this.consumeTimeString = consumeTimeString;
+    }
+
+    public String getBillStatusString() {
+        billStatusString = BillStatus.getById(billStatus).desc;
+        return billStatusString;
+    }
+
+    public void setBillStatusString(String billStatusString) {
+        this.billStatusString = billStatusString;
+    }
+
+    public String getConsumeTypeString() {
+        return ConsumeType.getById(consumeType).desc;
+    }
+
+    public void setConsumeTypeString(String consumeTypeString) {
+        this.consumeTypeString = consumeTypeString;
+    }
+
+    public String getRepaymentTimeString() {
+        return DateToolUtil.format("yyyy-MM-dd HH:mm:ss",repaymentTime);
+    }
+
+    public void setRepaymentTimeString(String repaymentTimeString) {
+        this.repaymentTimeString = repaymentTimeString;
+    }
+
+    public String getRepaymentTypeString() {
+        return RepaymentType.getById(repaymentType).desc;
+    }
+
+    public void setRepaymentTypeString(String repaymentTypeString) {
+        this.repaymentTypeString = repaymentTypeString;
+    }
+
+    public String getCreateTimeString() {
+        return DateToolUtil.format("yyyy-MM-dd HH:mm:ss",createTime);
+    }
+
+    public void setCreateTimeString(String createTimeString) {
+        this.createTimeString = createTimeString;
+    }
 
     @Override
     public String toString() {

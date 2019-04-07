@@ -21,4 +21,14 @@ public enum BillStatus {
         this.status = status;
         this.desc = desc;
     }
+
+    public static BillStatus getById(int status) {
+        for (BillStatus billStatus : BillStatus.values()) {
+            if (billStatus.status == status)
+                return billStatus;
+        }
+        return YI_CHANG;
+    }
+
+
 }
