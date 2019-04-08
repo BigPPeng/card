@@ -66,6 +66,16 @@ public class CardController {
         return cardService.activateCard(cardId);
     }
 
-
+    /**
+     * 删除信用卡
+     *
+     * @param cardId 是cardID，不是cardNumber卡号
+     * @return 激活的信用卡信息CardInfo
+     */
+    @RequestMapping(value = "/deleteCardInfo")
+    @ResponseBody
+    public Response<CardInfo> deleteCardInfo(long cardId) {
+        return cardService.deleteCardInfo(cardId);
+    }
 
 }

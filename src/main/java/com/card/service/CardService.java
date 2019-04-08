@@ -136,7 +136,18 @@ public class CardService {
     }
 
 
-
+    public Response<CardInfo> deleteCardInfo(long cardId) {
+        Response<CardInfo> response = new Response<>();
+        CardInfo cardInfoResponse = cardInfoMapper.selectByPrimaryKey(cardId);
+        if (cardInfoResponse == null) {
+            response.setStatus(1);
+            response.setMessage("卡号错误");
+            return response;
+        }
+        cardInfoMapper.deleteByPrimaryKey(cardId);
+        response.setData(cardInfoResponse);
+        return response;
+    }
 
 
 
