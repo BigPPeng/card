@@ -75,7 +75,7 @@
                 status = #{status},
             </if>
             <if test="repayTime != null">
-                repay_time = repayTime,
+                repay_time = #{repayTime},
             </if>
         </set>
         where id = #{id}
