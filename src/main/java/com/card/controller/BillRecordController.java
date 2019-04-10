@@ -4,15 +4,17 @@ import com.card.common.Page;
 import com.card.common.Response;
 import com.card.model.BillRecord;
 import com.card.model.enums.RepaymentType;
+import com.card.model.request.BillRecordChartRequest;
 import com.card.model.request.BillRecordRequest;
-import com.card.model.response.BillRecordResponse;
+import com.card.model.response.BillRecordChartResponse;
 import com.card.service.BillRecordService;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import java.util.Date;
+import java.util.List;
 
 /**
  * 用户账单控制器
@@ -173,6 +175,19 @@ public class BillRecordController {
         response.setData(true);
         return response;
     }
+
+
+    /**
+     * 获取消费报表
+     * @param recordChartRequest 请求参数
+     * @return
+     */
+    @RequestMapping(value = "/getBillChart")
+    @ResponseBody
+    public Response<List<BillRecordChartResponse>> getBillChart(BillRecordChartRequest recordChartRequest) {
+        return  billRecordService.getBillChart(recordChartRequest);
+    }
+
 
 
 }

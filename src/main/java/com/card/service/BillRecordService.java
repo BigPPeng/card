@@ -11,8 +11,11 @@ import com.card.model.User;
 import com.card.model.enums.BillStatus;
 import com.card.model.enums.ConsumeType;
 import com.card.model.enums.RepaymentType;
+import com.card.model.request.BillRecordChartRequest;
 import com.card.model.request.BillRecordRequest;
 import com.card.model.request.GetCardRequest;
+import com.card.model.response.BillRecordChartResponse;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,10 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Created by hongpeng.cui on 2019/3/27.
@@ -271,6 +271,78 @@ public class BillRecordService {
     }
 
 
+    public Response<List<BillRecordChartResponse>> getBillChart(BillRecordChartRequest recordChartRequest) {
+        Response<List<BillRecordChartResponse>> response = new Response<>();
+        if (recordChartRequest == null
+                || recordChartRequest.getUserId() <= 0
+                ) {
+            response.setStatus(1);
+            response.setMessage("参数错误");
+            return response;
+        }
+        Response<User> userResponse = userService.getUserInfo(String.valueOf(recordChartRequest.getUserId()),4);
+        if (userResponse.getStatus() != 0 || userResponse.getData() == null) {
+            response.setStatus(1);
+            response.setMessage("用户不存在");
+            return response;
+        }
 
+
+        BillRecordChartResponse recordChartResponse;
+        if (recordChartRequest.getYear() > 3000
+                || recordChartRequest.getYear() < 2000
+                || recordChartRequest.getMonth() < 1
+                || recordChartRequest.getMonth() > 12) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(System.currentTimeMillis());
+            long begin = LocalTimeUtil.getTargetMonthBeginTime(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH)+1);
+            long end = LocalTimeUtil.getTargetMonthEndTime(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH)+1);
+            recordChartResponse = getChartRecordByTime(recordChartRequest,begin,end);
+            recordChartResponse.setYear(calendar.get(Calendar.YEAR));
+            recordChartResponse.setMonth(calendar.get(Calendar.MONTH)+1);
+        } else {
+            long begin = LocalTimeUtil.getTargetMonthBeginTime(recordChartRequest.getYear(),recordChartRequest.getMonth());
+            long end = LocalTimeUtil.getTargetMonthEndTime(recordChartRequest.getYear(),recordChartRequest.getMonth());
+            recordChartResponse = getChartRecordByTime(recordChartRequest,begin,end);
+            recordChartResponse.setYear(recordChartRequest.getYear());
+            recordChartResponse.setMonth(recordChartRequest.getMonth());
+        }
+
+        List<BillRecordChartResponse> responseArrayList = Lists.newArrayList();
+        responseArrayList.add(recordChartResponse);
+        response.setData(responseArrayList);
+        return response;
+    }
+
+    private BillRecordChartResponse getChartRecordByTime(BillRecordChartRequest recordChartRequest,long begin, long end) {
+        Map<String,Object> param = Maps.newHashMap();
+        param.put("userId",recordChartRequest.getUserId());
+        param.put("consumeBegin",begin);
+        param.put("consumeEnd",end);
+        Map<Integer,String> consumeTypeMap = Maps.newConcurrentMap();
+        if (recordChartRequest.getConsumeType() != 0 ) {
+            ConsumeType consumeType = ConsumeType.getById(recordChartRequest.getConsumeType());
+            param.put("consumeType", consumeType.type);
+            consumeTypeMap.put(consumeType.type,consumeType.desc);
+        }
+        Map<Integer,Double> consumeSumMap = Maps.newConcurrentMap();
+        for (Integer integer : consumeTypeMap.keySet()) {
+            consumeSumMap.put(integer,0.0);
+        }
+
+        List<BillRecord> recordList = billRecordMapper.selectByParams(param);
+        for (BillRecord billRecord : recordList) {
+            Integer consumeType = billRecord.getConsumeType();
+            if (!consumeTypeMap.containsKey(consumeType)) {
+                consumeTypeMap.put(consumeType,ConsumeType.getById(consumeType).desc);
+            }
+            double value = consumeSumMap.get(consumeType) == null ? billRecord.getMoney() : consumeSumMap.get(consumeType) + billRecord.getMoney();
+            consumeSumMap.put(consumeType, value);
+        }
+        BillRecordChartResponse response = new BillRecordChartResponse();
+        response.setChartInfo(consumeSumMap);
+        response.setConsumeDesc(consumeTypeMap);
+        return response;
+    }
 
 }
