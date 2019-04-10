@@ -6,6 +6,7 @@ import com.card.model.BillRecord;
 import com.card.model.enums.RepaymentType;
 import com.card.model.request.BillRecordChartRequest;
 import com.card.model.request.BillRecordRequest;
+import com.card.model.response.BillMonthChartResponse;
 import com.card.model.response.BillRecordChartResponse;
 import com.card.service.BillRecordService;
 import org.springframework.stereotype.Controller;
@@ -38,9 +39,9 @@ public class BillRecordController {
      */
     @RequestMapping(value = "/toLeadBillRecord")
     @ResponseBody
-    public Response<Page<BillRecord>> toLeadBillRecord(String email, long userId) {
+    public Response<Page<BillRecord>> toLeadBillRecord(String email, long userId, int year,int month) {
         Response<Page<BillRecord>> response = new Response<>();
-        Response<Long> response1 =  billRecordService.toLeadBillRecord(email, userId);
+        Response<Long> response1 =  billRecordService.toLeadBillRecord(email, userId,year,month);
         if (response1.getStatus() != 0) {
             response.setStatus(1);
             response.setMessage("参数错误"+response1.getMessage());
@@ -186,6 +187,13 @@ public class BillRecordController {
     @ResponseBody
     public Response<List<BillRecordChartResponse>> getBillChart(BillRecordChartRequest recordChartRequest) {
         return  billRecordService.getBillChart(recordChartRequest);
+    }
+
+
+    @RequestMapping(value = "/getBillChartMonth")
+    @ResponseBody
+    public Response<BillMonthChartResponse> getBillChartMonth(BillRecordChartRequest recordChartRequest) {
+        return  billRecordService.getBillChartMonth(recordChartRequest);
     }
 
 

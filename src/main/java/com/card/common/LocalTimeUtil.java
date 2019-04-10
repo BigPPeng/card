@@ -44,6 +44,24 @@ public class LocalTimeUtil {
         return calendar.getTimeInMillis() / 1000;
     }
 
+    public static Long getTargetMonthMiddleTime(int year,int month,int day) {
+        if (year <= 2000 || year >= 3000)
+            year = 2019;
+        if (month < 1 || month > 12)
+            month = 1;
+        if (day < 1 || day > 30)
+            day = 15;
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR,year);
+        calendar.set(Calendar.MONTH,month - 1);
+        calendar.set(Calendar.DAY_OF_MONTH, 15);
+        calendar.set(Calendar.HOUR_OF_DAY,0);
+        calendar.set(Calendar.MINUTE,0);
+        calendar.set(Calendar.SECOND,0);
+
+        return calendar.getTimeInMillis() / 1000;
+    }
+
     public static Long getTargetMonthEndTime(int year,int month) {
         if (year <= 2000 || year >= 3000)
             year = 2019;

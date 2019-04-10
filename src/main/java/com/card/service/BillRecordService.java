@@ -14,6 +14,7 @@ import com.card.model.enums.RepaymentType;
 import com.card.model.request.BillRecordChartRequest;
 import com.card.model.request.BillRecordRequest;
 import com.card.model.request.GetCardRequest;
+import com.card.model.response.BillMonthChartResponse;
 import com.card.model.response.BillRecordChartResponse;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -189,8 +190,7 @@ public class BillRecordService {
         return response;
     }
 
-
-    public Response<Long> toLeadBillRecord(String email,long userId) {
+    public Response<Long> toLeadBillRecord(String email,long userId,int year, int month) {
         Response<Long> response = new Response<>();
 
         logger.info("email:{},userID:{}",email,userId);
@@ -220,8 +220,8 @@ public class BillRecordService {
                 billRecord.setBillStatus(billStatus.status);
                 billRecord.setRepaymentType(getRepaymentType(billStatus).type);
                 billRecord.setCardId(cardInfo.getId());// 指定cardID
-                billRecord.setConsumeTime(LocalTimeUtil.getCurrentTimeSecond());
-                billRecord.setCreateTime(LocalTimeUtil.getCurrentTimeSecond());
+                billRecord.setConsumeTime(LocalTimeUtil.getTargetMonthMiddleTime(year,month,i));
+                billRecord.setCreateTime(LocalTimeUtil.getTargetMonthMiddleTime(year,month,i));
                 billRecord.setMoney(getRandomMoney());
                 billRecord.setConsumeType(ConsumeType.getRandom(-1).type);
                 billRecord.setRepaymentTime(LocalTimeUtil.getRePaymentTime(LocalTimeUtil.getCurrentTimeSecond()));
@@ -231,8 +231,8 @@ public class BillRecordService {
                 billRecord2.setBillStatus(billStatus.status);
                 billRecord2.setRepaymentType(getRepaymentType(billStatus).type);
                 billRecord2.setCardId(cardInfo.getId());// 指定cardID
-                billRecord2.setConsumeTime(LocalTimeUtil.getCurrentTimeSecond());
-                billRecord2.setCreateTime(LocalTimeUtil.getCurrentTimeSecond());
+                billRecord2.setConsumeTime(LocalTimeUtil.getTargetMonthMiddleTime(year,month,i+5));
+                billRecord2.setCreateTime(LocalTimeUtil.getTargetMonthMiddleTime(year,month,i+51));
                 billRecord2.setMoney(getRandomMoney());
                 billRecord2.setConsumeType(ConsumeType.getRandom(-1).type);
                 billRecord2.setRepaymentTime(LocalTimeUtil.getRePaymentTime(LocalTimeUtil.getCurrentTimeSecond()));
@@ -286,49 +286,71 @@ public class BillRecordService {
             response.setMessage("用户不存在");
             return response;
         }
-
-
-        BillRecordChartResponse recordChartResponse;
-        if (recordChartRequest.getYear() > 3000
-                || recordChartRequest.getYear() < 2000
-                || recordChartRequest.getMonth() < 1
-                || recordChartRequest.getMonth() > 12) {
+        int yearBegin = recordChartRequest.getYearBegin();
+        int yearEnd = recordChartRequest.getYearEnd();
+        int monthBegin = recordChartRequest.getMonthBegin();
+        int monthEnd = recordChartRequest.getMonthEnd();
+        if ((yearBegin == yearEnd && yearBegin == 0)
+                || yearEnd < yearBegin
+                || yearBegin >3000
+                || yearBegin < 2000
+                || yearEnd > 3000
+                || yearEnd < 2000) {
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(System.currentTimeMillis());
-            long begin = LocalTimeUtil.getTargetMonthBeginTime(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH)+1);
-            long end = LocalTimeUtil.getTargetMonthEndTime(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH)+1);
-            recordChartResponse = getChartRecordByTime(recordChartRequest,begin,end);
-            recordChartResponse.setYear(calendar.get(Calendar.YEAR));
-            recordChartResponse.setMonth(calendar.get(Calendar.MONTH)+1);
-        } else {
-            long begin = LocalTimeUtil.getTargetMonthBeginTime(recordChartRequest.getYear(),recordChartRequest.getMonth());
-            long end = LocalTimeUtil.getTargetMonthEndTime(recordChartRequest.getYear(),recordChartRequest.getMonth());
-            recordChartResponse = getChartRecordByTime(recordChartRequest,begin,end);
-            recordChartResponse.setYear(recordChartRequest.getYear());
-            recordChartResponse.setMonth(recordChartRequest.getMonth());
+            yearBegin = calendar.get(Calendar.YEAR);
+            yearEnd = yearBegin;
         }
+        if (monthBegin < 1 || monthBegin > 12)
+            monthBegin = recordChartRequest.getMonthBegin();
+        if (monthEnd < 1 || monthEnd > 12)
+            monthEnd = recordChartRequest.getMonthEnd();
+        if (yearEnd == yearBegin && monthEnd < monthBegin)
+            monthEnd = monthBegin;
 
         List<BillRecordChartResponse> responseArrayList = Lists.newArrayList();
-        responseArrayList.add(recordChartResponse);
+        for (int  i = yearBegin; i <= yearEnd ; i ++) {
+            if (i < yearEnd && i > yearBegin) {
+                for (int j = 1; j <= 12; j++) {
+                    responseArrayList.add(getChartRecordByTime(recordChartRequest.getUserId(),i,j,recordChartRequest.getConsumeType()));
+                }
+            }
+            if (i == yearBegin && i != yearEnd) {
+                for (int j = monthBegin ; j <= 12; j++) {
+                    responseArrayList.add(getChartRecordByTime(recordChartRequest.getUserId(),i,j,recordChartRequest.getConsumeType()));
+                }
+            }
+            if (i == yearEnd && i != yearBegin) {
+                for (int j = 1 ; j <= monthEnd; j++) {
+                    responseArrayList.add(getChartRecordByTime(recordChartRequest.getUserId(),i,j,recordChartRequest.getConsumeType()));
+                }
+            }
+            if (yearBegin == yearEnd) {
+                for (int j = monthBegin;j<= monthEnd;j++) {
+                    responseArrayList.add(getChartRecordByTime(recordChartRequest.getUserId(),i,j,recordChartRequest.getConsumeType()));
+                }
+            }
+
+
+        }
         response.setData(responseArrayList);
         return response;
     }
 
-    private BillRecordChartResponse getChartRecordByTime(BillRecordChartRequest recordChartRequest,long begin, long end) {
+    private BillRecordChartResponse getChartRecordByTime(long userId,int year,int month,int type) {
+        logger.info("year:{},month:{},type:{}",year,month,type);
+        long begin = LocalTimeUtil.getTargetMonthBeginTime(year,month);
+        long end = LocalTimeUtil.getTargetMonthEndTime(year,month);
         Map<String,Object> param = Maps.newHashMap();
-        param.put("userId",recordChartRequest.getUserId());
+        param.put("userId",userId);
         param.put("consumeBegin",begin);
         param.put("consumeEnd",end);
-        Map<Integer,String> consumeTypeMap = Maps.newConcurrentMap();
-        if (recordChartRequest.getConsumeType() != 0 ) {
-            ConsumeType consumeType = ConsumeType.getById(recordChartRequest.getConsumeType());
+        if (type != 0) {
+            ConsumeType consumeType = ConsumeType.getById(type);
             param.put("consumeType", consumeType.type);
-            consumeTypeMap.put(consumeType.type,consumeType.desc);
         }
+        Map<Integer,String> consumeTypeMap = Maps.newConcurrentMap();
         Map<Integer,Double> consumeSumMap = Maps.newConcurrentMap();
-        for (Integer integer : consumeTypeMap.keySet()) {
-            consumeSumMap.put(integer,0.0);
-        }
 
         List<BillRecord> recordList = billRecordMapper.selectByParams(param);
         for (BillRecord billRecord : recordList) {
@@ -340,9 +362,42 @@ public class BillRecordService {
             consumeSumMap.put(consumeType, value);
         }
         BillRecordChartResponse response = new BillRecordChartResponse();
+        response.setYear(year);
+        response.setMonth(month);
         response.setChartInfo(consumeSumMap);
         response.setConsumeDesc(consumeTypeMap);
         return response;
     }
 
+    public Response<BillMonthChartResponse> getBillChartMonth(BillRecordChartRequest recordChartRequest) {
+        Response<BillMonthChartResponse> response = new Response<>();
+        Response<List<BillRecordChartResponse>> listResponse = this.getBillChart(recordChartRequest);
+        if (listResponse.getStatus() != 0) {
+            response.setStatus(listResponse.getStatus());
+            response.setMessage(listResponse.getMessage());
+            return response;
+        }
+
+        int consumeType = recordChartRequest.getConsumeType() == 0 ? 0 : ConsumeType.getById(recordChartRequest.getConsumeType()).type;
+        BillMonthChartResponse response1 = new BillMonthChartResponse();
+        Map<String,Double> chartInfo = Maps.newConcurrentMap();
+        for (BillRecordChartResponse recordChartResponse : listResponse.getData()) {
+            String key = recordChartResponse.getYear()+"_"+recordChartResponse.getMonth();
+            double sum = consumeType == 0 ? getAll(recordChartResponse) : recordChartResponse.getChartInfo().get(consumeType);
+            chartInfo.put(key,sum);
+        }
+        response1.setChartInfo(chartInfo);
+        response1.setConsumeType(consumeType);
+        response1.setConsumeDesc(consumeType == 0 ? "全部":ConsumeType.getById(recordChartRequest.getConsumeType()).desc);
+        response.setData(response1);
+        return response;
+    }
+
+    private double getAll(BillRecordChartResponse recordChartResponse) {
+        double sum = 0.0;
+        for (Double aDouble : recordChartResponse.getChartInfo().values()) {
+            sum += aDouble;
+        }
+        return sum;
+    }
 }

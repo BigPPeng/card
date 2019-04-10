@@ -3,7 +3,7 @@ package com.card.model.request;
 /**
  * Created by hongpeng.cui on 2019/4/10.
  */
-public class BillRecordChartRequest {
+public class BillChartMonthRequest {
 
     private long userId;
     private int consumeType;
