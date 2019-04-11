@@ -380,7 +380,7 @@ public class BillRecordService {
 
         int consumeType = recordChartRequest.getConsumeType() == 0 ? 0 : ConsumeType.getById(recordChartRequest.getConsumeType()).type;
         BillMonthChartResponse response1 = new BillMonthChartResponse();
-        Map<String,Double> chartInfo = Maps.newConcurrentMap();
+        Map<String,Double> chartInfo = new TreeMap<>();
         for (BillRecordChartResponse recordChartResponse : listResponse.getData()) {
             String key = recordChartResponse.getYear()+"_"+recordChartResponse.getMonth();
             double sum = consumeType == 0 ? getAll(recordChartResponse) : recordChartResponse.getChartInfo().get(consumeType);
@@ -400,4 +400,6 @@ public class BillRecordService {
         }
         return sum;
     }
+
+
 }
