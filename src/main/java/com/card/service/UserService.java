@@ -129,7 +129,7 @@ public class UserService {
         Response upResponse = this.updateUser(user);
         if (upResponse.getStatus() != 0) {
             response.setStatus(1);
-            response.setMessage("实名失败，请检查信息");
+            response.setMessage("实名失败，请检查信息"+upResponse.getMessage());
             return response;
         }
 
@@ -193,40 +193,15 @@ public class UserService {
         Response<Integer> response = new Response<>();
         if (user == null || user.getId() < 0) {
             response.setStatus(1);
-            response.setMessage("参数错误");
+            response.setMessage("updateUser 参数错误");
             return response;
         }
-
-        Map<String,Object> param = Maps.newHashMap();
-
-        if (user.getName() != null) {
-            param.put("name",user.getName());
-            if (userMapper.getUserCount(param) > 1) {
-                response.setStatus(2);
-                response.setMessage("用户名不存在");
-                return response;
-            }
+        Response<User> responseUser = this.getUserInfo(String.valueOf(user.getId()),4);
+        if (responseUser.getStatus() != 0) {
+            response.setStatus(1);
+            response.setMessage("updateUser 用户信息错误，"+responseUser.getMessage());
+            return response;
         }
-        if (user.getUserEmail() != null) {
-            param.clear();
-            param.put("userEmail",user.getUserEmail());
-            if (userMapper.getUserCount(param) > 1) {
-                response.setStatus(2);
-                response.setMessage("邮箱已经注册");
-                return response;
-            }
-        }
-
-        if (user.getPhoneNumber() != null){
-            param.clear();
-            param.put("phoneNumber",user.getUserEmail());
-            if (userMapper.getUserCount(param) > 1) {
-                response.setStatus(2);
-                response.setMessage("手机号已经注册");
-                return response;
-            }
-        }
-
         response.setData(userMapper.updateByPrimaryKey(user));
 
         return response;
