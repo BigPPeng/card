@@ -107,7 +107,7 @@ public class UserService {
 
         Response<User> temp = this.getUserInfo(nameOrEmailOrPhoneOrId,type);
         if (temp.getStatus() != 0 || temp.getData() == null) {
-            response.setMessage("没有用户信息");
+            response.setMessage("没有用户信息，message:"+temp.getMessage());
             response.setStatus(1);
             response.setData(null);
             return response;
