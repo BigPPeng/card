@@ -81,7 +81,7 @@
 
 
     <loggers>
-        <root level="DEBUG">
+        <root level="INFO">
             <AppenderRef ref="stdout"/>
             <!--<AppenderRef ref="fileAppender"/>-->
         </root>
@@ -107,7 +107,7 @@
         <!--<Logger name="org.activiti" level="info" additivity="false">-->
             <!--<AppenderRef ref="activitiFileAppender" />-->
         <!--</Logger>-->
-        <Logger name="org.apache.ibatis" level="info" additivity="false">
+        <Logger name="org.apache.ibatis" level="warn" additivity="false">
             <AppenderRef ref="springFileAppender" />
         </Logger>
 

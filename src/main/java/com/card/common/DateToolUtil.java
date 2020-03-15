@@ -7,6 +7,7 @@ import java.util.Date;
  * Created by hongpeng.cui on 2019/4/7.
  */
 public class DateToolUtil {
+    public static String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
 
     public static String format(String formatPatten, long mill) {
         if (mill <= 0)
@@ -27,7 +28,8 @@ public class DateToolUtil {
     public static void main(String[] args){
         long now = System.currentTimeMillis();
         System.out.println(now);
-        System.out.println(format("yyyy-MM-dd HH:mm:ss",now));
+
+        System.out.println(format(YYYY_MM_DD_HH_MM_SS,now));
     }
 
 

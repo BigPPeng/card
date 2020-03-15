@@ -12,7 +12,6 @@ import java.util.Map;
  */
 @Component
 public interface UserMapper {
-
     int deleteByPrimaryKey(long id);
 
     long insert(User record);

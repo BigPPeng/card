@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.card.mapper.BlackListMapper">
+
+    <sql id="Select_Base_Column_List">
+        id, mhotel_id, shotel_id, sroom_id, rateplan_id, supplier_id, group_id,
+        dist_type,status, creater, create_time,_timestamp
+    </sql>
+
+    <resultMap id="BaseResultMap"
+               type="com.card.test.mysql.GoodsBlackList">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="mhotel_id" property="mhotelId" jdbcType="INTEGER"/>
+        <result column="shotel_id" property="shotelId" jdbcType="INTEGER"/>
+        <result column="sroom_id" property="sroomId" jdbcType="INTEGER"/>
+        <result column="rateplan_id" property="ratePlanId" jdbcType="INTEGER"/>
+        <result column="supplier_id" property="supplierId" jdbcType="INTEGER"/>
+        <result column="group_id" property="groupId" jdbcType="INTEGER"/>
+        <result column="dist_type" property="distType" jdbcType="INTEGER"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <select id="queryBlackList" parameterType="java.util.Map"
+            resultMap="BaseResultMap">
+        SELECT
+        <include refid="Select_Base_Column_List"/>
+        FROM goods_blacklist
+        <where>
+            <if test="beginTime != null and beginTime != ''">AND _timestamp <![CDATA[>=]]> #{beginTime}</if>
+            <if test="endTime != null and endTime != ''">AND _timestamp <![CDATA[<=]]>#{endTime}</if>
+            <if test="status != null">AND status = #{status}</if>
+        </where>
+        <if test="start != null and pageSize != null">
+            LIMIT #{start}, #{pageSize}
+        </if>
+    </select>
+
+    <select id="queryCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT COUNT(*) from goods_blacklist
+        <where>
+            <if test="beginTime != null and beginTime != ''">AND _timestamp <![CDATA[>=]]> #{beginTime}</if>
+            <if test="endTime != null and endTime != ''">AND _timestamp <![CDATA[<=]]>#{endTime}</if>
+            <if test="status != null">AND status = #{status}</if>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="com.card.test.mysql.GoodsBlackList">
+        insert into goods_blacklist(mhotel_id, shotel_id, sroom_id, rateplan_id,
+        supplier_id, group_id, dist_type, status, creater, create_time)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.mhotelId,jdbcType=INTEGER}, #{item.shotelId,jdbcType=INTEGER},
+            #{item.sroomId,jdbcType=INTEGER}, #{item.ratePlanId,jdbcType=INTEGER},
+            #{item.supplierId,jdbcType=INTEGER},#{item.groupId,jdbcType=INTEGER},
+            #{item.distType,jdbcType=INTEGER}, #{item.status,jdbcType=INTEGER},
+            #{item.creater,jdbcType=VARCHAR},#{item.createTime,jdbcType=TIMESTAMP})
+        </foreach>
+    </insert>
+</mapper>

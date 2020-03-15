@@ -11,11 +11,12 @@ public class TestLockCondition {
 
         Thread threadA = new Thread(new MyThreadA(myService));
         threadA.setName("ThreadA");
-//        Thread threadAA = new Thread(new MyThreadAA(myService));
-//        threadAA.setName("ThreadAA");
+        Thread threadAA = new Thread(new MyThreadAA(myService));
+        threadAA.setName("ThreadAA");
         Thread threadB = new Thread(new MyThreadB(myService));
         threadB.setName("ThreadB");
         threadA.start();
+        threadAA.start();
         threadB.start();
 
 

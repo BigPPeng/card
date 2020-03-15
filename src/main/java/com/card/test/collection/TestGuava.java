@@ -10,18 +10,27 @@ public class TestGuava {
 
 
     public static void main(String[] args) {
-        rangeTest();
-
+        A a = new A();
+        System.out.println(a.b.aa);
     }
 
-    private static void rangeTest() {
-        Range range = Range.openClosed(1d,2d);
-        System.out.println("range.isEmpty():"+range.isEmpty());
-        System.out.println(" 2:"+range.contains(2d));
-        System.out.println(" 2:"+range.contains(1d));
-        System.out.println(" 2:"+range.contains(1.5));
-        Range range1 = Range.closed(1,1);
-        System.out.println("range1.isEmpty():"+range1.isEmpty());
+
+    static class A {
+        B b;
+
+        public A() {
+            b = new B(this);
+        }
+    }
+
+
+    static class B {
+        A a;
+        int aa = 10;
+
+        public B(A a) {
+            this.a = a;
+        }
     }
 
 

@@ -65,11 +65,11 @@ public class DruidConfig {
     @Value("${spring.datasource.druid.testOnReturn}")
     private boolean testOnReturn;
 
-    @Value("${spring.datasource.druid.filters}")
-    private String filters;
-
-    @Value("${spring.datasource.logSlowSql}")
-    private String logSlowSql;
+//    @Value("${spring.datasource.druid.filters}")
+//    private String filters;
+//
+//    @Value("${spring.datasource.logSlowSql}")
+//    private String logSlowSql;
 
     @Bean
     public ServletRegistrationBean druidServlet() {
@@ -78,7 +78,7 @@ public class DruidConfig {
         reg.addUrlMappings("/druid/*");
         reg.addInitParameter("loginUsername", username);
         reg.addInitParameter("loginPassword", password);
-        reg.addInitParameter("logSlowSql", logSlowSql);
+//        reg.addInitParameter("logSlowSql", logSlowSql);
         return reg;
     }
 
@@ -109,11 +109,11 @@ public class DruidConfig {
         datasource.setTestWhileIdle(testWhileIdle);
         datasource.setTestOnBorrow(testOnBorrow);
         datasource.setTestOnReturn(testOnReturn);
-        try {
-            datasource.setFilters(filters);
-        } catch (SQLException e) {
-            logger.error("druid configuration initialization filter", e);
-        }
+//        try {
+//            datasource.setFilters(filters);
+//        } catch (SQLException e) {
+//            logger.error("druid configuration initialization filter", e);
+//        }
         return datasource;
     }
 }

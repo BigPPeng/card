@@ -15,17 +15,20 @@ public class RunTimeConstantPoolOOM {
 
     public static void main(String[] args) {
 
-//        List<String> list = new ArrayList<>();
-//        int i = 0;
-//        while (true) {
-//            list.add(String.valueOf(i++).intern());
-//        }
+        String a= "111112323rsdvx sjkdhcnns执行插上了可能从三轮车杀伤力是采纳数两三次你出参是你HS方式CLKJC SCSCK ZX,MNCS ACZNJKCSCBZCX ALBC" +
+                "SLNCLA KCSZKCBKSLCLZBCKVCZ,X n:CSh XBASKJC as从哪里三是，心存卡上as从事；是南向北UI无论你是长沙市两次缆车；SNCnch kcs 理你：SDcard";
 
-        String str1 = new StringBuilder("计算机").append("软件").toString();
-        System.out.println(str1 == str1.intern());
-
-        String java = new StringBuilder("ja").append("va").toString();
-        System.out.println(java == java.intern());
+        List<String> list = new ArrayList<>();
+        int i = 0;
+        while (true) {
+            list.add((new String(a) + String.valueOf(i++)).intern());
+        }
+//
+//        String str1 = new StringBuilder("计算机").append("软件").toString();
+//        System.out.println(str1 == str1.intern());
+//
+//        String java = new StringBuilder("ja").append("va").toString();
+//        System.out.println(java == java.intern());
 
     }
 }
