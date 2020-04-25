@@ -14,8 +14,7 @@ public class FileDemo {
 
 
     public static void main(String[] args) throws IOException {
-        // demo1();
-        // demo2();
+        System.out.println(1l << (2 - 1));
 
 
     }

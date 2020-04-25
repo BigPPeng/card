@@ -31,7 +31,7 @@ public class Test {
     public void test() {
         logger.warn("test print----------------");
         int i = 10;
-        while (i < 100) {
+        while (i < 200) {
             testInsert(5000);
             i ++;
         }

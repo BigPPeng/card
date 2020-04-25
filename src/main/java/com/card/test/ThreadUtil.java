@@ -1,5 +1,7 @@
 package com.card.test;
 
+import java.util.Random;
+
 /**
  * Created by cuihp on 2020/1/3.
  */
@@ -13,4 +15,9 @@ public class ThreadUtil {
         }
     }
 
+
+    public static int random() {
+        Random random = new Random();
+        return random.nextInt(5);
+    }
 }
