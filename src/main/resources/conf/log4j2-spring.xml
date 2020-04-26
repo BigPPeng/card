@@ -2,8 +2,8 @@
 <Configuration>
 
     <Properties>
-        <!--<Property name="LOG_PATH">/Users/hongpeng.cui/Desktop/app/card</Property>-->
-        <Property name="LOG_PATH">/Users/cuihp/Desktop/temp</Property>
+        <Property name="LOG_PATH">/Users/hongpeng.cui/Desktop/app/card</Property>
+        <!--<Property name="LOG_PATH">/Users/cuihp/Desktop/temp</Property>-->
     </Properties>
 
     <Appenders>
@@ -76,6 +76,15 @@
                 <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
             </Policies>
         </RollingRandomAccessFile>
+        <!--添加一个文本追加器，文件位于根目录下，activiti.log  记录activiti组件的日志-->
+        <RollingRandomAccessFile name="mongoFileAppender"
+                                 fileName="${LOG_PATH}/logs/mongo.log"
+                                 filePattern="${LOG_PATH}/logs/mongo.log.%d{yyyy-MM-dd}.log">
+            <PatternLayout pattern="[%-5p] %d %c - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingRandomAccessFile>
 
     </Appenders>
 
@@ -104,9 +113,12 @@
         <Logger name="org.springframework" level="DEBUG" additivity="false">
             <AppenderRef ref="springFileAppender" />
         </Logger>
-        <!--<Logger name="org.activiti" level="info" additivity="false">-->
-            <!--<AppenderRef ref="activitiFileAppender" />-->
-        <!--</Logger>-->
+        <Logger name="org.activiti" level="info" additivity="false">
+            <AppenderRef ref="activitiFileAppender" />
+        </Logger>
+        <Logger name="org.mongodb" level="info" additivity="false">
+            <AppenderRef ref="mongoFileAppender" />
+        </Logger>
         <Logger name="org.apache.ibatis" level="info" additivity="false">
             <AppenderRef ref="springFileAppender" />
         </Logger>
