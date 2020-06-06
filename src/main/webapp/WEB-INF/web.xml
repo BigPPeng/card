@@ -5,7 +5,7 @@
          id="WebApp_ID" version="3.0">
     <display-name>card</display-name>
     <welcome-file-list>
-        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>index.ftl</welcome-file>
     </welcome-file-list>  
     <context-param>
 		<param-name>log4jConfigLocation</param-name>
@@ -36,10 +36,6 @@
 	<servlet>
 		<servlet-name>springmvc</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-		<init-param>
-			<param-name>contextConfigLocation</param-name>
-			<param-value>classpath:conf/core/spring-config-mvc.xml</param-value>
-		</init-param>
 		<load-on-startup>1</load-on-startup>
 		<async-supported>true</async-supported>
 	</servlet>

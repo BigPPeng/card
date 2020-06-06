@@ -15,8 +15,10 @@ public class ReadExcel {
     private static RestTemplate restTemplate = new RestTemplate();
     private static String url = "http://dashboard2.mis.elong.com/proxy/192.168.110.233:8080/getCtripPromotionToSubsidize?activityId=";
     public static void main(String[] args) {
-        List<ExcelModel> excelModels = ExcelReader.readExcel("/Users/cuihp/Desktop/pb_bonuses-export.xlsx");
-        System.out.println(excelModels.size());
+        List<ExcelModel> excelModels = ExcelReader.readExcel("/Users/cuihp/Desktop/all_city_info.xlsx");
+
+        String urlPro = "http://hotel-goods.dictionary.api.vip.elong.com/dict/dim/province/all";
+        String urlCity = "http://hotel-goods.dictionary.api.vip.elong.com/dict/dim/city/0800";
 
         for (ExcelModel excelModel : excelModels) {
             String activity_id = excelModel.getActivity_id();

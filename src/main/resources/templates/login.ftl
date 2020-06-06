@@ -13,7 +13,7 @@
                     <br/>
                     <span class="text-lg text-bold text-primary">艺龙酒店商品库审批平台</span>
                     <br/><br/>
-                    <form class="form" action="/login" method="post" autocomplete="off">
+                    <form class="form" action="/login/in" method="post" autocomplete="off">
                         <div class="form-group">
                             <input type="text" class="form-control" id="username" name="username" required>
                             <label for="username">用户名</label>
@@ -24,6 +24,11 @@
                             <p class="help-block">
                                 <#if message??>${message!}</#if>
                             </p>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="code" name="code" required>
+                            <label for="code">验证码</label>
+                            <img class="codeimg" id="codeimg" src="/captcha" height="48px" width="130px"/>
                         </div>
                         <br/>
                         <div class="row">
@@ -38,12 +43,6 @@
                                 <button class="btn btn-primary btn-raised" type="submit">登 录</button>
                             </div><!--end .col -->
                         </div><!--end .row -->
-                        <div class="row">
-                            <label class="col-sm-4 col-sm-offset-0.5 control-label">权限开通请联系:</label>
-                            <div class="col-sm-4">
-                                <span style="color: black">yi.tian@corp.elong.com</span>
-                            </div>
-                        </div>
                     </form>
                 </div><!--end .col -->
             </div><!--end .row -->

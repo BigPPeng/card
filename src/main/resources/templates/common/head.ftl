@@ -37,6 +37,5 @@
             text-overflow: ellipsis;
         }
     </style>
-
-<#include "script.ftl"/>
+    <#include "script.ftl"/>
 </head>

@@ -2,8 +2,7 @@
 <Configuration>
 
     <Properties>
-        <Property name="LOG_PATH">/Users/hongpeng.cui/Desktop/app/card</Property>
-        <!--<Property name="LOG_PATH">/Users/cuihp/Desktop/temp</Property>-->
+        <Property name="LOG_PATH">/Users/cuihp/Desktop/app/card</Property>
     </Properties>
 
     <Appenders>
