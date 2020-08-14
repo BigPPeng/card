@@ -36,10 +36,10 @@ public class User {
     }
 
     private void init() {
-        this.realName = "";
-        this.identityCardNumber = "";
-        this.homeAddress = "";
-        this.receiveAddress = "";
+        this.realName = "DEFAULT";
+        this.identityCardNumber = "DEFAULT";
+        this.homeAddress = "DEFAULT";
+        this.receiveAddress = "DEFAULT";
         this.status = UserStatus.DEFAULT.status;
     }
 
@@ -184,4 +184,24 @@ public class User {
         return s.hashCode()+s;
     }
 
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", pass='" + pass + '\'' +
+                ", realName='" + realName + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", identityCardNumber='" + identityCardNumber + '\'' +
+                ", userEmail='" + userEmail + '\'' +
+                ", homeAddress='" + homeAddress + '\'' +
+                ", receiveAddress='" + receiveAddress + '\'' +
+                ", status=" + status +
+                ", loginTime=" + loginTime +
+                ", loginTimeString='" + loginTimeString + '\'' +
+                ", createTime=" + createTime +
+                ", createTimeString='" + createTimeString + '\'' +
+                '}';
+    }
 }
