@@ -18,14 +18,70 @@ package leetcode.editor.cn;
 public class P53MaximumSubarray{
     public static void main(String[] args) {
         Solution solution = new P53MaximumSubarray().new Solution();
+        int i = solution.maxSubArray(new int[]{-1});
+        System.out.println(i);
         // TO TEST
     }
     //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int maxSubArray(int[] nums) {
-        return 1;
+        return three(nums);
     }
-}
+
+        private int three(int[] nums) {
+            if (nums.length == 0) {
+                return 0;
+            }
+            int max = nums[0];
+            int tempMax = nums[0];
+            for (int i = 1; i < nums.length; i++) {
+                if (tempMax > 0) {
+                    tempMax = tempMax + nums[i];
+                } else {
+                    tempMax = nums[i];
+                }
+                max = Math.max(tempMax,max);
+            }
+            return max;
+        }
+
+        /**
+         * 动态规划解法
+         */
+        private int two(int[] nums) {
+            if (nums.length == 0) {
+                return 0;
+            }
+            int[] dp = new int[nums.length];
+            dp[0] = nums[0];
+            for (int i = 1; i < nums.length; i++) {
+                if (dp[i - 1] > 0) {
+                    dp[i] = dp[i-1] + nums[i];
+                } else {
+                    dp[i] = nums[i];
+                }
+            }
+            int max = dp[0];
+            for (int i = 1; i < dp.length; i++) {
+                max = Math.max(max,dp[i]);
+            }
+            return max;
+        }
+
+        private int one(int[] nums) {
+            int max = Integer.MIN_VALUE;
+            for (int i = 0; i < nums.length; i++) {
+                int temp = nums[i];
+                int sum = nums[i];
+                for (int i1 = i + 1; i1 < nums.length; i1++) {
+                    sum += nums[i1];
+                    temp = Math.max(temp,sum);
+                }
+                max = Math.max(temp,max);
+            }
+            return max;
+        }
+    }
 //leetcode submit region end(Prohibit modification and deletion)
 
 }

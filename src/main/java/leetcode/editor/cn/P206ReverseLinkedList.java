@@ -52,7 +52,7 @@ public class P206ReverseLinkedList{
  */
 class Solution {
     public ListNode reverseList(ListNode head) {
-        return reverseList(null,head);
+        return reverseList(null,head); // 递归
     }
 
 
@@ -65,8 +65,7 @@ class Solution {
         return reverseList(next, node);
     }
 
-
-
+    // 非递归
     private ListNode one(ListNode head) {
         if (head == null) {
             return null;
