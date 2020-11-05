@@ -24,6 +24,9 @@ public class HelloServiceHsHaServer {
          * TSimpleJSONProtocol 提供JSON只写协议，生成的文件很容易通过脚本语言解析
          *
          * 半同步半异步的服务端模型
+         *
+         * ServerSocketChannel非阻塞。单个线程接受请求，处理IO。线程池处理业务逻辑
+         *
          * 使用一个单独的线程处理IO，一个独立的worker线程池处理消息， 可以并行处理所有请求
          */
 

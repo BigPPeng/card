@@ -10,9 +10,13 @@ import org.apache.thrift.transport.TTransportException;
 
 public class HelloServiceSimpleServer {
     /*
-     * Thrift的Server类型有TSimpleServer、TNonblockingServer、THsHaServer、TThreadedSelectorServer、TThreadPoolServer
+     * Thrift的Server类型有
+     * TSimpleServer、TNonblockingServer、
+     * THsHaServer、
+     * TThreadedSelectorServer、TThreadPoolServer
+     *
      * TSimpleServer:
-     * 单线程阻塞IO的方式，仅用于测试
+     * 单线程阻塞IO的方式，仅用于测试。基于BIO的ServerSocket实现。
      * 一次只有一个client端服务
      */
     public static void main(String[] args) {

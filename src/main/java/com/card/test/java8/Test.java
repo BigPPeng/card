@@ -3,7 +3,9 @@ package com.card.test.java8;
 import com.google.common.collect.Lists;
 
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by cuihp on 2020/5/11.
@@ -31,10 +33,27 @@ public class Test {
 //        });
 //        aa.start();
 
-        int blackWeek = 48;
-        for (int i = 0; i < 7; i++) {
-            System.out.println(isSetBit(blackWeek, i));
+//        int blackWeek = 48;
+//        for (int i = 0; i < 7; i++) {
+//            System.out.println(isSetBit(blackWeek, i));
+//        }
+
+        Map<Integer,Integer> map = new HashMap<>();
+        map.put(1,1);
+        map.put(3,3);
+        map.put(4,4);
+        map.put(5,5);
+        map.put(2,2);
+
+
+        for (int i = 0; i < 10; i++) {
+            for (Map.Entry<Integer, Integer> integerIntegerEntry : map.entrySet()) {
+                System.out.print(integerIntegerEntry.getKey()+":"+integerIntegerEntry.getValue()+"_");
+            }
+            System.out.println();
         }
+
+
 
 
     }

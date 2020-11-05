@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>org.apache.thrift.server.AbstractNonblockingServer</OriginalElement>
+  <nodes>
+    <node x="22.0" y="240.0">org.apache.thrift.server.THsHaServer</node>
+    <node x="0.0" y="160.0">org.apache.thrift.server.TNonblockingServer</node>
+    <node x="194.99999999999997" y="160.0">org.apache.thrift.server.TThreadedSelectorServer</node>
+    <node x="85.46428571428567" y="80.0">org.apache.thrift.server.AbstractNonblockingServer</node>
+    <node x="325.46428571428567" y="80.0">org.apache.thrift.server.TThreadPoolServer</node>
+    <node x="357.5" y="0.0">org.apache.thrift.server.TServer</node>
+    <node x="512.4642857142857" y="80.0">org.apache.thrift.server.TSimpleServer</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="org.apache.thrift.server.TThreadPoolServer" target="org.apache.thrift.server.TServer">
+      <point x="0.0" y="-15.0" />
+      <point x="408.96428571428567" y="55.0" />
+      <point x="406.0" y="55.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="org.apache.thrift.server.TThreadedSelectorServer" target="org.apache.thrift.server.AbstractNonblockingServer">
+      <point x="0.0" y="-15.0" />
+      <point x="297.5" y="135.0" />
+      <point x="250.46428571428567" y="135.0" />
+      <point x="55.0" y="15.0" />
+    </edge>
+    <edge source="org.apache.thrift.server.THsHaServer" target="org.apache.thrift.server.TNonblockingServer">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="org.apache.thrift.server.TNonblockingServer" target="org.apache.thrift.server.AbstractNonblockingServer">
+      <point x="0.0" y="-15.0" />
+      <point x="87.5" y="135.0" />
+      <point x="140.46428571428567" y="135.0" />
+      <point x="-55.0" y="15.0" />
+    </edge>
+    <edge source="org.apache.thrift.server.TSimpleServer" target="org.apache.thrift.server.TServer">
+      <point x="0.0" y="-15.0" />
+      <point x="580.9642857142857" y="55.0" />
+      <point x="438.33333333333337" y="55.0" />
+      <point x="32.33333333333337" y="15.0" />
+    </edge>
+    <edge source="org.apache.thrift.server.AbstractNonblockingServer" target="org.apache.thrift.server.TServer">
+      <point x="0.0" y="-15.0" />
+      <point x="195.46428571428567" y="55.0" />
+      <point x="373.66666666666663" y="55.0" />
+      <point x="-32.33333333333337" y="15.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.3640847855558718" x="515.0" y="132.0" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

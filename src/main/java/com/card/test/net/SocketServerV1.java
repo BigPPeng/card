@@ -3,6 +3,7 @@ package com.card.test.net;
 import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketAddress;
 
 /**
  * Created by cuihp on 2019/12/23.
@@ -11,22 +12,45 @@ public class SocketServerV1 {
 
     private static final int port = 16666;
 
-    public static void main(String[] args) throws Exception{
-        ServerSocket serverSocket = new ServerSocket(port);
+    public static void main(String[] args){
+        ServerSocket serverSocket = null;
         // server等待连接的到来
         System.out.println("server等待连接的到来");
-        Socket socket = serverSocket.accept();
-        InputStream inputStream = socket.getInputStream();
+        InputStream inputStream = null;
+
         byte[] bytes = new byte[1014];
         int len;
-        StringBuilder stringBuilder = new StringBuilder();
-        while ((len = inputStream.read(bytes)) != -1) {
-            stringBuilder.append(new String(bytes,0,len,"UTF-8"));
+
+        try {
+            serverSocket = new ServerSocket(port);
+            while (true) {
+                Socket socket = serverSocket.accept();
+                SocketAddress remoteSocketAddress = socket.getRemoteSocketAddress();
+                System.out.println("handing clint at "+remoteSocketAddress);
+                inputStream = socket.getInputStream();
+                while ((len = inputStream.read(bytes)) != -1) {
+                    byte[] temp = new byte[len];
+                    System.arraycopy(bytes,0,temp,0,len);
+                    System.out.println("accept:" + new String(temp));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (serverSocket != null) {
+                    serverSocket.close();
+                }
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        System.out.println("accept:"+stringBuilder);
-        inputStream.close();
-        socket.close();
-        serverSocket.close();
+
+
+
     }
 
 

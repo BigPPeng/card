@@ -26,9 +26,9 @@ public class HelloServiceNonblockingServer {
          *
          *
          * TNonblockingServer是单线程非阻塞IO的方式，
+         * 基于NIO ServerSocketChannel非阻塞。接受请求，处理IO，处理业务仍然是单线程。
          * 通过java.nio.channels.Selector的select()接收连接请求，
          * 但是处理消息仍然是单线程，吞吐量有限不可用于生产
-         *
          */
 
         try {

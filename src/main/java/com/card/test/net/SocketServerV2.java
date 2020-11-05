@@ -32,7 +32,7 @@ public class SocketServerV2 {
                 }
                 System.out.println("accept:"+stringBuilder);
 
-                Thread.sleep(1000);
+                Thread.sleep(100);
                 OutputStream outputStream = socket.getOutputStream();
                 String s = "return : get" + stringBuilder.toString();
                 outputStream.write(s.getBytes("UTF-8"));

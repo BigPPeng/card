@@ -20,6 +20,8 @@ public class HelloServiceThreadPoolServer {
          * 当请求处理完毕该worker释放并回到线程池中，可以配置线程最大值，当达到线程最大值时请求会被阻塞。
          * TThreadPoolServer性能表现优异，代价是并发高时会创建大量线程
          *
+         *
+         *
          * TThreadedSelectorServer是thrift 0.8引入的实现，处理IO也使用了线程池，
          * 比THsHaServer有更高的吞吐量和更低的时延，与TThreadPoolServer比性能相近且能应对网络IO较多的情况对于客户端较少的情况，
          * TThreadPoolServer也有优异的性能表现，但是考虑到未来SOA可能的高并发，决定采用TThreadedSelectorServer

@@ -30,6 +30,7 @@ public class HelloServiceTThreadSelectorServerV2 {
             args.processor(tProcessor);
             args.protocolFactory(new TCompactProtocol.Factory());// 传输协议 二进制格式
             args.transportFactory(new TFramedTransport.Factory());
+            args.selectorThreads(10);
             // 线程池服务模型，使用标准的阻塞式IO，预先创建一组线程处理请求
             TServer server = new TThreadedSelectorServer(args);
             server.serve();
