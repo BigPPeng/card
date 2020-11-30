@@ -1,5 +1,7 @@
 package com.card.test.tree;
 
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Stack;
 
 /**
@@ -21,7 +23,29 @@ public class PrintTree {
         System.out.println();
         postOrder3(tree);// 后序遍历非递归
         System.out.println();
+        levelPrint(tree);
     }
+
+
+
+    private static void levelPrint(Node node) {
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(node);
+        while (!queue.isEmpty()) {
+            Node poll = queue.poll();
+            if (poll == null) {
+                continue;
+            }
+            System.out.print(poll.aChar + " ");
+            if (poll.left != null) {
+                queue.add(poll.left);
+            }
+            if (poll.right != null) {
+                queue.add(poll.right);
+            }
+        }
+    }
+
 
 
     private static void preOrder2(Node node) {

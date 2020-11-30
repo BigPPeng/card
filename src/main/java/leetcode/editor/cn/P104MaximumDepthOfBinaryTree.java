@@ -25,6 +25,10 @@ import java.util.Stack;
 public class P104MaximumDepthOfBinaryTree{
     public static void main(String[] args) {
         Solution solution = new P104MaximumDepthOfBinaryTree().new Solution();
+        TreeNode tree = TreeNode.getTree(3,9,20,null,null,15,7);
+        int i = solution.maxDepth(tree);
+        System.out.println();
+        System.out.println(i);
         // TO TEST
     }
     //leetcode submit region begin(Prohibit modification and deletion)
@@ -39,23 +43,23 @@ public class P104MaximumDepthOfBinaryTree{
  */
 class Solution {
     public int maxDepth(TreeNode root) {
-        int maxHigh = 0;
-        Stack<TreeNode> stack = new Stack<>();
-        TreeNode temp = root;
-        while (temp != null || !stack.isEmpty()) {
-            while (temp != null) {
-                System.out.println(temp.val);
-                stack.push(temp);
-                maxHigh = maxHigh > stack.size() ? maxHigh : stack.size();
-                temp = temp.left;
-            }
-            while (!stack.isEmpty()) {
-                temp = stack.pop();
-                temp = temp.right;
-            }
-        }
-        return maxHigh;
+        return print(root, 0);
     }
+
+    int print(TreeNode root,int maxHigh) {
+        if (root == null) {
+            return maxHigh;
+        }
+        maxHigh++;
+        int left = print(root.left, maxHigh);
+        int right = print(root.right, maxHigh);
+//        System.out.print(root.val + " ");
+        return left > right ? left : right;
+    }
+
+
+
+
 
 
 //    private void preOrder(TreeNode node) {

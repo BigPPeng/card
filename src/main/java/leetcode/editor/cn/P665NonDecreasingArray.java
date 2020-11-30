@@ -41,31 +41,24 @@ public class P665NonDecreasingArray{
     //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public boolean checkPossibility(int[] nums) {
-        if (nums.length <= 2)
+        if (nums.length <= 3)
             return true;
-        int a = 0;
-        int index = -1;
-        for (int i = nums.length - 1; i > 0; i--) {
-            if (nums[i] >= nums[i - 1])
-                continue;
-            a++;
-            if (a == 2) {
-                return false;
-            }
-            index = i;
-        }
-        if (index != -1) {
-            int num = 0;
-            for (int j = index - 1; j >= 0; j--) {
-                if (nums[j] >= nums[index])
-                    num++;
-                if (num == 2) {
-                    return false;
-                }
-            }
-        }
 
-        return true;
+        int count = 0;
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i - 1] <= nums[i])
+                continue;
+            count++;
+            if (count > 1) {
+                break;
+            }
+            if (i >= 2 && nums[i] < nums[i - 2]) {
+                nums[i] = nums[i - 1];
+            } else {
+                nums[i - 1] = nums[i];
+            }
+        }
+        return count <= 1;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

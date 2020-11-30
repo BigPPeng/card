@@ -22,13 +22,22 @@ public class ListTest {
 
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
+        ArrayList<Integer> arrayList = Lists.newArrayList(1, 2, 2, 4, 5, 67, 43, 8, 7);
+        for (int i = 0; i < arrayList.size(); i++) {
+            if (arrayList.get(i) == 2) {
+                arrayList.remove(i);
+            }
+        }
+        System.out.println(arrayList);
+    }
+
+    private static void a() throws InterruptedException, ExecutionException {
         FutureTask<Integer> myThreadFutureTask = new FutureTask<>(new MyThread());
         Thread thread = new Thread(myThreadFutureTask);
         thread.start();
         Integer integer = myThreadFutureTask.get();
         System.out.println(integer);
     }
-
 
 
     private static void SetNotSafe() {

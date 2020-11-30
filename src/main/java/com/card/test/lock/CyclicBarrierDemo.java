@@ -12,7 +12,7 @@ public class CyclicBarrierDemo {
 
     public static void main(String[] args) {
         /*
-         * CyclicBarrier 集齐七颗龙珠，再召唤神龙
+         * CyclicBarrierTest 集齐七颗龙珠，再召唤神龙
          */
         CyclicBarrier cyclicBarrier = new CyclicBarrier(10, () -> {
             System.out.println("召唤神龙");

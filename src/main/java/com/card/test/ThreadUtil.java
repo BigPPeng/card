@@ -18,6 +18,6 @@ public class ThreadUtil {
 
     public static int random() {
         Random random = new Random();
-        return random.nextInt(5);
+        return random.nextInt(5) < 0 ? -random.nextInt(5) : random.nextInt(5);
     }
 }
