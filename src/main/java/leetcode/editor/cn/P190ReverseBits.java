@@ -39,13 +39,41 @@ package leetcode.editor.cn;
 public class P190ReverseBits{
     public static void main(String[] args) {
         Solution solution = new P190ReverseBits().new Solution();
+        int i1 = 0b11111111111111111111111111111101;
+        int a = -2147483648;
+        System.out.println(Integer.toBinaryString(a));
+
+        System.out.println(Integer.toBinaryString(i1));
+
+        int i = solution.reverseBits(i1);
+
+        System.out.println(Integer.toBinaryString(i));
+
         // TO TEST
     }
     //leetcode submit region begin(Prohibit modification and deletion)
 public class Solution {
     // you need treat n as an unsigned value
     public int reverseBits(int n) {
-        return 0;
+        for (int i = 0; i < 16; i++) {
+            int lowIndex = 1 << i;
+            boolean lowIndex_1 = (n & lowIndex) == lowIndex;
+            int highIndex = 1 << (31 - i);
+            boolean highIndex_1 = (n & highIndex) == highIndex;
+
+            if (lowIndex_1) {
+                n = n | highIndex;
+            } else {
+                n = n & ~highIndex;
+            }
+
+            if (highIndex_1) {
+                n = n | lowIndex;
+            } else {
+                n = n & ~lowIndex;
+            }
+        }
+        return n;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

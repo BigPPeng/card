@@ -27,12 +27,6 @@ public class TreeNode {
     }
 
 
-    public static void main(String[] args) {
-        TreeNode tree = getTree(1, 2, 3, 4, 5, 6, 7,null,null,10,11,12,13);
-        levelPrint(tree);
-    }
-
-
     public static void levelPrint(TreeNode node){
         if (node == null) {
             return;
@@ -91,5 +85,16 @@ public class TreeNode {
         return head;
     }
 
+    // region set/get
+
+    public int getVal() {
+        return val;
+    }
+
+    public void setVal(int val) {
+        this.val = val;
+    }
+
+    // endregion
 
 }

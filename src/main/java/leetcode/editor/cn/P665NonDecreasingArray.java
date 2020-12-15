@@ -41,7 +41,7 @@ public class P665NonDecreasingArray{
     //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public boolean checkPossibility(int[] nums) {
-        if (nums.length <= 3)
+        if (nums.length <= 2)
             return true;
 
         int count = 0;
