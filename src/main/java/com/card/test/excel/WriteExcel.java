@@ -1,10 +1,12 @@
 package com.card.test.excel;
 
+import com.google.common.collect.Lists;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.*;
@@ -22,69 +24,46 @@ public class WriteExcel {
     private static final String EXCEL_XLSX = "xlsx";
 
     public static void main(String[] args) {
-        List<ExcelModel> excelModels = ExcelReader.readExcel("/Users/cuihp/Desktop/all_city_info_2.xlsx");
-
-        String urlPro = "http://hotel-goods.dictionary.api.vip.elong.com/dict/dim/province/all";
-        String urlCity = "http://hotel-goods.dictionary.api.vip.elong.com/dict/dim/city/0800";
-
-        Map<String, String> dataMap=new HashMap<String, String>();
-        dataMap.put("BankName", "BankName");
-        dataMap.put("Addr", "Addr");
-        dataMap.put("Phone", "Phone");
-        List<Map> list=new ArrayList<Map>();
-        list.add(dataMap);
-        writeExcel(list, 3, "/Users/cuihp/Desktop/all_city_info_2.xlsx");
-
+        ArrayList<String> head = Lists.newArrayList("Name", "Age", "Phone");
+        List<List<String>> dataList = Lists.newArrayList();
+        for (int i = 0; i < 5; i++) {
+            ArrayList<String> strings = Lists.newArrayList("Name" + i, "Age" + i, "Phone" + i);
+            dataList.add(strings);
+        }
+        writeExcel(head,dataList,"/Users/cuihp/Desktop/1.xlsx");
     }
 
-    private static void writeExcel(List<Map> dataList, int cloumnCount, String finalXlsxPath) {
+
+    public static void writeExcel(List<String> head,List<List<String>> dataList, String finalXlsxPath){
+
         OutputStream out = null;
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        XSSFSheet xssfSheet = workbook.createSheet("sheet0");
         try {
             // 获取总列数
-            int columnNumCount = cloumnCount;
             // 读取Excel文档
-            File finalXlsxFile = new File(finalXlsxPath);
-            Workbook workBook = getWorkbok(finalXlsxFile);
-            // sheet 对应一个工作页
-            Sheet sheet = workBook.getSheetAt(0);
-            /**
-             * 删除原有数据，除了属性列
-             */
-            int rowNumber = sheet.getLastRowNum();    // 第一行从0开始算
-            System.out.println("原始数据总行数，除属性列：" + rowNumber);
-            for (int i = 1; i <= rowNumber; i++) {
-                Row row = sheet.getRow(i);
-                sheet.removeRow(row);
+            Row rowFirst = xssfSheet.createRow(0);
+            for (int i = 0; i < head.size(); i++) {
+                Cell first = rowFirst.createCell(i);
+                first.setCellValue(head.get(i));
             }
-            // 创建文件输出流，输出电子表格：这个必须有，否则你在sheet上做的任何操作都不会有效
-            out = new FileOutputStream(finalXlsxPath);
-            workBook.write(out);
             /**
              * 往Excel中写新数据
              */
             for (int j = 0; j < dataList.size(); j++) {
                 // 创建一行：从第二行开始，跳过属性列
-                Row row = sheet.createRow(j + 1);
+                Row row = xssfSheet.createRow(j + 1);
                 // 得到要插入的每一条记录
-                Map dataMap = dataList.get(j);
-                String name = dataMap.get("BankName").toString();
-                String address = dataMap.get("Addr").toString();
-                String phone = dataMap.get("Phone").toString();
-                for (int k = 0; k <= columnNumCount; k++) {
+                List<String> list = dataList.get(j);
+                for (int i = 0; i < list.size(); i++) {
                     // 在一行内循环
-                    Cell first = row.createCell(0);
-                    first.setCellValue(name);
-
-                    Cell second = row.createCell(1);
-                    second.setCellValue(address);
-
-                    Cell third = row.createCell(2);
-                    third.setCellValue(phone);
+                    Cell first = row.createCell(i);
+                    first.setCellValue(list.get(i));
                 }
             }
             // 创建文件输出流，准备输出电子表格：这个必须有，否则你在sheet上做的任何操作都不会有效
-            out = new FileOutputStream(finalXlsxPath);
-            workBook.write(out);
+            out = new FileOutputStream(new File(finalXlsxPath));
+            workbook.write(out);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -97,11 +76,11 @@ public class WriteExcel {
                 e.printStackTrace();
             }
         }
-        System.out.println("数据导出成功");
+        //System.out.println("数据导出成功");
     }
 
 
-    private static Workbook getWorkbok(File file) throws IOException{
+    private static Workbook getWorkbook(File file) throws IOException{
         Workbook wb = null;
         FileInputStream in = new FileInputStream(file);
         if(file.getName().endsWith(EXCEL_XLS)){     //Excel&nbsp;2003
