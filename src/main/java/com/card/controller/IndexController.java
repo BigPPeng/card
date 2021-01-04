@@ -68,6 +68,7 @@ public class IndexController {
     }
 
     @RequestMapping(value = "/check", method = RequestMethod.GET)
+    @ResponseBody
     public Response check(){
         logger.info("/check");
         Response<User> response = new Response<>();

@@ -59,60 +59,20 @@ public class P101SymmetricTree{
 class Solution {
 
     public boolean isSymmetric(TreeNode root) {
-        if (root == null) {
+        return isSymmetric(root,root);
+    }
+
+    public boolean isSymmetric(TreeNode first,TreeNode second) {
+        if (first == null && second == null) {
             return true;
         }
-        LinkedList<Node> linkedList = new LinkedList<>();
-        linkedList.addLast(new Node(root,false));
-        int level = 0;
-        while (!linkedList.isEmpty()) {
-            level++;
-            int levelSize = linkedList.size();
-            // 某一层非偶数个节点，直接返回false
-            if (level != 1 && (levelSize % 2 != 0)) {
+        if (first != null && second != null) {
+            if (first.val != second.val) {
                 return false;
             }
-            Node[] levelVal = new Node[levelSize];
-            for (int i = 0; i < levelSize; i++) {
-                Node treeNode = linkedList.removeFirst();
-                levelVal[i] = treeNode;
-                if (treeNode.node.left != null) {
-                    linkedList.addLast(new Node(treeNode.node.left,true));
-                }
-                if (treeNode.node.right != null) {
-                    linkedList.addLast(new Node(treeNode.node.right,false));
-                }
-            }
-            if (level != 1 && !isSymmetric(levelVal)){
-                return false;
-            }
+            return isSymmetric(first.left,second.right) && isSymmetric(first.right,second.left);
         }
-        return true;
-    }
-
-
-    class Node{
-        TreeNode node;
-        boolean left;
-
-        public Node(TreeNode node, boolean left) {
-            this.node = node;
-            this.left = left;
-        }
-    }
-
-    public boolean isSymmetric(Node[] levelVal) {
-        int end = levelVal.length - 1;
-        int start = 0;
-        while (start < end) {
-            if (levelVal[start].node.val != levelVal[end].node.val
-                    || levelVal[start].left == levelVal[end].left) {
-                return false;
-            }
-            start++;
-            end--;
-        }
-        return true;
+        return false;
     }
 }
 

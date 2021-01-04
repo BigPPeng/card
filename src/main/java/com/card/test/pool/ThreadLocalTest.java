@@ -17,10 +17,10 @@ public class ThreadLocalTest {
             threads[i] = new Thread(() -> {
                 local.set(10);
                 local.set(local.get() + 10);
-                System.out.println(Thread.currentThread().getName() + " : " +local.get());
+                System.out.println(Thread.currentThread().getName() + " local : " +local.get());
 
                 number += 10;
-                System.out.println(Thread.currentThread().getName() + " : " +number);
+                System.out.println(Thread.currentThread().getName() + " number : " +number);
 
             });
         }
@@ -28,6 +28,7 @@ public class ThreadLocalTest {
             threads[i].start();
         }
         System.out.println(Thread.currentThread().getName() + " : " +number);
+        System.out.println(Thread.currentThread().getName() + " local : " +ThreadLocalTest.local.get());
     }
 
 
