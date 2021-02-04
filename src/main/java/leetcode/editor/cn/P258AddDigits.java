@@ -18,17 +18,20 @@ package leetcode.editor.cn;
 public class P258AddDigits {
     public static void main(String[] args) {
         Solution solution = new P258AddDigits().new Solution();
-        System.out.println(solution.addDigits(38));
-        System.out.println(solution.addDigits(32));
-        System.out.println(solution.addDigits(18));
-        System.out.println(solution.addDigits(88));
+        System.out.println(solution.addDigits(19));
         // TO TEST
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public int addDigits(int num) {
-            while (num > 10) {
+            if (num == 0)
+                return 0;
+            return num % 9 == 0 ? 9 : num % 9;
+        }
+
+        private int one(int num) {
+            while (num >= 10) {
                 num = sumAll(num);
             }
             return num;
@@ -39,7 +42,8 @@ public class P258AddDigits {
             int sum = 0;
             for (int i = 0; i < s.length(); i++) {
                 char c = s.charAt(i);
-                sum += charToInt(c);
+                int i1 = charToInt(c);
+                sum += i1;
             }
             return sum;
         }
@@ -66,7 +70,7 @@ public class P258AddDigits {
                 case '8':
                     return 8;
                 case '9':
-                    return 8;
+                    return 9;
             }
             return 0;
         }

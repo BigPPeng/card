@@ -5,7 +5,7 @@
 // 我们用一个由 n 个节点组成的链表来表示输入/输出中的链表。每个节点用一个 [val, random_index] 表示： 
 //
 // 
-// val：一个表示 Node.val 的整数。 
+// val：一个表示 Node1.val 的整数。
 // random_index：随机指针指向的节点索引（范围从 0 到 n-1）；如果不指向任何节点，则为 null 。 
 // 
 //
@@ -47,8 +47,8 @@
 // 提示： 
 //
 // 
-// -10000 <= Node.val <= 10000 
-// Node.random 为空（null）或指向链表中的节点。 
+// -10000 <= Node1.val <= 10000
+// Node1.random 为空（null）或指向链表中的节点。
 // 节点数目不超过 1000 。 
 // 
 // Related Topics 哈希表 链表
@@ -62,11 +62,11 @@ import java.util.Map;
 //Java：复制带随机指针的链表
 public class P138CopyListWithRandomPointer{
     public static void main(String[] args) {
-        Node node1 = new Node(7);
-        Node node2 = new Node(13);
-        Node node3 = new Node(11);
-        Node node4 = new Node(10);
-        Node node5 = new Node(1);
+        Node1 node1 = new Node1(7);
+        Node1 node2 = new Node1(13);
+        Node1 node3 = new Node1(11);
+        Node1 node4 = new Node1(10);
+        Node1 node5 = new Node1(1);
 
         node2.random = node1;
         node3.random = node5;
@@ -79,23 +79,23 @@ public class P138CopyListWithRandomPointer{
         node4.next = node5;
 
 
-        Node.print(node1);
+        Node1.print(node1);
         Solution solution = new P138CopyListWithRandomPointer().new Solution();
-        Node node = solution.copyRandomList(node1);
-        Node.print(node);
+        Node1 node = solution.copyRandomList(node1);
+        Node1.print(node);
 
 
         // TO TEST
     }
     //leetcode submit region begin(Prohibit modification and deletion)
 /*
-// Definition for a Node.
-class Node {
+// Definition for a Node1.
+class Node1 {
     int val;
-    Node next;
-    Node random;
+    Node1 next;
+    Node1 random;
 
-    public Node(int val) {
+    public Node1(int val) {
         this.val = val;
         this.next = null;
         this.random = null;
@@ -104,20 +104,20 @@ class Node {
 */
 
 class Solution {
-    public Node copyRandomList(Node head) {
+    public Node1 copyRandomList(Node1 head) {
         if (head == null) {
             return null;
         }
-        Map<Node,Node> oldIndexNode = new HashMap<>(1000);
+        Map<Node1,Node1> oldIndexNode = new HashMap<>(1000);
 
 
-        Node temp = head.next;
-        Node newHead = new Node(head.val);
+        Node1 temp = head.next;
+        Node1 newHead = new Node1(head.val);
         oldIndexNode.put(head,newHead);
-        Node newTemp = newHead;
+        Node1 newTemp = newHead;
 
         while (temp != null) {
-            Node newNode = new Node(temp.val);
+            Node1 newNode = new Node1(temp.val);
             newTemp.next = newNode;
             newTemp = newTemp.next;
             temp = temp.next;

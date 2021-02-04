@@ -3,18 +3,18 @@ package leetcode.editor.cn;
 /**
  * Created by cuihp on 2020/7/1.
  */
-public class Node {
+public class Node1 {
     int val;
-    Node next;
-    Node random;
+    Node1 next;
+    Node1 random;
 
-    public Node(int val) {
+    public Node1(int val) {
         this.val = val;
         this.next = null;
         this.random = null;
     }
 
-    public static void print(Node node) {
+    public static void print(Node1 node) {
         while (node != null) {
             System.out.print(node.toString()+" ");
             node = node.next;
