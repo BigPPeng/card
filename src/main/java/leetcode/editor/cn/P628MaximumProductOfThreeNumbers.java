@@ -37,7 +37,8 @@
 
 package leetcode.editor.cn;
 
-import edu.emory.mathcs.backport.java.util.Arrays;
+
+import java.util.Arrays;
 
 //Java：三个数的最大乘积
 public class P628MaximumProductOfThreeNumbers{

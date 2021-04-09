@@ -25,7 +25,8 @@
 
 package leetcode.editor.cn;
 
-import edu.emory.mathcs.backport.java.util.Arrays;
+
+import java.util.Arrays;
 
 //Java：按奇偶排序数组
 public class P905SortArrayByParity {

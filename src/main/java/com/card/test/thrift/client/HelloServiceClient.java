@@ -1,13 +1,5 @@
 package com.card.test.thrift.client;
 
-import com.card.test.thrift.GsonUtil;
-import com.elong.hotel.goods.ds.thrift.ProductSearchService;
-import com.elong.hotel.goods.ds.thrift.SearchRequest;
-import com.elong.hotel.goods.ds.thrift.SearchResponse;
-import org.apache.thrift.protocol.TCompactProtocol;
-import org.apache.thrift.transport.TFramedTransport;
-import org.apache.thrift.transport.TSocket;
-
 public class HelloServiceClient {
 
 //    public static void main(String[] args) {
