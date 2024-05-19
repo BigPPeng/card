@@ -1,18 +1,10 @@
 import com.card.SpringBootApplicationStart;
-import com.card.common.DateToolUtil;
-import com.card.mapper.BlackListMapper;
-import com.card.test.mysql.GoodsBlackList;
-import org.assertj.core.util.Lists;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.Random;
 
 /**
@@ -24,48 +16,18 @@ import java.util.Random;
 public class Test {
     private static final Logger logger = LoggerFactory.getLogger(Test.class);
 
-    @Resource
-    private BlackListMapper blackListMapper;
+
 
     @org.junit.Test
     public void test() {
         logger.warn("test print----------------");
         int i = 10;
         while (i < 200) {
-            testInsert(5000);
+//            testInsert(5000);
             i ++;
         }
 
         logger.warn("test print----------------");
-    }
-
-    private void testInsert(int size) {
-        ArrayList<GoodsBlackList> objects = getGoodsBlackLists(size);
-        long t1 = System.currentTimeMillis();
-        int insert = blackListMapper.insert(objects);
-        long t2 = System.currentTimeMillis();
-        logger.warn("print insert count {}, time:{}", insert, t2-t1);
-    }
-
-    private ArrayList<GoodsBlackList> getGoodsBlackLists(int size) {
-        ArrayList<GoodsBlackList> objects = Lists.newArrayList();
-        for (int i = 0; i < size ; i++) {
-            GoodsBlackList goodsBlackList = new GoodsBlackList();
-            goodsBlackList.setMhotelId(getRaNum(8));
-            goodsBlackList.setCreater(getCreater());
-            Date createTime = new Date();
-            goodsBlackList.setCreateTime(createTime);
-            goodsBlackList.setCreateTimeString(DateToolUtil.format(DateToolUtil.YYYY_MM_DD_HH_MM_SS,createTime));
-            goodsBlackList.setDistType(getRaNum(1));
-            goodsBlackList.setGroupId(getRaNum(8));
-            goodsBlackList.setRatePlanId(getRaNum(8));
-            goodsBlackList.setShotelId(getRaNum(8));
-            goodsBlackList.setSroomId(getRaNum(4));
-            goodsBlackList.setStatus(getRaNum(1));
-            goodsBlackList.setSupplierId(getRaNum(8));
-            objects.add(goodsBlackList);
-        }
-        return objects;
     }
 
 
