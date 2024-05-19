@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Collections;
 import java.util.List;
@@ -24,6 +25,7 @@ public class UserController {
     private UserServiceV2 userServiceV2;
 
     @RequestMapping(value = "/userLogin")
+    @ResponseBody
     public Response<User> userLogin(String userName, String userPass) {
         if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(userPass)) {
             return new Response<>("用户名或者密码为空", 1);
@@ -36,12 +38,14 @@ public class UserController {
 
 
     @RequestMapping(value = "/deleteUser")
+    @ResponseBody
     public Response<Boolean> deleteUser(int id) {
         userServiceV2.deleteUser(id);
         return new Response<>("成功", 0, Boolean.TRUE);
     }
 
     @RequestMapping(value = "/adminAdd")
+    @ResponseBody
     public Response<String> addAdministrators(int adminUserid, String userName, String userPass, int userType) {
         UserTypeEnum byId = UserTypeEnum.getById(userType);
         String result = "用户类型不对";
@@ -61,6 +65,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/userRegister")
+    @ResponseBody
     public Response<String> userRegister(String userName, String userPhone, String userEmail,
                                          String userPass, int userType) {
         UserTypeEnum byId = UserTypeEnum.getById(userType);
@@ -72,6 +77,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/getAllUserByType")
+    @ResponseBody
     public Response<List<User>> getAllUserByType(List<Integer> userTypeEnums) {
         List<UserTypeEnum> typeEnums = Optional.ofNullable(userTypeEnums).orElse(Collections.emptyList())
                 .stream().map(UserTypeEnum::getById).collect(Collectors.toList());
@@ -80,6 +86,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/getUserById")
+    @ResponseBody
     public Response<User> getUserById(int id) {
         User userById = userServiceV2.getUserById(id);
         if (userById == null) {
