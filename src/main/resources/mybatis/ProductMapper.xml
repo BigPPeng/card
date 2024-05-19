@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzuli.agricultural.mapper.ProductMapper">
+    <insert id="insertProduct" parameterType="com.zzuli.agricultural.model.Product">
+        INSERT INTO Products (rent_sale_type, product_status, product_type, price, quantity, seller_user_id, start_time, end_time)
+        VALUES (#{rentSaleType}, #{productStatus}, #{productType}, #{price}, #{quantity}, #{sellerUserId}, #{startTime}, #{endTime})
+    </insert>
+
+    <delete id="deleteProduct" parameterType="int">
+        DELETE FROM Products WHERE id = #{id}
+    </delete>
+
+    <update id="updateProduct" parameterType="com.zzuli.agricultural.model.Product">
+        UPDATE Products
+        SET rent_sale_type = #{rentSaleType},
+            product_status = #{productStatus},
+            product_type = #{productType},
+            price = #{price},
+            quantity = #{quantity},
+            seller_user_id = #{sellerUserId},
+            start_time = #{startTime},
+            end_time = #{endTime}
+        WHERE id = #{id}
+    </update>
+
+    <select id="selectProduct" parameterType="int" resultType="com.zzuli.agricultural.model.Product">
+        SELECT * FROM Products WHERE id = #{id}
+    </select>
+
+    <select id="selectAllProducts" resultType="com.zzuli.agricultural.model.Product">
+        SELECT * FROM Products
+    </select>
+</mapper>

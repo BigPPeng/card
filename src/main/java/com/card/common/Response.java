@@ -12,6 +12,19 @@ public class Response<T> {
 
     private T data;
 
+    public Response() {
+    }
+
+    public Response(String message, int status) {
+        this.message = message;
+        this.status = status;
+    }
+
+    public Response(String message, int status, T data) {
+        this.message = message;
+        this.status = status;
+        this.data = data;
+    }
 
     public String getMessage() {
         return message;
