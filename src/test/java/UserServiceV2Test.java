@@ -40,7 +40,7 @@ public class UserServiceV2Test {
 
     @org.junit.Test
     public void test2() {
-        String s = userServiceV2.addStoreOwner(56,"addStoreOwner", "112", "12@qq.com", "sasa");
+        String s = userServiceV2.addStoreOwner(56,"addStoreOwner", "112", "12@qq.com", "sasa", UserTypeEnum.Store_owner);
         System.out.println(s);
     }
 
