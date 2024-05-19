@@ -24,6 +24,10 @@ public class DateToolUtil {
         return new SimpleDateFormat(formatPatten).format(date);
     }
 
+    public static int getNow() {
+        return (int) (System.currentTimeMillis() / 1000);// 当前秒数
+    }
+
 
     public static void main(String[] args){
         long now = System.currentTimeMillis();

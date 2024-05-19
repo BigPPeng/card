@@ -16,7 +16,7 @@ import javax.sql.DataSource;
  * Created by hongpeng.cui on 2019/1/4.
  */
 @Configuration
-@MapperScan("com.card.mapper")
+@MapperScan({"com.card.mapper","com.zzuli.agricultural.mapper"})
 public class MybatisConfig {
 
     @Resource
