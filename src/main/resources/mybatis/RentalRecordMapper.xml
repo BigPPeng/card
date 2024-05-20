@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzuli.agricultural.mapper.RentalRecordMapper">
+    <insert id="insertRentalRecord" parameterType="com.zzuli.agricultural.model.RentalRecord">
+        INSERT INTO RentalRecords (product_id, quantity, total_price, price, lessor_user_id, lessee_user_id, rental_start_time, rental_end_time, rental_status, is_valid)
+        VALUES (#{productId}, #{quantity}, #{totalPrice}, #{price}, #{lessorUserId}, #{lesseeUserId}, #{rentalStartTime}, #{rentalEndTime}, #{rentalStatus}, #{isValid})
+    </insert>
+
+    <delete id="deleteRentalRecord" parameterType="int">
+        DELETE FROM RentalRecords WHERE id = #{id}
+    </delete>
+
+    <update id="updateRentalRecord" parameterType="com.zzuli.agricultural.model.RentalRecord">
+        UPDATE RentalRecords
+        SET product_id = #{productId},
+            quantity = #{quantity},
+            total_price = #{totalPrice},
+            price = #{price},
+            lessor_user_id = #{lessorUserId},
+            lessee_user_id = #{lesseeUserId},
+            rental_start_time = #{rentalStartTime},
+            rental_end_time = #{rentalEndTime},
+            rental_status = #{rentalStatus},
+            is_valid = #{isValid}
+        WHERE id = #{id}
+    </update>
+
+    <select id="selectRentalRecord" parameterType="int" resultType="com.zzuli.agricultural.model.RentalRecord">
+        SELECT * FROM RentalRecords WHERE id = #{id}
+    </select>
+
+    <select id="selectAllRentalRecords" resultType="com.zzuli.agricultural.model.RentalRecord">
+        SELECT * FROM RentalRecords
+    </select>
+
+    <resultMap id="BaseResultMap" type="com.zzuli.agricultural.model.RentalRecord">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <id column="product_id" jdbcType="INTEGER" property="productId"/>
+        <result column="quantity" jdbcType="INTEGER" property="quantity"/>
+        <result column="total_price" jdbcType="DOUBLE" property="totalPrice"/>
+        <result column="price" jdbcType="DOUBLE" property="price"/>
+        <result column="lessor_user_id" jdbcType="INTEGER" property="lessorUserId"/>
+        <result column="lessee_user_id" jdbcType="INTEGER" property="lesseeUserId"/>
+        <result column="rental_start_time" jdbcType="INTEGER" property="rentalStartTime"/>
+        <result column="rental_end_time" jdbcType="INTEGER" property="rentalEndTime"/>
+        <result column="rental_status" jdbcType="INTEGER" property="rentalStatus"/>
+        <result column="is_valid" jdbcType="INTEGER" property="isValid"/>
+    </resultMap>
+
+    <sql id="BaseSelect">
+        id, product_id, quantity, total_price, price, lessor_user_id, lessee_user_id, rental_start_time, rental_end_time, rental_status, is_valid
+    </sql>
+
+    <!-- 根据参数查询用户信息 -->
+    <select id="selectByParams" resultMap="BaseResultMap" parameterType="java.util.Map">
+        SELECT
+        <include refid="BaseSelect"/>
+        FROM RentalRecords
+        <where>
+            <if test="lessorUserId != null">AND `lessor_user_id` = #{lessorUserId}</if>
+            <if test="lesseeUserId != null">AND `lessee_user_id` = #{lesseeUserId}</if>
+            <if test="productId != null">AND `product_id` = #{productId}</if>
+        </where>
+        <if test="start != null and pageSize != null">
+            LIMIT #{start}, #{pageSize}
+        </if>
+    </select>
+
+</mapper>

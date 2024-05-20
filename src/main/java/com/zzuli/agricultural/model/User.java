@@ -13,8 +13,8 @@ public class User {
     private String password;
     private String username;
     private Integer registerTime;
-    private Integer userStatus = 1;// 0有效，1无效
-    private Integer isActive = 1;// 0有效，1无效
+    private Integer userStatus = 1;// 1有效，0无效
+    private Integer isActive = 1;// 1有效，0无效
     private String phone;
     private String email;
 

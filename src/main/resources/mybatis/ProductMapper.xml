@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zzuli.agricultural.mapper.ProductMapper">
     <insert id="insertProduct" parameterType="com.zzuli.agricultural.model.Product">
-        INSERT INTO Products (rent_sale_type, product_status, product_type, price, quantity, seller_user_id, start_time, end_time)
-        VALUES (#{rentSaleType}, #{productStatus}, #{productType}, #{price}, #{quantity}, #{sellerUserId}, #{startTime}, #{endTime})
+        INSERT INTO Products (product_name, rent_sale_type, product_status, product_type, price, quantity, seller_user_id, start_time, end_time)
+        VALUES (#{productName} ,#{rentSaleType}, #{productStatus}, #{productType}, #{price}, #{quantity}, #{sellerUserId}, #{startTime}, #{endTime})
     </insert>
 
     <delete id="deleteProduct" parameterType="int">
@@ -14,6 +14,7 @@
         UPDATE Products
         SET rent_sale_type = #{rentSaleType},
             product_status = #{productStatus},
+            product_name = #{productName},
             product_type = #{productType},
             price = #{price},
             quantity = #{quantity},
@@ -28,6 +29,39 @@
     </select>
 
     <select id="selectAllProducts" resultType="com.zzuli.agricultural.model.Product">
-        SELECT * FROM Products
+        SELECT <include refid="BaseSelect"/> FROM Products
     </select>
+
+    <resultMap id="BaseResultMap" type="com.zzuli.agricultural.model.Product">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <id column="product_name" jdbcType="VARCHAR" property="productName"/>
+        <id column="rent_sale_type" jdbcType="INTEGER" property="rentSaleType"/>
+        <result column="product_status" jdbcType="INTEGER" property="productStatus"/>
+        <result column="product_type" jdbcType="INTEGER" property="productType"/>
+        <result column="price" jdbcType="DOUBLE" property="price"/>
+        <result column="quantity" jdbcType="INTEGER" property="quantity"/>
+        <result column="seller_user_id" jdbcType="INTEGER" property="sellerUserId"/>
+        <result column="start_time" jdbcType="INTEGER" property="startTime"/>
+        <result column="end_time" jdbcType="INTEGER" property="endTime"/>
+    </resultMap>
+
+    <sql id="BaseSelect">
+        id,product_name, rent_sale_type, product_status, product_type, price, quantity, seller_user_id, start_time, end_time
+    </sql>
+
+    <!-- 根据参数查询用户信息 -->
+    <select id="selectByParams" resultMap="BaseResultMap" parameterType="java.util.Map">
+        SELECT
+        <include refid="BaseSelect"/>
+        FROM Products
+        <where>
+            <if test="rentSaleType != null">AND `rent_sale_type` = #{rentSaleType}</if>
+            <if test="productType != null">AND `product_type` = #{productType}</if>
+            <if test="sellerUserId != null">AND `seller_user_id` = #{sellerUserId}</if>
+        </where>
+        <if test="start != null and pageSize != null">
+            LIMIT #{start}, #{pageSize}
+        </if>
+    </select>
+
 </mapper>

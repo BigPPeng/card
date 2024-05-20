@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class Product {
     private Integer id;
+    private String productName;
     private Integer rentSaleType;// 1租，2售卖
     private Integer productStatus;// 0 有效，1无效
     private Integer productType;

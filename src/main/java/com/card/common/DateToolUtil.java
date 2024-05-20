@@ -28,6 +28,10 @@ public class DateToolUtil {
         return (int) (System.currentTimeMillis() / 1000);// 当前秒数
     }
 
+    public static int getOneYearLater() {
+        return getNow() + 365 * 24 * 60 * 60;
+    }
+
 
     public static void main(String[] args){
         long now = System.currentTimeMillis();
