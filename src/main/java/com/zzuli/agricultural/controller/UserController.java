@@ -1,7 +1,7 @@
 package com.zzuli.agricultural.controller;
 
 import com.card.common.Response;
-import com.zzuli.agricultural.bean.UserInfo;
+import com.zzuli.agricultural.model.request.*;
 import com.zzuli.agricultural.model.User;
 import com.zzuli.agricultural.model.UserTypeEnum;
 import com.zzuli.agricultural.service.UserServiceV2;
@@ -27,7 +27,7 @@ public class UserController {
 
     @RequestMapping(value = "/userLogin", method = RequestMethod.POST)
     @ResponseBody
-    public Response<User> userLogin(@RequestBody UserInfo userInfo) {
+    public Response<User> userLogin(@RequestBody UserLoginReq userInfo) {
         String userName = userInfo.getUserName();
         String userPass = userInfo.getUserPass();
         if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(userPass)) {
@@ -42,24 +42,24 @@ public class UserController {
 
     @RequestMapping(value = "/deleteUser")
     @ResponseBody
-    public Response<Boolean> deleteUser(int id) {
-        userServiceV2.deleteUser(id);
+    public Response<Boolean> deleteUser(@RequestBody IdReq idReq) {
+        userServiceV2.deleteUser(idReq.getId());
         return new Response<>("成功", 0, Boolean.TRUE);
     }
 
     @RequestMapping(value = "/adminAdd")
     @ResponseBody
-    public Response<String> addAdministrators(int adminUserid, String userName, String userPass, int userType) {
-        UserTypeEnum byId = UserTypeEnum.getById(userType);
+    public Response<String> addAdministrators(@RequestBody AddAdministratorsReq req) {
+        UserTypeEnum byId = UserTypeEnum.getById(req.getUserType());
         String result = "用户类型不对";
         if (byId == UserTypeEnum.administrators) {
-            result = userServiceV2.addAdministrators(adminUserid, userName, "", "", userPass);
+            result = userServiceV2.addAdministrators(req.getAdminUserid(), req.getUserName(), "", "", req.getUserPass());
         }
         if (byId == UserTypeEnum.agricultural_technology_experts) {
-            result = userServiceV2.addAgriculturalTechnologyExperts(adminUserid, userName, "", "", userPass);
+            result = userServiceV2.addAgriculturalTechnologyExperts(req.getAdminUserid(), req.getUserName(), "", "", req.getUserPass());
         }
         if (byId == UserTypeEnum.Store_owner || byId == UserTypeEnum.buyer) {
-            result = userServiceV2.addStoreOwner(adminUserid, userName, "", "", userPass, byId);
+            result = userServiceV2.addStoreOwner(req.getAdminUserid(), req.getUserName(), "", "", req.getUserPass(), byId);
         }
         if (UserServiceV2.SUCCESS.equals(result)) {
             return new Response<>("成功", 0, result);
@@ -69,10 +69,10 @@ public class UserController {
 
     @RequestMapping(value = "/userRegister")
     @ResponseBody
-    public Response<String> userRegister(String userName, String userPhone, String userEmail,
-                                         String userPass, int userType) {
-        UserTypeEnum byId = UserTypeEnum.getById(userType);
-        String result = userServiceV2.userRegister(userName, userPhone, userEmail, userPass, byId);
+    public Response<String> userRegister(@RequestBody UserRegReq userType) {
+        UserTypeEnum byId = UserTypeEnum.getById(userType.getUserType());
+        String result = userServiceV2.userRegister(userType.getUserName(), userType.getUserPhone(),
+                userType.getUserEmail(), userType.getUserPass(), byId);
         if (UserServiceV2.SUCCESS.equals(result)) {
             return new Response<>("成功", 0, result);
         }
@@ -81,8 +81,8 @@ public class UserController {
 
     @RequestMapping(value = "/getAllUserByType")
     @ResponseBody
-    public Response<List<User>> getAllUserByType(List<Integer> userTypeEnums) {
-        List<UserTypeEnum> typeEnums = Optional.ofNullable(userTypeEnums).orElse(Collections.emptyList())
+    public Response<List<User>> getAllUserByType(@RequestBody ListReq<Integer> listReq) {
+        List<UserTypeEnum> typeEnums = Optional.ofNullable(listReq.getList()).orElse(Collections.emptyList())
                 .stream().map(UserTypeEnum::getById).collect(Collectors.toList());
         List<User> allUserByType = userServiceV2.getAllUserByType(typeEnums);
         return new Response<>("成功", 0, allUserByType);
@@ -90,8 +90,8 @@ public class UserController {
 
     @RequestMapping(value = "/getUserById")
     @ResponseBody
-    public Response<User> getUserById(int id) {
-        User userById = userServiceV2.getUserById(id);
+    public Response<User> getUserById(@RequestBody IdReq idReq) {
+        User userById = userServiceV2.getUserById(idReq.getId());
         if (userById == null) {
             return new Response<>("失败", 1, null);
         }
