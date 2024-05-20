@@ -1,6 +1,7 @@
 package com.zzuli.agricultural.controller;
 
 import com.card.common.Response;
+import com.zzuli.agricultural.bean.UserInfo;
 import com.zzuli.agricultural.model.User;
 import com.zzuli.agricultural.model.UserTypeEnum;
 import com.zzuli.agricultural.service.UserServiceV2;
@@ -8,8 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -19,14 +19,17 @@ import java.util.stream.Collectors;
 @Controller
 @Slf4j
 @RequestMapping(value = "/user")
+@CrossOrigin
 public class UserController {
 
     @Autowired
     private UserServiceV2 userServiceV2;
 
-    @RequestMapping(value = "/userLogin")
+    @RequestMapping(value = "/userLogin", method = RequestMethod.POST)
     @ResponseBody
-    public Response<User> userLogin(String userName, String userPass) {
+    public Response<User> userLogin(@RequestBody UserInfo userInfo) {
+        String userName = userInfo.getUserName();
+        String userPass = userInfo.getUserPass();
         if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(userPass)) {
             return new Response<>("用户名或者密码为空", 1);
         }
