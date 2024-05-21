@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzuli.agricultural.mapper.AgriculturalSaleInfoMapper">
+
+    <!-- ResultMap to map the SQL result to the AgriculturalSaleInfo model -->
+    <resultMap id="AgriculturalSaleInfoResultMap" type="com.zzuli.agricultural.model.AgriculturalSaleInfo">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="sale_time" property="saleTime" jdbcType="INTEGER"/>
+        <result column="seller_user_id" property="sellerUserId" jdbcType="INTEGER"/>
+        <result column="seller_user_name" property="sellerUserName" jdbcType="VARCHAR"/>
+        <result column="related_purchase_id" property="relatedPurchaseId" jdbcType="INTEGER"/>
+        <result column="sale_price" property="salePrice" jdbcType="DOUBLE"/>
+        <result column="sale_quantity" property="saleQuantity" jdbcType="INTEGER"/>
+        <result column="total_sale_price" property="totalSalePrice" jdbcType="DOUBLE"/>
+    </resultMap>
+
+    <!-- SQL statement to insert a new AgriculturalSaleInfo record -->
+    <insert id="insertAgriculturalSaleInfo" parameterType="com.zzuli.agricultural.model.AgriculturalSaleInfo">
+        INSERT INTO AgriculturalSaleInfo (sale_time, seller_user_id, seller_user_name, related_purchase_id,
+                                          sale_price, sale_quantity, total_sale_price)
+        VALUES (#{saleTime}, #{sellerUserId}, #{sellerUserName}, #{relatedPurchaseId}, #{salePrice}, #{saleQuantity}, #{totalSalePrice})
+    </insert>
+
+    <!-- SQL statement to update an existing AgriculturalSaleInfo record -->
+    <update id="updateAgriculturalSaleInfo" parameterType="com.zzuli.agricultural.model.AgriculturalSaleInfo">
+        UPDATE AgriculturalSaleInfo
+        SET sale_time = #{saleTime},
+            seller_user_id = #{sellerUserId},
+            seller_user_name = #{sellerUserName},
+            related_purchase_id = #{relatedPurchaseId},
+            sale_price = #{salePrice},
+            sale_quantity = #{saleQuantity},
+            total_sale_price = #{totalSalePrice}
+        WHERE id = #{id}
+    </update>
+
+    <!-- SQL statement to select a single AgriculturalSaleInfo record by id -->
+    <select id="selectAgriculturalSaleInfoById" parameterType="int" resultMap="AgriculturalSaleInfoResultMap">
+        SELECT * FROM AgriculturalSaleInfo WHERE id = #{id}
+    </select>
+
+    <!-- SQL statement to select all AgriculturalSaleInfo records -->
+    <select id="selectAllAgriculturalSaleInfos" resultMap="AgriculturalSaleInfoResultMap">
+        SELECT * FROM AgriculturalSaleInfo
+    </select>
+
+    <!-- SQL statement to delete an AgriculturalSaleInfo record by id -->
+    <delete id="deleteAgriculturalSaleInfo" parameterType="int">
+        DELETE FROM AgriculturalSaleInfo WHERE id = #{id}
+    </delete>
+
+    <sql id="BaseSelect">
+        id, sale_time, seller_user_id, seller_user_name, related_purchase_id,
+        sale_price, sale_quantity, total_sale_price
+    </sql>
+
+    <select id="selectByParams" resultMap="AgriculturalSaleInfoResultMap" parameterType="java.util.Map">
+        SELECT
+        <include refid="BaseSelect"/>
+        FROM AgriculturalSaleInfo
+        <where>
+            <if test="sellerUserId != null">AND `seller_user_id` = #{sellerUserId}</if>
+            <if test="sellerUserName != null">AND `seller_user_name` = #{sellerUserName}</if>
+            <if test="relatedPurchaseId != null">AND `related_purchase_id` = #{relatedPurchaseId}</if>
+        </where>
+        <if test="start != null and pageSize != null">
+            LIMIT #{start}, #{pageSize}
+        </if>
+    </select>
+
+</mapper>

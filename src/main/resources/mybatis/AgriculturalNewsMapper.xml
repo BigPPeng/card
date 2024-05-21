@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzuli.agricultural.mapper.AgriculturalNewsMapper">
+
+    <!-- ResultMap to map the SQL result to the AgriculturalNews model -->
+    <resultMap id="AgriculturalNewsResultMap" type="com.zzuli.agricultural.model.AgriculturalNews">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="publish_time" property="publishTime" jdbcType="INTEGER"/>
+        <result column="publish_keywords" property="publishKeywords" jdbcType="VARCHAR"/>
+        <result column="publisher" property="publisher" jdbcType="VARCHAR"/>
+        <result column="source" property="source" jdbcType="VARCHAR"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- SQL statement to insert a new AgriculturalNews record -->
+    <insert id="insertAgriculturalNews" parameterType="com.zzuli.agricultural.model.AgriculturalNews">
+        INSERT INTO AgriculturalNews (title, publish_time, publish_keywords, publisher, source, content)
+        VALUES (#{title}, #{publishTime}, #{publishKeywords}, #{publisher}, #{source}, #{content})
+    </insert>
+
+    <!-- SQL statement to update an existing AgriculturalNews record -->
+    <update id="updateAgriculturalNews" parameterType="com.zzuli.agricultural.model.AgriculturalNews">
+        UPDATE AgriculturalNews
+        SET title = #{title},
+            publish_time = #{publishTime},
+            publish_keywords = #{publishKeywords},
+            publisher = #{publisher},
+            source = #{source}
+            content = #{content}
+        WHERE id = #{id}
+    </update>
+
+    <!-- SQL statement to select a single AgriculturalNews record by id -->
+    <select id="selectAgriculturalNewsById" parameterType="int" resultMap="AgriculturalNewsResultMap">
+        SELECT * FROM AgriculturalNews WHERE id = #{id}
+    </select>
+
+    <!-- SQL statement to select all AgriculturalNews records -->
+    <select id="selectAllAgriculturalNews" resultMap="AgriculturalNewsResultMap">
+        SELECT * FROM AgriculturalNews
+    </select>
+
+    <!-- SQL statement to delete an AgriculturalNews record by id -->
+    <delete id="deleteAgriculturalNews" parameterType="int">
+        DELETE FROM AgriculturalNews WHERE id = #{id}
+    </delete>
+
+    <sql id="BaseSelect">
+        id, title, publish_time, publish_keywords, publisher, `source`, content
+    </sql>
+
+    <select id="selectByParams" resultMap="AgriculturalNewsResultMap" parameterType="java.util.Map">
+        SELECT
+        <include refid="BaseSelect"/>
+        FROM AgriculturalNews
+        <where>
+            <if test="publisher != null">AND `publisher` = #{publisher}</if>
+            <if test="publishKeywords != null">AND `publish_keywords` = #{publishKeywords}</if>
+        </where>
+        <if test="start != null and pageSize != null">
+            LIMIT #{start}, #{pageSize}
+        </if>
+    </select>
+
+</mapper>

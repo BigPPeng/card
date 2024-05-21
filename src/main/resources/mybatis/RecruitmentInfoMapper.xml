@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzuli.agricultural.mapper.RecruitmentInfoMapper">
+
+    <!-- ResultMap to map the SQL result to the RecruitmentInfo model -->
+    <resultMap id="RecruitmentInfoResultMap" type="com.zzuli.agricultural.model.RecruitmentInfo">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="recruitment_title" property="recruitmentTitle" jdbcType="VARCHAR"/>
+        <result column="recruitment_time" property="recruitmentTime" jdbcType="INTEGER"/>
+        <result column="recruitment_quantity" property="recruitmentQuantity" jdbcType="INTEGER"/>
+        <result column="job_description" property="jobDescription" jdbcType="VARCHAR"/>
+        <result column="recruiter_user_id" property="recruiterUserId" jdbcType="INTEGER"/>
+        <result column="publish_time" property="publishTime" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!-- SQL statement to insert a new RecruitmentInfo record -->
+    <insert id="insertRecruitmentInfo" parameterType="com.zzuli.agricultural.model.RecruitmentInfo">
+        INSERT INTO RecruitmentInfo (recruitment_title, recruitment_time, recruitment_quantity,
+                                     job_description, recruiter_user_id, publish_time)
+        VALUES (#{recruitmentTitle}, #{recruitmentTime}, #{recruitmentQuantity}, #{jobDescription}, #{recruiterUserId}, #{publishTime})
+    </insert>
+
+    <!-- SQL statement to update an existing RecruitmentInfo record -->
+    <update id="updateRecruitmentInfo" parameterType="com.zzuli.agricultural.model.RecruitmentInfo">
+        UPDATE RecruitmentInfo
+        SET recruitment_title = #{recruitmentTitle},
+            recruitment_time = #{recruitmentTime},
+            recruitment_quantity = #{recruitmentQuantity},
+            job_description = #{jobDescription},
+            recruiter_user_id = #{recruiterUserId},
+            publish_time = #{publishTime}
+        WHERE id = #{id}
+    </update>
+
+    <!-- SQL statement to select a single RecruitmentInfo record by id -->
+    <select id="selectRecruitmentInfoById" parameterType="int" resultMap="RecruitmentInfoResultMap">
+        SELECT * FROM RecruitmentInfo WHERE id = #{id}
+    </select>
+
+    <!-- SQL statement to select all RecruitmentInfo records -->
+    <select id="selectAllRecruitmentInfos" resultMap="RecruitmentInfoResultMap">
+        SELECT * FROM RecruitmentInfo
+    </select>
+
+    <!-- SQL statement to delete an RecruitmentInfo record by id -->
+    <delete id="deleteRecruitmentInfo" parameterType="int">
+        DELETE FROM RecruitmentInfo WHERE id = #{id}
+    </delete>
+
+    <sql id="BaseSelect">
+        id, recruitment_title, recruitment_time, recruitment_quantity, job_description, recruiter_user_id, publish_time
+    </sql>
+
+    <select id="selectByParams" resultMap="RecruitmentInfoResultMap" parameterType="java.util.Map">
+        SELECT
+        <include refid="BaseSelect"/>
+        FROM RecruitmentInfo
+        <where>
+            <if test="recruiterUserId != null">AND `recruiter_user_id` = #{recruiterUserId}</if>
+            <if test="recruitmentTitle != null">AND `recruitment_title` = #{recruitmentTitle}</if>
+        </where>
+        <if test="start != null and pageSize != null">
+            LIMIT #{start}, #{pageSize}
+        </if>
+    </select>
+
+</mapper>

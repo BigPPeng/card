@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzuli.agricultural.mapper.ExpertConsultationMapper">
+
+    <!-- ResultMap to map the SQL result to the ExpertConsultation model -->
+    <resultMap id="ExpertConsultationResultMap" type="com.zzuli.agricultural.model.ExpertConsultation">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="consultant_id" property="consultantId" jdbcType="INTEGER"/>
+        <result column="consultant_name" property="consultantName" jdbcType="VARCHAR"/>
+        <result column="consultation_time" property="consultationTime" jdbcType="INTEGER"/>
+        <result column="consultation_title" property="consultationTitle" jdbcType="VARCHAR"/>
+        <result column="consultation_content" property="consultationContent" jdbcType="VARCHAR"/>
+        <result column="consultation_keywords" property="consultationKeywords" jdbcType="VARCHAR"/>
+        <result column="responder_id" property="responderId" jdbcType="INTEGER"/>
+        <result column="responder_name" property="responderName" jdbcType="VARCHAR"/>
+        <result column="response_time" property="responseTime" jdbcType="INTEGER"/>
+        <result column="response_content" property="responseContent" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- SQL statement to insert a new ExpertConsultation record -->
+    <insert id="insertExpertConsultation" parameterType="com.zzuli.agricultural.model.ExpertConsultation">
+        INSERT INTO ExpertConsultations (consultant_id, consultant_name, consultation_time, consultation_title, consultation_content, consultation_keywords, responder_id, responder_name, response_time, response_content)
+        VALUES (#{consultantId}, #{consultantName}, #{consultationTime}, #{consultationTitle}, #{consultationContent}, #{consultationKeywords}, #{responderId}, #{responderName}, #{responseTime}, #{responseContent})
+    </insert>
+
+    <!-- SQL statement to update an existing ExpertConsultation record -->
+    <update id="updateExpertConsultation" parameterType="com.zzuli.agricultural.model.ExpertConsultation">
+        UPDATE ExpertConsultations
+        SET consultant_id = #{consultantId},
+            consultant_name = #{consultantName},
+            consultation_time = #{consultationTime},
+            consultation_title = #{consultationTitle},
+            consultation_content = #{consultationContent},
+            consultation_keywords = #{consultationKeywords},
+            responder_id = #{responderId},
+            responder_name = #{responderName},
+            response_time = #{responseTime},
+            response_content = #{responseContent}
+        WHERE id = #{id}
+    </update>
+
+    <!-- SQL statement to select a single ExpertConsultation record by id -->
+    <select id="selectExpertConsultationById" parameterType="int" resultMap="ExpertConsultationResultMap">
+        SELECT * FROM ExpertConsultations WHERE id = #{id}
+    </select>
+
+    <!-- SQL statement to select all ExpertConsultation records -->
+    <select id="selectAllExpertConsultations" resultMap="ExpertConsultationResultMap">
+        SELECT * FROM ExpertConsultations
+    </select>
+
+    <!-- SQL statement to delete an ExpertConsultation record by id -->
+    <delete id="deleteExpertConsultation" parameterType="int">
+        DELETE FROM ExpertConsultations WHERE id = #{id}
+    </delete>
+
+    <sql id="BaseSelect">
+        id, consultant_id, consultant_name, consultation_time, consultation_title, consultation_content,
+          consultation_keywords, responder_id, responder_name, response_time, response_content
+    </sql>
+
+    <select id="selectByParams" resultMap="ExpertConsultationResultMap" parameterType="java.util.Map">
+        SELECT
+        <include refid="BaseSelect"/>
+        FROM ExpertConsultations
+        <where>
+            <if test="consultantName != null">AND `consultant_name` = #{consultantName}</if>
+            <if test="consultationTitle != null">AND `consultation_title` = #{consultationTitle}</if>
+            <if test="responderName != null">AND `responder_name` = #{responderName}</if>
+            <if test="consultantId != null">AND `consultant_id` = #{consultantId}</if>
+            <if test="responderId != null">AND `responder_id` = #{responderId}</if>
+        </where>
+        <if test="start != null and pageSize != null">
+            LIMIT #{start}, #{pageSize}
+        </if>
+    </select>
+
+</mapper>

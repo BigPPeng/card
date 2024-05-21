@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzuli.agricultural.mapper.AgriculturalPurchaseInfoMapper">
+
+    <!-- ResultMap to map the SQL result to the AgriculturalPurchaseInfo model -->
+    <resultMap id="AgriculturalPurchaseInfoResultMap" type="com.zzuli.agricultural.model.AgriculturalPurchaseInfo">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="purchase_category" property="purchaseCategory" jdbcType="VARCHAR"/>
+        <result column="purchase_price" property="purchasePrice" jdbcType="DOUBLE"/>
+        <result column="purchase_quantity" property="purchaseQuantity" jdbcType="INTEGER"/>
+        <result column="purchaser_id" property="purchaserId" jdbcType="INTEGER"/>
+        <result column="purchaser_name" property="purchaserName" jdbcType="VARCHAR"/>
+        <result column="purchase_start_time" property="purchaseStartTime" jdbcType="INTEGER"/>
+        <result column="purchase_end_time" property="purchaseEndTime" jdbcType="INTEGER"/>
+        <result column="publish_time" property="publishTime" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!-- SQL statement to insert a new AgriculturalPurchaseInfo record -->
+    <insert id="insertAgriculturalPurchaseInfo" parameterType="com.zzuli.agricultural.model.AgriculturalPurchaseInfo">
+        INSERT INTO AgriculturalPurchaseInfo (purchase_category, purchase_price, purchase_quantity, purchaser_id,
+                                              purchaser_name, purchase_start_time, purchase_end_time, publish_time)
+        VALUES (#{purchaseCategory}, #{purchasePrice}, #{purchaseQuantity}, #{purchaserId}, #{purchaserName},
+                #{purchaseStartTime}, #{purchaseEndTime}, #{publishTime})
+    </insert>
+
+    <!-- SQL statement to update an existing AgriculturalPurchaseInfo record -->
+    <update id="updateAgriculturalPurchaseInfo" parameterType="com.zzuli.agricultural.model.AgriculturalPurchaseInfo">
+        UPDATE AgriculturalPurchaseInfo
+        SET purchase_category = #{purchaseCategory},
+            purchase_price = #{purchasePrice},
+            purchase_quantity = #{purchaseQuantity},
+            purchaser_id = #{purchaserId},
+            purchaser_name = #{purchaserName},
+            purchase_start_time = #{purchaseStartTime},
+            purchase_end_time = #{purchaseEndTime},
+            publish_time = #{publishTime}
+        WHERE id = #{id}
+    </update>
+
+    <!-- SQL statement to select a single AgriculturalPurchaseInfo record by id -->
+    <select id="selectAgriculturalPurchaseInfoById" parameterType="int" resultMap="AgriculturalPurchaseInfoResultMap">
+        SELECT * FROM AgriculturalPurchaseInfo WHERE id = #{id}
+    </select>
+
+    <!-- SQL statement to select all AgriculturalPurchaseInfo records -->
+    <select id="selectAllAgriculturalPurchaseInfos" resultMap="AgriculturalPurchaseInfoResultMap">
+        SELECT <include refid="BaseSelect"/> FROM AgriculturalPurchaseInfo
+    </select>
+
+    <!-- SQL statement to delete an AgriculturalPurchaseInfo record by id -->
+    <delete id="deleteAgriculturalPurchaseInfo" parameterType="int">
+        DELETE FROM AgriculturalPurchaseInfo WHERE id = #{id}
+    </delete>
+    <sql id="BaseSelect">
+        id, purchase_category, purchase_price, purchase_quantity, purchaser_id,
+        purchaser_name, purchase_start_time, purchase_end_time, publish_time
+    </sql>
+
+    <select id="selectByParams" resultMap="AgriculturalPurchaseInfoResultMap" parameterType="java.util.Map">
+        SELECT
+        <include refid="BaseSelect"/>
+        FROM AgriculturalPurchaseInfo
+        <where>
+            <if test="purchaserName != null">AND `purchaser_name` = #{purchaserName}</if>
+            <if test="purchaserId != null">AND `purchaser_id` = #{purchaserId}</if>
+            <if test="purchaseCategory != null">AND `purchase_category` = #{purchaseCategory}</if>
+        </where>
+        <if test="start != null and pageSize != null">
+            LIMIT #{start}, #{pageSize}
+        </if>
+    </select>
+
+</mapper>
