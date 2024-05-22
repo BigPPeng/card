@@ -1,0 +1,10 @@
+package com.zzuli.agricultural.model.request;
+
+import lombok.Data;
+
+@Data
+public class ResponseConsultationReq {
+    private int responderId;
+    private int consultationId;
+    private String content;
+}
