@@ -37,6 +37,13 @@ public class ProductService {
         return productMapper.selectByParams(map);
     }
 
+    public List<Product> getAllSaleProductPublishId(int publishId) {
+        Map<String, Object> map = Maps.newHashMap();
+        map.put("rentSaleType", RentSaleType.Sale.type);
+        map.put("sellerUserId", publishId);
+        return productMapper.selectByParams(map);
+    }
+
     public Product getProductById(int id) {
         return productMapper.selectProduct(id);
     }
@@ -108,6 +115,13 @@ public class ProductService {
         return productMapper.selectByParams(map);
     }
 
+    public List<Product> getAllRentProductByPublishId(int publishId) {
+        Map<String, Object> map = Maps.newHashMap();
+        map.put("rentSaleType", RentSaleType.Rent.type);
+        map.put("sellerUserId", publishId);
+        return productMapper.selectByParams(map);
+    }
+
     /**
      */
     public void addRentProduct(ProductTypeEnum productType,
@@ -155,7 +169,7 @@ public class ProductService {
         return new Response<>("租赁成功", 1);
     }
 
-    public Response<List<RentalRecord>> getRentalRecordByUserId(int lesseeUserId) {
+    public Response<List<RentalRecord>> getRentalRecordByUserId(int lesseeUserId) {  //租用列表
         Map<String, Object> param = Maps.newHashMap();
         param.put("lesseeUserId", lesseeUserId);
         List<RentalRecord> rentalRecords = rentalRecordMapper.selectByParams(param);

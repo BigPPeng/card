@@ -9,14 +9,15 @@
         <result column="publish_time" property="publishTime" jdbcType="INTEGER"/>
         <result column="publish_keywords" property="publishKeywords" jdbcType="VARCHAR"/>
         <result column="publisher" property="publisher" jdbcType="VARCHAR"/>
+        <result column="publisher_id" property="publisherId" jdbcType="INTEGER"/>
         <result column="source" property="source" jdbcType="VARCHAR"/>
         <result column="content" property="content" jdbcType="VARCHAR"/>
     </resultMap>
 
     <!-- SQL statement to insert a new AgriculturalNews record -->
     <insert id="insertAgriculturalNews" parameterType="com.zzuli.agricultural.model.AgriculturalNews">
-        INSERT INTO AgriculturalNews (title, publish_time, publish_keywords, publisher, source, content)
-        VALUES (#{title}, #{publishTime}, #{publishKeywords}, #{publisher}, #{source}, #{content})
+        INSERT INTO AgriculturalNews (title, publish_time, publish_keywords, publisher, source, content, publisher_id)
+        VALUES (#{title}, #{publishTime}, #{publishKeywords}, #{publisher}, #{source}, #{content}, #{publisherId})
     </insert>
 
     <!-- SQL statement to update an existing AgriculturalNews record -->
@@ -26,6 +27,7 @@
             publish_time = #{publishTime},
             publish_keywords = #{publishKeywords},
             publisher = #{publisher},
+            publisher_id = #{publisherId},
             source = #{source}
             content = #{content}
         WHERE id = #{id}
@@ -38,7 +40,7 @@
 
     <!-- SQL statement to select all AgriculturalNews records -->
     <select id="selectAllAgriculturalNews" resultMap="AgriculturalNewsResultMap">
-        SELECT * FROM AgriculturalNews
+        SELECT <include refid="BaseSelect"/> FROM AgriculturalNews
     </select>
 
     <!-- SQL statement to delete an AgriculturalNews record by id -->
@@ -47,7 +49,7 @@
     </delete>
 
     <sql id="BaseSelect">
-        id, title, publish_time, publish_keywords, publisher, `source`, content
+        id, title, publish_time, publish_keywords, publisher, publisher_id, `source`, content
     </sql>
 
     <select id="selectByParams" resultMap="AgriculturalNewsResultMap" parameterType="java.util.Map">
@@ -56,6 +58,7 @@
         FROM AgriculturalNews
         <where>
             <if test="publisher != null">AND `publisher` = #{publisher}</if>
+            <if test="publisherId != null">AND `publisher_id` = #{publisherId}</if>
             <if test="publishKeywords != null">AND `publish_keywords` = #{publishKeywords}</if>
         </where>
         <if test="start != null and pageSize != null">

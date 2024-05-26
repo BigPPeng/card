@@ -5,6 +5,7 @@ import com.zzuli.agricultural.model.ExpertConsultation;
 import com.zzuli.agricultural.model.request.IdReq;
 import com.zzuli.agricultural.model.request.PublishConsultationReq;
 import com.zzuli.agricultural.model.request.ResponseConsultationReq;
+import com.zzuli.agricultural.model.request.StringReq;
 import com.zzuli.agricultural.service.ExpertConsultationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,9 +45,15 @@ public class ExpertConsultationController {
         return consultationService.getConsultationById(idReq.getId());
     }
 
+    @RequestMapping(value = "/getConsultationByResponderName")
+    @ResponseBody
+    public Response<List<ExpertConsultation>> getConsultationById(@RequestBody  StringReq stringReq) {
+        return consultationService.getConsultationByResponder(stringReq.getId(), stringReq.getResponderName());
+    }
+
     @RequestMapping(value = "/responseConsultation")
     @ResponseBody
-    public Response<String> responseConsultation(ResponseConsultationReq req) {
+    public Response<String> responseConsultation(@RequestBody ResponseConsultationReq req) {
         return consultationService.responseConsultation(req.getResponderId(), req.getConsultationId(), req.getContent());
     }
 

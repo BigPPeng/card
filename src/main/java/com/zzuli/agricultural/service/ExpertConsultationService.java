@@ -74,6 +74,20 @@ public class ExpertConsultationService {
         return new Response<>("查询成功", 0, expertConsultation);
     }
 
+    /**
+     * 根据id查询咨询
+     */
+    public Response<List<ExpertConsultation>> getConsultationByResponder(int publisher, String responderName) {
+        Map<String, Object> param = Maps.newHashMap();
+        param.put("responderName", responderName);
+        param.put("consultantId", publisher);
+        List<ExpertConsultation> expertConsultations = expertConsultationMapper.selectByParams(param);
+        if (expertConsultations == null) {
+            return new Response<>("查询失败，无咨询", 0, expertConsultations);
+        }
+        return new Response<>("查询成功", 0, expertConsultations);
+    }
+
 
     /**
      * 查询所有咨询

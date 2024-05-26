@@ -4,9 +4,9 @@ import lombok.Data;
 
 @Data
 public class AddProductReq {
-    private final int productType;
-    private final double price;
-    private final int quantity;
-    private final int sellerUserId;
-    private final String name;
+    private int productType;
+    private double price;
+    private int quantity;
+    private int sellerUserId;
+    private String name;
 }

@@ -21,7 +21,7 @@ public class RecruitmentController {
     @Autowired
     private RecruitmentService recruitmentService;
 
-    @RequestMapping(value = "/publishRecruitmentInfo")
+    @RequestMapping(value = "/publishRecruitmentInfo") //发布雇用信息
     @ResponseBody
     public Response<String> publishRecruitmentInfo(@RequestBody PublishRecruitmentReq publishRecruitmentReq) {
         return recruitmentService.publishRecruitmentInfo(publishRecruitmentReq.getRecruitmentUserId(),
@@ -35,26 +35,26 @@ public class RecruitmentController {
         return recruitmentService.delRecruitmentInfo(idReq.getId());
     }
 
-    @RequestMapping(value = "/selectAllRecruitmentInfo")
+    @RequestMapping(value = "/selectAllRecruitmentInfo")  //选择所有雇用信息
     @ResponseBody
     public Response<List<RecruitmentInfo>> selectAllRecruitmentInfo() {
         return recruitmentService.selectAllRecruitmentInfo();
     }
 
-    @RequestMapping(value = "/selectRecruitmentInfoByRecruitmentUserId")
+    @RequestMapping(value = "/selectRecruitmentInfoByRecruitmentUserId") //选择“雇用信息”“按招聘用户ID”
     @ResponseBody
     public Response<List<RecruitmentInfo>> selectRecruitmentInfoByRecruitmentUserId(@RequestBody IdReq idReq) {
         return recruitmentService.selectRecruitmentInfoByRecruitmentUserId(idReq.getId());
     }
 
 
-    @RequestMapping(value = "/applyRecruitment")
+    @RequestMapping(value = "/applyRecruitment") //申请招聘
     @ResponseBody
     public Response<String> applyRecruitment(@RequestBody ApplyRecruitmentReq applyRecruitmentReq) {
         return recruitmentService.applyRecruitment(applyRecruitmentReq.getApplyUserId(), applyRecruitmentReq.getRecruitmentInfoId());
     }
 
-    @RequestMapping(value = "/selectAllRecruitmentApplicationRecord")
+    @RequestMapping(value = "/selectAllRecruitmentApplicationRecord")//招聘记录
     @ResponseBody
     public Response<List<RecruitmentApplicationRecord>> selectAllRecruitmentApplicationRecord() {
         return recruitmentService.selectAllRecruitmentApplicationRecord();
@@ -66,19 +66,19 @@ public class RecruitmentController {
         return recruitmentService.delRecruitmentApplicationRecord(idReq.getId());
     }
 
-    @RequestMapping(value = "/selectRecruitmentApplicationRecordByApplyUserId")
+    @RequestMapping(value = "/selectRecruitmentApplicationRecordByApplyUserId")  //按申请用户Id选择招聘申请记录
     @ResponseBody
     public Response<List<RecruitmentApplicationRecord>> selectRecruitmentApplicationRecordByApplyUserId(@RequestBody IdReq idReq) {
         return recruitmentService.selectRecruitmentApplicationRecordByApplyUserId(idReq.getId());
     }
 
-    @RequestMapping(value = "/selectRecruitmentApplicationRecordByRecruitmentInfoId")
+    @RequestMapping(value = "/selectRecruitmentApplicationRecordByRecruitmentInfoId")  //选择招聘申请记录按招聘信息ID
     @ResponseBody
     public Response<List<RecruitmentApplicationRecord>> selectRecruitmentApplicationRecordByRecruitmentInfoId(@RequestBody IdReq idReq) {
         return recruitmentService.selectRecruitmentApplicationRecordByRecruitmentInfoId(idReq.getId());
     }
 
-    @RequestMapping(value = "/selectRecruitmentApplicationRecordByRecruitmentUserId")
+    @RequestMapping(value = "/selectRecruitmentApplicationRecordByRecruitmentUserId") //按招聘用户Id选择招聘申请记录
     @ResponseBody
     public Response<List<RecruitmentApplicationRecord>> selectRecruitmentApplicationRecordByRecruitmentUserId(@RequestBody IdReq idReq) {
         return recruitmentService.selectRecruitmentApplicationRecordByRecruitmentUserId(idReq.getId());

@@ -65,39 +65,54 @@ public class ProductController {
     }
 
 
-    @RequestMapping(value = "/getAllRentProduct")
+    @RequestMapping(value = "/getAllRentProduct")   //获得所有租用信息
     @ResponseBody
     public Response<List<Product>> getAllRentProduct() {
         List<Product> allRentProduct = productService.getAllRentProduct();
         return new Response<>("成功", 0, allRentProduct);
     }
 
-    @RequestMapping(value = "/getAllSaleProduct")
+    @RequestMapping(value = "/getAllRentProductByPublishId")   //获取租用商品通过发布者ID  发布者的租用信息
+    @ResponseBody
+    public Response<List<Product>> getAllRentProductByPublishId(@RequestBody  IdReq idReq) {
+        List<Product> allSaleProduct = productService.getAllRentProductByPublishId(idReq.getId());
+        return new Response<>("成功", 0, allSaleProduct);
+    }
+
+
+    @RequestMapping(value = "/getAllSaleProduct")   //获得所有售卖商品
     @ResponseBody
     public Response<List<Product>> getAllSaleProduct() {
         List<Product> allSaleProduct = productService.getAllSaleProduct();
         return new Response<>("成功", 0, allSaleProduct);
     }
 
-    @RequestMapping(value = "/buyProduct")
+    @RequestMapping(value = "/getAllSaleProductByPublishId")  //获得所有商品通过发布者ID  租用列表
+    @ResponseBody
+    public Response<List<Product>> getAllSaleProduct(@RequestBody  IdReq idReq) {
+        List<Product> allSaleProduct = productService.getAllSaleProductPublishId(idReq.getId());
+        return new Response<>("成功", 0, allSaleProduct);
+    }
+
+    @RequestMapping(value = "/buyProduct")//卖商品
     @ResponseBody
     public Response<String> buyProduct(@RequestBody BuyOrRentProductReq buyProductReq) {
         return productService.buyProduct(buyProductReq.getUserId(), buyProductReq.getProductId(), buyProductReq.getProductCount());
     }
 
-    @RequestMapping(value = "/rentProduct")
+    @RequestMapping(value = "/rentProduct")//出租商品
     @ResponseBody
     public Response<String> rentProduct(@RequestBody BuyOrRentProductReq buyProductReq) {
         return productService.rentProduct(buyProductReq.getUserId(), buyProductReq.getProductId(), buyProductReq.getProductCount(), buyProductReq.getEndTime());
     }
 
-    @RequestMapping(value = "/getRentRecordByUserId")
+    @RequestMapping(value = "/getRentRecordByUserId")  //获得租用记录通过用户ID
     @ResponseBody
     public Response<List<RentalRecord>> getRentRecordByUserId(@RequestBody IdReq idReq) {
         return productService.getRentalRecordByUserId(idReq.getId());
     }
 
-    @RequestMapping(value = "/getBuyOrderByUserId")
+    @RequestMapping(value = "/getBuyOrderByUserId") //获得购买订单通过用户ID
     @ResponseBody
     public Response<List<ProductOrder>> rentProduct(@RequestBody IdReq idReq) {
         return productService.getProductOrderByUserId(idReq.getId());

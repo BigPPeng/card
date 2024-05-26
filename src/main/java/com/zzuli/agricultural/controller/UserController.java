@@ -1,5 +1,6 @@
 package com.zzuli.agricultural.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.card.common.Response;
 import com.zzuli.agricultural.model.request.*;
 import com.zzuli.agricultural.model.User;
@@ -82,9 +83,11 @@ public class UserController {
     @RequestMapping(value = "/getAllUserByType")
     @ResponseBody
     public Response<List<User>> getAllUserByType(@RequestBody ListReq<Integer> listReq) {
+        log.info("getAllUserByType{}", JSON.toJSONString(listReq));
         List<UserTypeEnum> typeEnums = Optional.ofNullable(listReq.getList()).orElse(Collections.emptyList())
                 .stream().map(UserTypeEnum::getById).collect(Collectors.toList());
         List<User> allUserByType = userServiceV2.getAllUserByType(typeEnums);
+        log.info("getAllUserByType:"+ JSON.toJSONString(allUserByType));
         return new Response<>("成功", 0, allUserByType);
     }
 
