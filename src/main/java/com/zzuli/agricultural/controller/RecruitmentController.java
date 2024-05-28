@@ -78,7 +78,9 @@ public class RecruitmentController {
         return recruitmentService.selectRecruitmentApplicationRecordByRecruitmentInfoId(idReq.getId());
     }
 
-    @RequestMapping(value = "/selectRecruitmentApplicationRecordByRecruitmentUserId") //按招聘用户Id选择招聘申请记录
+    // 按照发布雇佣信息的发布人查询所有对应的报名信息
+    // 按招聘用户Id选择招聘申请记录
+    @RequestMapping(value = "/selectRecruitmentApplicationRecordByRecruitmentUserId")
     @ResponseBody
     public Response<List<RecruitmentApplicationRecord>> selectRecruitmentApplicationRecordByRecruitmentUserId(@RequestBody IdReq idReq) {
         return recruitmentService.selectRecruitmentApplicationRecordByRecruitmentUserId(idReq.getId());
