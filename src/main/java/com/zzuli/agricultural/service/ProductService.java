@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -109,6 +111,10 @@ public class ProductService {
         List<ProductOrder> productOrders = productOrderMapper.selectByParams(param);
         if (CollectionUtils.isEmpty(productOrders)) {
             return new Response<>("无记录", 1, productOrders);
+        }
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        for (ProductOrder productOrder : productOrders) {
+            productOrder.setPurchaseTimeStr(formatter.format(new Date(productOrder.getPurchaseTime() * 1000)));
         }
         return new Response<>("成功", 0, productOrders);
     }

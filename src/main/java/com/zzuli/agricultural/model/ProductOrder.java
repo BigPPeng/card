@@ -18,5 +18,6 @@ public class ProductOrder {
     // 1已支付
     private Integer paymentStatus;
     private Integer isValid;
+    private String purchaseTimeStr;
 
 }

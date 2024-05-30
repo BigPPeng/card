@@ -120,7 +120,7 @@ public class ProductController {
 
     @RequestMapping(value = "/getBuyOrderByUserId") //获得购买订单通过用户ID
     @ResponseBody
-    public Response<List<ProductOrder>> rentProduct(@RequestBody IdReq idReq) {
+    public Response<List<ProductOrder>> getBuyOrderByUserId(@RequestBody IdReq idReq) {
         return productService.getProductOrderByUserId(idReq.getId());
     }
 
