@@ -5,9 +5,7 @@ import com.zzuli.agricultural.model.Product;
 import com.zzuli.agricultural.model.ProductOrder;
 import com.zzuli.agricultural.model.ProductTypeEnum;
 import com.zzuli.agricultural.model.RentalRecord;
-import com.zzuli.agricultural.model.request.AddProductReq;
-import com.zzuli.agricultural.model.request.BuyOrRentProductReq;
-import com.zzuli.agricultural.model.request.IdReq;
+import com.zzuli.agricultural.model.request.*;
 import com.zzuli.agricultural.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,6 +84,14 @@ public class ProductController {
         List<Product> allSaleProduct = productService.getAllSaleProduct();
         return new Response<>("成功", 0, allSaleProduct);
     }
+
+    @RequestMapping(value = "/getAllSaleProductByName")   //获得所有售卖商品
+    @ResponseBody
+    public Response<List<Product>> getAllSaleProduct(@RequestBody NameReq name) {
+        List<Product> allSaleProduct = productService.getAllSaleProductByName(name.getName());
+        return new Response<>("成功", 0, allSaleProduct);
+    }
+
 
     @RequestMapping(value = "/getAllSaleProductByPublishId")  //获得所有商品通过发布者ID  租用列表
     @ResponseBody

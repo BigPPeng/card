@@ -56,6 +56,7 @@
         FROM Products
         <where>
             <if test="rentSaleType != null">AND `rent_sale_type` = #{rentSaleType}</if>
+            <if test="productName != null">AND `product_name` = #{productName}</if>
             <if test="productType != null">AND `product_type` = #{productType}</if>
             <if test="sellerUserId != null">AND `seller_user_id` = #{sellerUserId}</if>
         </where>

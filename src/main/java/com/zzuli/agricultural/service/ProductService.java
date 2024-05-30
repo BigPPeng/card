@@ -44,6 +44,13 @@ public class ProductService {
         return productMapper.selectByParams(map);
     }
 
+    public List<Product> getAllSaleProductByName(String name) {
+        Map<String, Object> map = Maps.newHashMap();
+        map.put("rentSaleType", RentSaleType.Sale.type);
+        map.put("productName", name);
+        return productMapper.selectByParams(map);
+    }
+
     public Product getProductById(int id) {
         return productMapper.selectProduct(id);
     }
