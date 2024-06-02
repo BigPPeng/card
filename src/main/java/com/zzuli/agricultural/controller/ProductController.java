@@ -36,6 +36,15 @@ public class ProductController {
         return new Response<>("成功", 0);
     }
 
+    @RequestMapping(value = "/updateSaleProduct", method = RequestMethod.POST)
+    @ResponseBody
+    public Response<String> updateSaleProduct(@RequestBody UpdateProductReq update) {
+        if (update.getProductId() < 0) {
+            new Response<>("参数错误，添加失败", 1);
+        }
+        return productService.updateProduct(update.getProductId(), update.getPrice(), update.getQuantity(), update.getName());
+    }
+
     @RequestMapping(value = "/addRentProduct", method = RequestMethod.POST)
     @ResponseBody
     public Response<String> addRentProduct(@RequestBody AddProductReq addProduct) {

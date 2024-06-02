@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -73,6 +74,24 @@ public class ProductService {
                 .endTime(DateToolUtil.getOneYearLater()).build();
 
         productMapper.insertProduct(build);
+    }
+
+    public Response<String> updateProduct( int productId, double price, int quantity, String name) {
+        Product productById = getProductById(productId);
+        if (productById == null) {
+            return new Response<>("商品不存在，不能更新", 0);
+        }
+        if (!StringUtils.isEmpty(name)) {
+            productById.setProductName(name);
+        }
+        if (price > 0) {
+            productById.setPrice(price);
+        }
+        if (quantity > 0) {
+            productById.setQuantity(quantity);
+        }
+        productMapper.updateProduct(productById);
+        return new Response<>("更新成功", 0);
     }
 
 
