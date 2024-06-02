@@ -125,4 +125,18 @@ public class ProductController {
     }
 
 
+    @RequestMapping(value = "/getAllRentRecordByPublisherId")  //获得租用记录通过用户ID
+    @ResponseBody
+    public Response<List<RentalRecord>> getAllRentRecordByPublisherId(@RequestBody IdReq idReq) {
+        return productService.getAllRentRecordByPublisherId(idReq.getId());
+    }
+
+    @RequestMapping(value = "/getBuyOrderByByPublisherId") //获得购买订单通过用户ID
+    @ResponseBody
+    public Response<List<ProductOrder>> getBuyOrderByByPublisherId(@RequestBody IdReq idReq) {
+        return productService.getBuyOrderByByPublisherId(idReq.getId());
+    }
+
+
+
 }

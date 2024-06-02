@@ -193,4 +193,27 @@ public class ProductService {
     }
 
 
+    public Response<List<RentalRecord>> getAllRentRecordByPublisherId(int id) {
+        Map<String, Object> param = Maps.newHashMap();
+        param.put("lessorUserId", id);
+        List<RentalRecord> rentalRecords = rentalRecordMapper.selectByParams(param);
+        if (CollectionUtils.isEmpty(rentalRecords)) {
+            return new Response<>("你的商品没有被租赁记录", 0);
+        }
+        return new Response<>("查询成功", 0, rentalRecords);
+    }
+
+    public Response<List<ProductOrder>> getBuyOrderByByPublisherId(int id) {
+        Map<String, Object> param = Maps.newHashMap();
+        param.put("sellerUserId", id);
+        List<ProductOrder> productOrders = productOrderMapper.selectByParams(param);
+        if (CollectionUtils.isEmpty(productOrders)) {
+            return new Response<>("无记录", 1, productOrders);
+        }
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        for (ProductOrder productOrder : productOrders) {
+            productOrder.setPurchaseTimeStr(formatter.format(new Date(productOrder.getPurchaseTime() * 1000)));
+        }
+        return new Response<>("成功", 0, productOrders);
+    }
 }
