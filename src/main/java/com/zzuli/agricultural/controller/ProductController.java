@@ -6,6 +6,7 @@ import com.zzuli.agricultural.model.ProductOrder;
 import com.zzuli.agricultural.model.ProductTypeEnum;
 import com.zzuli.agricultural.model.RentalRecord;
 import com.zzuli.agricultural.model.request.*;
+import com.zzuli.agricultural.model.response.ProductOrderVo;
 import com.zzuli.agricultural.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -142,7 +143,7 @@ public class ProductController {
 
     @RequestMapping(value = "/getBuyOrderByByPublisherId") //根据商家ID获取其所有商品售出记录
     @ResponseBody
-    public Response<List<ProductOrder>> getBuyOrderByByPublisherId(@RequestBody IdReq idReq) {
+    public Response<List<ProductOrderVo>> getBuyOrderByByPublisherId(@RequestBody IdReq idReq) {
         return productService.getBuyOrderByByPublisherId(idReq.getId());
     }
 

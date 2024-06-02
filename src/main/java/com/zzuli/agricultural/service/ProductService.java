@@ -8,6 +8,7 @@ import com.zzuli.agricultural.mapper.ProductOrderMapper;
 import com.zzuli.agricultural.mapper.RentalRecordMapper;
 import com.zzuli.agricultural.mapper.UserMapper2;
 import com.zzuli.agricultural.model.*;
+import com.zzuli.agricultural.model.response.ProductOrderVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -222,17 +224,23 @@ public class ProductService {
         return new Response<>("查询成功", 0, rentalRecords);
     }
 
-    public Response<List<ProductOrder>> getBuyOrderByByPublisherId(int id) {
+    public Response<List<ProductOrderVo>> getBuyOrderByByPublisherId(int id) {
         Map<String, Object> param = Maps.newHashMap();
         param.put("sellerUserId", id);
         List<ProductOrder> productOrders = productOrderMapper.selectByParams(param);
         if (CollectionUtils.isEmpty(productOrders)) {
-            return new Response<>("无记录", 1, productOrders);
+            return new Response<>("无记录", 1);
         }
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        for (ProductOrder productOrder : productOrders) {
-            productOrder.setPurchaseTimeStr(formatter.format(new Date(productOrder.getPurchaseTime() * 1000)));
+        List<ProductOrderVo> collect = productOrders.stream().map(ProductOrderVo::new).collect(Collectors.toList());
+        // 更新数据
+        for (ProductOrderVo productOrderVo : collect) {
+            Product productById = getProductById(productOrderVo.getProductId());
+            productOrderVo.setProductName(productById == null ? "" : productById.getProductName());
+            User seller = userMapper2.selectUser(productOrderVo.getSellerUserId());
+            productOrderVo.setSellerUserName(seller == null ? "" : seller.getUsername());
+            User buyer = userMapper2.selectUser(productOrderVo.getBuyerUserId());
+            productOrderVo.setSellerUserName(buyer == null ? "" : buyer.getUsername());
         }
-        return new Response<>("成功", 0, productOrders);
+        return new Response<>("成功", 0, collect);
     }
 }
