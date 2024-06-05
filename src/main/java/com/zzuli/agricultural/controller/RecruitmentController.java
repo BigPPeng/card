@@ -29,6 +29,15 @@ public class RecruitmentController {
                 publishRecruitmentReq.getRecruitmentTime(), publishRecruitmentReq.getRecruitmentQuantity());
     }
 
+    @RequestMapping(value = "/updateRecruitmentInfo") //发布雇用信息
+    @ResponseBody
+    public Response<String> updateRecruitmentInfo(@RequestBody PublishRecruitmentReq publishRecruitmentReq) {
+        return recruitmentService.updateRecruitmentInfo(publishRecruitmentReq.getRecruitmentUserId(),
+                publishRecruitmentReq.getTitle(), publishRecruitmentReq.getJobDescription(),
+                publishRecruitmentReq.getRecruitmentTime(), publishRecruitmentReq.getRecruitmentQuantity());
+    }
+
+
     @RequestMapping(value = "/delRecruitmentInfo")
     @ResponseBody
     public Response<String> delRecruitmentInfo(@RequestBody IdReq idReq) {

@@ -4,6 +4,7 @@ import com.card.common.DateToolUtil;
 import com.card.common.Response;
 import com.google.common.collect.Lists;
 import com.zzuli.agricultural.model.*;
+import com.zzuli.agricultural.model.response.ProductOrderVo;
 import com.zzuli.agricultural.service.ProductService;
 import com.zzuli.agricultural.service.UserServiceV2;
 import org.junit.Assert;
@@ -68,7 +69,7 @@ public class ProductServiceV2Test {
         Response<String> stringResponse2 = productService.buyProduct(41, 9, 10);
         System.out.println("-----"+JSON.toJSONString(stringResponse));
 
-        Response<List<ProductOrder>> productOrderByUserId = productService.getProductOrderByUserId(41);
+        Response<List<ProductOrderVo>> productOrderByUserId = productService.getProductOrderByUserId(41);
         System.out.println("-----"+JSON.toJSONString(productOrderByUserId));
     }
 

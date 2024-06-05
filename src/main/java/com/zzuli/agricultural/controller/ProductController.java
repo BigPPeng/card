@@ -58,6 +58,17 @@ public class ProductController {
         return new Response<>("成功", 0);
     }
 
+
+    @RequestMapping(value = "/updateRentProduct", method = RequestMethod.POST)
+    @ResponseBody
+    public Response<String> updateRentProduct(@RequestBody UpdateProductReq update) {
+        if (update.getProductId() < 0) {
+            new Response<>("参数错误，添加失败", 1);
+        }
+        return productService.updateRentProduct(update.getProductId(), update.getPrice(), update.getQuantity(), update.getName());
+    }
+
+
     @RequestMapping(value = "/deleteRentProduct")
     @ResponseBody
     public Response<Boolean> deleteRentProduct(@RequestBody IdReq idReq) {
@@ -69,6 +80,20 @@ public class ProductController {
     @ResponseBody
     public Response<Boolean> deleteSaleProduct(@RequestBody IdReq idReq) {
         productService.deleteProductById(idReq.getId());
+        return new Response<>("成功", 0, Boolean.TRUE);
+    }
+
+    @RequestMapping(value = "/deleteSaleProductOrder")
+    @ResponseBody
+    public Response<Boolean> deleteSaleProductOrder(@RequestBody IdReq idReq) {
+        productService.deleteSaleProductOrderById(idReq.getId());
+        return new Response<>("成功", 0, Boolean.TRUE);
+    }
+
+    @RequestMapping(value = "/deleteRentProductOrder")
+    @ResponseBody
+    public Response<Boolean> deleteRentProductOrder(@RequestBody IdReq idReq) {
+        productService.deleteRentProductOrderById(idReq.getId());
         return new Response<>("成功", 0, Boolean.TRUE);
     }
 
@@ -130,7 +155,7 @@ public class ProductController {
 
     @RequestMapping(value = "/getBuyOrderByUserId") //获得购买订单通过用户ID
     @ResponseBody
-    public Response<List<ProductOrder>> getBuyOrderByUserId(@RequestBody IdReq idReq) {
+    public Response<List<ProductOrderVo>> getBuyOrderByUserId(@RequestBody IdReq idReq) {
         return productService.getProductOrderByUserId(idReq.getId());
     }
 

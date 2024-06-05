@@ -26,6 +26,23 @@ public class ProductOrderVo {
     private Integer isValid;
     private String purchaseTimeStr;
 
+
+    public ProductOrderVo(Integer id, Integer productId, String productName, Integer quantity, Double totalPrice, Double price, Integer sellerUserId, String sellerUserName, Integer buyerUserId, String buyerUserName, Integer paymentStatus, Integer isValid, String purchaseTimeStr) {
+        this.id = id;
+        this.productId = productId;
+        this.productName = productName;
+        this.quantity = quantity;
+        this.totalPrice = totalPrice;
+        this.price = price;
+        this.sellerUserId = sellerUserId;
+        this.sellerUserName = sellerUserName;
+        this.buyerUserId = buyerUserId;
+        this.buyerUserName = buyerUserName;
+        this.paymentStatus = paymentStatus;
+        this.isValid = isValid;
+        this.purchaseTimeStr = purchaseTimeStr;
+    }
+
     public ProductOrderVo(ProductOrder productOrder) {
         this.id = productOrder.getId();
         this.productId = productOrder.getProductId();

@@ -72,8 +72,35 @@ public class RecruitmentService {
         }
         return new Response<>("招工信息发布失败，请重试", 1);
     }
+
+    public Response<String> updateRecruitmentInfo(int id, String title, String jobDescription, int recruitmentTime, int recruitmentQuantity) {
+        RecruitmentInfo recruitmentInfo = recruitmentInfoMapper.selectRecruitmentInfoById(id);
+        if (recruitmentInfo == null) {
+            return new Response<>("更新的信息不存在", 1);
+        }
+        if (!StringUtils.isEmpty(title)) {
+            recruitmentInfo.setRecruitmentTitle(title);
+        }
+        if (!StringUtils.isEmpty(jobDescription)) {
+            recruitmentInfo.setJobDescription(jobDescription);
+        }
+        if (recruitmentTime > 0) {
+            recruitmentInfo.setRecruitmentTime(recruitmentTime);
+        }
+        if (recruitmentQuantity > 0) {
+            recruitmentInfo.setRecruitmentQuantity(recruitmentQuantity);
+        }
+        int i = recruitmentInfoMapper.updateRecruitmentInfo(recruitmentInfo);
+        if (i == 1) {
+            return new Response<>("更新成功", 0);
+        }
+        return new Response<>("更新失败", 1);
+    }
+
+
     /**
      * 删除招工信息
+     *
      * @param recruitmentInfoId
      * @return
      */
@@ -87,6 +114,7 @@ public class RecruitmentService {
 
     /**
      * 查询所有的招工信息
+     *
      * @return
      */
     public Response<List<RecruitmentInfo>> selectAllRecruitmentInfo() {
@@ -96,6 +124,7 @@ public class RecruitmentService {
 
     /**
      * 根据发布人id查询其发布的所有招工信息
+     *
      * @param recruitmentUserId
      * @return
      */

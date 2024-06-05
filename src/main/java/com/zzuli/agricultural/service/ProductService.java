@@ -64,6 +64,14 @@ public class ProductService {
         productMapper.deleteProduct(id);
     }
 
+    public void deleteSaleProductOrderById(int id) {
+        productOrderMapper.deleteProductOrder(id);
+    }
+
+    public void deleteRentProductOrderById(int id) {
+        rentalRecordMapper.deleteRentalRecord(id);
+    }
+
     /**
      */
     public void addProduct(ProductTypeEnum productType, double price, int quantity, int sellerUserId, String name) {
@@ -126,18 +134,18 @@ public class ProductService {
         return new Response<>("购买成功", 1);
     }
 
-    public Response<List<ProductOrder>> getProductOrderByUserId(int buyerUserId) {
+    public Response<List<ProductOrderVo>> getProductOrderByUserId(int buyerUserId) {
         Map<String, Object> param = Maps.newHashMap();
         param.put("buyerUserId", buyerUserId);
         List<ProductOrder> productOrders = productOrderMapper.selectByParams(param);
+
         if (CollectionUtils.isEmpty(productOrders)) {
-            return new Response<>("无记录", 1, productOrders);
+            return new Response<>("无记录", 1);
         }
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        for (ProductOrder productOrder : productOrders) {
-            productOrder.setPurchaseTimeStr(formatter.format(new Date(productOrder.getPurchaseTime() * 1000)));
-        }
-        return new Response<>("成功", 0, productOrders);
+        List<ProductOrderVo> productOrderVos = productOrders.stream().map(ProductOrderVo::new).collect(Collectors.toList());
+        // 更新数据
+        fillName(productOrderVos);
+        return new Response<>("成功", 0, productOrderVos);
     }
 
     /**
@@ -169,6 +177,25 @@ public class ProductService {
                 .endTime(DateToolUtil.getOneYearLater()).build();
 
         productMapper.insertProduct(build);
+    }
+
+
+    public Response<String> updateRentProduct( int productId, double price, int quantity, String name) {
+        Product productById = getProductById(productId);
+        if (productById == null) {
+            return new Response<>("商品不存在，不能更新", 0);
+        }
+        if (!StringUtils.isEmpty(name)) {
+            productById.setProductName(name);
+        }
+        if (price > 0) {
+            productById.setPrice(price);
+        }
+        if (quantity > 0) {
+            productById.setQuantity(quantity);
+        }
+        productMapper.updateProduct(productById);
+        return new Response<>("更新成功", 0);
     }
 
 
@@ -232,6 +259,11 @@ public class ProductService {
             return new Response<>("无记录", 1);
         }
         List<ProductOrderVo> collect = productOrders.stream().map(ProductOrderVo::new).collect(Collectors.toList());
+        fillName(collect);
+        return new Response<>("成功", 0, collect);
+    }
+
+    private void fillName(List<ProductOrderVo> collect) {
         // 更新数据
         for (ProductOrderVo productOrderVo : collect) {
             Product productById = getProductById(productOrderVo.getProductId());
@@ -239,8 +271,7 @@ public class ProductService {
             User seller = userMapper2.selectUser(productOrderVo.getSellerUserId());
             productOrderVo.setSellerUserName(seller == null ? "" : seller.getUsername());
             User buyer = userMapper2.selectUser(productOrderVo.getBuyerUserId());
-            productOrderVo.setSellerUserName(buyer == null ? "" : buyer.getUsername());
+            productOrderVo.setBuyerUserName(buyer == null ? "" : buyer.getUsername());
         }
-        return new Response<>("成功", 0, collect);
     }
 }

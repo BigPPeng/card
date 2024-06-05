@@ -24,6 +24,20 @@ public class ProductVo {
     private String startTimeStr;
     private String endTimeStr;
 
+
+    public ProductVo(Integer id, String productName, Integer rentSaleType, Integer productStatus, Integer productType, Double price, Integer quantity, Integer sellerUserId, String startTimeStr, String endTimeStr) {
+        this.id = id;
+        this.productName = productName;
+        this.rentSaleType = rentSaleType;
+        this.productStatus = productStatus;
+        this.productType = productType;
+        this.price = price;
+        this.quantity = quantity;
+        this.sellerUserId = sellerUserId;
+        this.startTimeStr = startTimeStr;
+        this.endTimeStr = endTimeStr;
+    }
+
     public ProductVo(Product product) {
         this.id = product.getId();
         this.productName = product.getProductName();
