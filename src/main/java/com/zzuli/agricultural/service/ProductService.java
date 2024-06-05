@@ -117,6 +117,13 @@ public class ProductService {
         if (user == null || user.getUserStatus() == 0) {
             return new Response<>("用户状态异常，购买失败", 1);
         }
+        if (productById.getQuantity() < productCount) {
+            return new Response<>("剩余库存不足，购买失败", 1);
+        }
+        productById.setQuantity(productById.getQuantity() - productCount);
+        // 更新库存
+        productMapper.updateProduct(productById);
+
         ProductOrder build = ProductOrder.builder()
                 .price(productById.getPrice())
                 .buyerUserId(userId)
