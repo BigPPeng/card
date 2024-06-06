@@ -1,19 +1,12 @@
 package com.card.config.shiro;
 
-import com.card.model.User;
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authz.AuthorizationInfo;
-import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
-import java.util.Set;
 
 /**
  * Created by cuihp on 2020/4/26.
@@ -52,15 +45,15 @@ public class ShiroRealm extends AuthorizingRealm{
 
         // 通过用户名到数据库查询用户信息
 //        User user = this.userService.findByName(userName);
-        User user = new User();
-        user.setName("CuiHongPeng");
-        user.setPass("pass");
+//        User user = new User();
+//        user.setName("CuiHongPeng");
+//        user.setPass("pass");
 //        if (user == null)
 //            throw new UnknownAccountException("用户名或密码错误！");
 //        if (!StringUtils.equals(password, user.getPassword()))
 //            throw new IncorrectCredentialsException("用户名或密码错误！");
 //        if (User.STATUS_LOCK.equals(user.getStatus()))
 //            throw new LockedAccountException("账号已被锁定,请联系管理员！");
-        return new SimpleAuthenticationInfo(user, "pass", getName());
+        return null;
     }
 }
