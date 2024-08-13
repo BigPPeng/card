@@ -1,4 +1,4 @@
-package com.card.config.shiro;
+package com.zzuli.agricultural.config.shiro;
 
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;

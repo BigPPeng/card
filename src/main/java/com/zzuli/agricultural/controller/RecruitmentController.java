@@ -1,13 +1,12 @@
 package com.zzuli.agricultural.controller;
 
-import com.card.common.Response;
+import com.zzuli.agricultural.common.Response;
 import com.zzuli.agricultural.model.*;
 import com.zzuli.agricultural.model.request.*;
 import com.zzuli.agricultural.service.RecruitmentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

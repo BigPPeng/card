@@ -1,11 +1,9 @@
 import com.SpringBootApplicationStart;
 import com.alibaba.fastjson.JSON;
-import com.card.common.DateToolUtil;
-import com.card.common.Response;
+import com.zzuli.agricultural.common.Response;
 import com.google.common.collect.Lists;
 import com.zzuli.agricultural.model.*;
 import com.zzuli.agricultural.service.ExpertConsultationService;
-import com.zzuli.agricultural.service.RecruitmentService;
 import com.zzuli.agricultural.service.UserServiceV2;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

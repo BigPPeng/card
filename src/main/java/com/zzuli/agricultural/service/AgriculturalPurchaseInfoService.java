@@ -1,7 +1,7 @@
 package com.zzuli.agricultural.service;
 
-import com.card.common.DateToolUtil;
-import com.card.common.Response;
+import com.zzuli.agricultural.common.DateToolUtil;
+import com.zzuli.agricultural.common.Response;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.zzuli.agricultural.mapper.AgriculturalPurchaseInfoMapper;

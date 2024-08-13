@@ -1,7 +1,7 @@
 package com.zzuli.agricultural.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.card.common.Response;
+import com.zzuli.agricultural.common.Response;
 import com.zzuli.agricultural.model.request.*;
 import com.zzuli.agricultural.model.User;
 import com.zzuli.agricultural.model.UserTypeEnum;

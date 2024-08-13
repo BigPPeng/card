@@ -1,6 +1,6 @@
 package com.zzuli.agricultural.controller;
 
-import com.card.common.Response;
+import com.zzuli.agricultural.common.Response;
 import com.zzuli.agricultural.model.AgriculturalNews;
 import com.zzuli.agricultural.model.request.IdReq;
 import com.zzuli.agricultural.model.request.PublishNewsReq;

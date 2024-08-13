@@ -1,6 +1,6 @@
 import com.alibaba.fastjson.JSON;
 import com.SpringBootApplicationStart;
-import com.card.common.DateToolUtil;
+import com.zzuli.agricultural.common.DateToolUtil;
 import com.zzuli.agricultural.mapper.UserMapper2;
 import com.zzuli.agricultural.model.User;
 import org.assertj.core.util.Lists;

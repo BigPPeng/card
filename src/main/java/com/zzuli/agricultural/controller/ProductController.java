@@ -1,8 +1,7 @@
 package com.zzuli.agricultural.controller;
 
-import com.card.common.Response;
+import com.zzuli.agricultural.common.Response;
 import com.zzuli.agricultural.model.Product;
-import com.zzuli.agricultural.model.ProductOrder;
 import com.zzuli.agricultural.model.ProductTypeEnum;
 import com.zzuli.agricultural.model.RentalRecord;
 import com.zzuli.agricultural.model.request.*;

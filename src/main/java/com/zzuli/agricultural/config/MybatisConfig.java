@@ -1,4 +1,4 @@
-package com.card.config;
+package com.zzuli.agricultural.config;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;

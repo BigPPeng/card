@@ -9,7 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
  *
  * Created by hongpeng.cui on 2018/12/26.
  */
-@SpringBootApplication(scanBasePackages = {"com.card", "com.zzuli"})
+@SpringBootApplication(scanBasePackages = {"com.zzuli"})
 public class SpringBootApplicationStart {
     public static void main(String[] args) {
         SpringApplication application = new SpringApplication(SpringBootApplicationStart.class);

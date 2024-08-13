@@ -1,6 +1,6 @@
 package com.zzuli.agricultural.controller;
 
-import com.card.common.Response;
+import com.zzuli.agricultural.common.Response;
 import com.zzuli.agricultural.model.AgriculturalPurchaseInfo;
 import com.zzuli.agricultural.model.AgriculturalSaleInfo;
 import com.zzuli.agricultural.model.request.IdReq;

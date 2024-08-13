@@ -1,6 +1,6 @@
 import com.SpringBootApplicationStart;
 import com.alibaba.fastjson.JSON;
-import com.card.common.Response;
+import com.zzuli.agricultural.common.Response;
 import com.google.common.collect.Lists;
 import com.zzuli.agricultural.model.AgriculturalPurchaseInfo;
 import com.zzuli.agricultural.model.AgriculturalSaleInfo;

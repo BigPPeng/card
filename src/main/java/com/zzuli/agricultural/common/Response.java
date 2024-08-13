@@ -1,4 +1,4 @@
-package com.card.common;
+package com.zzuli.agricultural.common;
 
 /**
  * 通用返回结构体

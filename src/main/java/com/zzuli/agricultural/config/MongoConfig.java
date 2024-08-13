@@ -1,4 +1,4 @@
-package com.card.config;
+package com.zzuli.agricultural.config;
 
 import com.google.common.collect.Lists;
 import com.mongodb.Mongo;

@@ -1,13 +1,10 @@
 import com.SpringBootApplicationStart;
 import com.alibaba.fastjson.JSON;
-import com.card.common.DateToolUtil;
-import com.card.common.Response;
-import com.google.common.collect.Lists;
+import com.zzuli.agricultural.common.DateToolUtil;
+import com.zzuli.agricultural.common.Response;
 import com.zzuli.agricultural.model.*;
 import com.zzuli.agricultural.model.response.ProductOrderVo;
 import com.zzuli.agricultural.service.ProductService;
-import com.zzuli.agricultural.service.UserServiceV2;
-import org.junit.Assert;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

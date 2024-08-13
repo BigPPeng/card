@@ -1,4 +1,4 @@
-package com.card.common;
+package com.zzuli.agricultural.common;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

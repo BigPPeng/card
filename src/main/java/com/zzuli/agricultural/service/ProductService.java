@@ -1,7 +1,7 @@
 package com.zzuli.agricultural.service;
 
-import com.card.common.DateToolUtil;
-import com.card.common.Response;
+import com.zzuli.agricultural.common.DateToolUtil;
+import com.zzuli.agricultural.common.Response;
 import com.google.common.collect.Maps;
 import com.zzuli.agricultural.mapper.ProductMapper;
 import com.zzuli.agricultural.mapper.ProductOrderMapper;
@@ -15,8 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
